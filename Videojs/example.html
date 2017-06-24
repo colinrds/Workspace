@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Videojs HlsJs plugin</title>
+
+  <link href="dist/video-js.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .info {
+      background-color: #eee;
+      border: thin solid #333;
+      border-radius: 3px;
+      padding: 0 5px;
+      text-align: center;
+    }
+
+    .video-js {
+      margin: 40px auto;
+    }
+  </style>
+</head>
+<body>
+<video class="video-js video vjs-default-skin" height="300" width="600" controls>
+  <p>
+    Your browser doesn't support video. Please <a href="http://browsehappy.com/">upgrade your browser</a> to see the
+    example.
+  </p>
+  <source src="http://cdn.sanjieke.cn/hahahaha/ori.m3u8" type="application/vnd.apple.mpegurl">
+</video>
+<script src="dist/video.js"></script>
+<script src="dist/hls.js"></script>
+<script src="lib/videojs-hlsjs.js"></script>
+<script>
+  // fire up the plugin
+  var videoDom = document.querySelector('.video');
+  var player = videojs(videoDom,{
+    bigPlayButton : false,
+    autoplay: false,
+    controlBar: {
+      captionsButton: false,
+      chaptersButton: false,
+      playbackRateMenuButton: true,
+      LiveDisplay: true,
+      subtitlesButton: false,
+      remainingTimeDisplay: true,
+      progressControl: true,
+      volumeMenuButton: {
+        inline: false,
+        vertical: true
+      },//竖着的音量条
+      fullscreenToggle: true
+    }
+  },function(){
+    var that = this;
+    this.ready(function(){
+      console.log(this);
+    });
+    this.on('play', function() {  
+
+    });
+    this.on('timeupdate', function () {  
+      // console.log(this.currentTime());
+    });
+    this.on('seeked',function(){
+      console.log(this.currentTime());
+    })
+  });
+</script>
+</body>
+</html>
