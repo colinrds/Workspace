@@ -1,0 +1,40 @@
+*.pydevproject
+.idea/
+node_modules/
+json/
+.DS_Store   
+.DS_Store?   
+.project
+.metadata
+*.tmp
+*.bak
+*.swp
+*.codekit
+*~.nib
+*.scssc
+*.css.map
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+composer.json
+.codekit-cache/
+src/module/admin/css/.sass-cache/
+src/module/blog/js/
+src/module/index/3.6.1/css/.sass-cache/
+src/module/index/3.6.1/img/
+src/module/mobile/call-dad/js/
+src/module/mobile/js/
+src/module/online_class/css/v3.5/.sass-cache/
