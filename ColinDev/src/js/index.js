@@ -8,5 +8,3 @@ class Person{
     return `我是${this.name},我今年${this.age}岁了。`;
   }
 }
-
-console.log('成功')
