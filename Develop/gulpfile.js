@@ -13,8 +13,9 @@ gulp.task('cssWatch',function(){
 
 gulp.task('connect',function(){
     connect.server({
-        port: 8585,
+        port: 80,
         root:'./dev',
+        host: 'www.colin.com',
         open: true,
         livereload:true
     })

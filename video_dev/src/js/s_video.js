@@ -193,6 +193,6 @@ sVideo.prototype = {
 
 new sVideo({
   id: 'video456585',
-  videoUrl: 'http://test.service.sanjieke.cn/video/master/5000122.m3u8'
+  videoUrl: 'https://www.ifreesec.com/test/3001090.m3u8'
 })
 // fire up the plugin
