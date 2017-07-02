@@ -1,0 +1,19 @@
+{
+  "name": "hls",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "colin",
+  "license": "ISC",
+  "dependencies": {
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "html-webpack-plugin": "^2.29.0",
+    "jquery": "^3.2.1",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.0.0"
+  }
+}

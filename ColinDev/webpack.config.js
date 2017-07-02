@@ -3,10 +3,12 @@ var htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: [
-        './src/js/index.js'
+        './src/js/hls.js',
+        './src/js/video.js',
+        './src/js/videojs-hlsjs.js'
     ],
     output: {
-        path:path.join(__dirname,"dist"),
+        path:path.join(__dirname,"dev"),
         filename:"js/bundle.js"
     },
     module: {

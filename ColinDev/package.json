@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "webpack": "webpack -p --watch"
+    "wp": "webpack -p --watch",
+    "dev": ""
   },
   "author": "colin",
   "license": "ISC",

@@ -1,0 +1,24 @@
+{
+  "name": "video_dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --watch",
+    "build": "webpack -p --config webpack.config.dev.js"
+  },
+  "author": "colin",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
+    "html-webpack-plugin": "^2.29.0",
+    "jquery": "^3.2.1",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.0.0"
+  }
+}

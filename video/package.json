@@ -1,0 +1,15 @@
+{
+  "name": "video",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --watch"
+  },
+  "author": "colin",
+  "license": "ISC",
+  "dependencies": {
+    "html-webpack-plugin": "^2.29.0",
+    "webpack": "^3.0.0"
+  }
+}
