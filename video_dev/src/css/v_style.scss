@@ -1,46 +1,3 @@
-.s_video .icon-play { 
-    border: 10px dashed transparent;
-    border-left: 15px solid #ababab;
-    display: inline-block;
-    left: 20px;
-    top: 10px;
-    position: absolute;
-    outline: 0;
-}
-.s_video .icon-play:hover{
-    border-left: 15px solid #6cc900;
-}
-.s_video .icon-pause{
-    display: inline-block;
-    position: absolute;
-    left: 20px;
-    top: 13px;
-    height: 15px;
-    width: 2px;
-    background-color: #ababab;
-}
-.s_video .icon-pause:before {
-    content: "";
-    display: block;
-    position: absolute;
-    background-color: #ababab;
-    height: 15px;
-    width: 2px;
-    left: 10px;
-}
-.s_video .icon-pause:hover{
-    background-color: #6cc900;
-}
-.s_video .icon-magnify{
-    
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAARCAYAAADQWvz5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUY5QTExOTdBRkJGMTFFNjk2RTFDMDU4RDQ5MjQ4NEUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUY5QTExOThBRkJGMTFFNjk2RTFDMDU4RDQ5MjQ4NEUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRjlBMTE5NUFGQkYxMUU2OTZFMUMwNThENDkyNDg0RSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRjlBMTE5NkFGQkYxMUU2OTZFMUMwNThENDkyNDg0RSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Plq4ixQAAABfSURBVHjavNFBCsBACANAFf//ED+ZXretCppSr8sOJNGIgOSnMjhnPp9nDwAsRGNWRAMLrTErCh5j3rwpG02+KPsXCF1nE6gbANNoJbbpKMW2Zb8wZrUb5gsgXe4SYACl4BEl62e14AAAAABJRU5ErkJggg==') no-repeat;
-}
-.s_video .icon-shrink{
-
-}
-
-
-
 .operate_bar{
     width: 100%;
     height: 40px;
@@ -150,6 +107,6 @@
         background-size: 16px 16px;
     }
     .ob_fullscreen{
-        
+
     }
 }
