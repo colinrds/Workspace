@@ -22,16 +22,16 @@ function sVideo(options){
 }
 sVideo.prototype = {
     panelEvent: function(){
-        $(this.id).parents('.s_video').find('.playOrStop').click(this.playOrStop.bind(this));
+        $(this.id).parents('body').find('.ob_switch').click(this.playOrStop.bind(this));
     },
     playOrStop: function(){
         if(this.playOrStop){
             this.id.play();
-            $(this.id).parents('.s_video').find('.play-btn').removeClass('icon-play').addClass('icon-pause');
+            $(this.id).parents('body').find('.ob_switch').removeClass('ob_play_icon').addClass('ob_pause_icon');
             this.playOrStop = false;
         }else{
             this.id.pause();
-            $(this.id).parents('.s_video').find('.play-btn').removeClass('icon-pause').addClass('icon-play');
+            $(this.id).parents('body').find('.ob_switch').removeClass('ob_pause_icon').addClass('ob_play_icon');
             this.playOrStop = true;
         }
     },
@@ -48,7 +48,9 @@ sVideo.prototype = {
         this._hls.on(Hls.Events.ERROR,this.onError.bind(this));
     },
     onBuffered:function(){
-        console.log(this.id.duration)
+        var duration = this.timeConversion(this.id.duration);
+        console.log($(this.id).parents('body').find('.ob_time-all'));
+        $(this.id).parents('body').find('.ob_time-all').text(duration);
     },
     // 转换秒为分钟
     timeConversion: function(tim){

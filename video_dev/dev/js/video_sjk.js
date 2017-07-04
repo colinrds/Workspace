@@ -10897,16 +10897,16 @@ function sVideo(options){
 }
 sVideo.prototype = {
     panelEvent: function(){
-        $(this.id).parents('.s_video').find('.playOrStop').click(this.playOrStop.bind(this));
+        $(this.id).parents('body').find('.ob_switch').click(this.playOrStop.bind(this));
     },
     playOrStop: function(){
         if(this.playOrStop){
             this.id.play();
-            $(this.id).parents('.s_video').find('.play-btn').removeClass('icon-play').addClass('icon-pause');
+            $(this.id).parents('body').find('.ob_switch').removeClass('ob_play_icon').addClass('ob_pause_icon');
             this.playOrStop = false;
         }else{
             this.id.pause();
-            $(this.id).parents('.s_video').find('.play-btn').removeClass('icon-pause').addClass('icon-play');
+            $(this.id).parents('body').find('.ob_switch').removeClass('ob_pause_icon').addClass('ob_play_icon');
             this.playOrStop = true;
         }
     },
@@ -10923,7 +10923,9 @@ sVideo.prototype = {
         this._hls.on(Hls.Events.ERROR,this.onError.bind(this));
     },
     onBuffered:function(){
-        console.log(this.id.duration)
+        var duration = this.timeConversion(this.id.duration);
+        console.log($(this.id).parents('body').find('.ob_time-all'));
+        $(this.id).parents('body').find('.ob_time-all').text(duration);
     },
     // 转换秒为分钟
     timeConversion: function(tim){
@@ -11026,7 +11028,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, ".operate_bar {\n  width: 100%;\n  height: 40px;\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.8);\n  z-index: 1000;\n}\n\n.operate_bar .ob_process {\n  position: absolute;\n  width: 100%;\n  top: -5px;\n  background: rgba(0, 0, 0, 0.5);\n  height: 5px;\n  cursor: pointer;\n}\n\n.operate_bar .ob_process .ob_process_load {\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background: #828282;\n  z-index: 97;\n}\n\n.operate_bar .ob_process .ob_process_play {\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  transition: height .2s;\n  z-index: 98;\n}\n\n.operate_bar .ob_process .ob_process_btn {\n  width: 11px;\n  height: 11px;\n  position: absolute;\n  left: 0;\n  top: -3px;\n  z-index: 99;\n  border-radius: 50%;\n  background: #FFF;\n  box-shadow: -1px 0 5px #626262;\n  -webkit-box-shadow: -1px 0 5px #626262;\n  -moz-box-shadow: -1px 0 5px #626262;\n  -o-box-shadow: -1px 0 5px #626262;\n}\n\n.operate_bar .ob_switch {\n  width: 40px;\n  height: 40px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_play_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABKklEQVRYR8XX/00CQRCG4ffrwE6wA0pQOtAOpAPoADuADrQDS5AOpAOs4MyYW3OBhbg7s8v+d5dL5sk3++tEZgzDcAfMgL2kY+6bqHe6AHgDHoAvYCnJnpuMS4APYD6paACDGCh0/BdgRa0VG0nrSEEJINW1FJ4lWUruUQNIRUPa4gGEtMULcLclClDdlmhAcVtaAIra0hIwbYst2+yW3gOQ2rKS9Hq6cfQCpLqf45b+t4n1BiTIIh1wtwKsJa1M0xvwDdhc2KQoegJ2wMvpaugB2I+Fs6dnS8BZ3LmzuxUgG3cPwNW4WwIsbruu/S6tkhHRgvdxklVdWD2AA/DkvRvWAKrjjpgDrrg9gJC4SwDp1yw07hLAPfAIbFv8jk0h2UlYso69394c8APtY7Ah+hvDbwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_pasue_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwUlEQVRYR+2XwQ3CMAxF/TboBsAkwAQwAiPAJLACG8AEwCZlg27wUVCQAmpKW5Bysa924qfn08cKF7n9kqahB9S/MH77pxVA0sLMLnHxDjiMgZC0NbN9fLsErp//5ABOZraKwzUwGwkQ7E3i2yOw6QsQSOevYSB7qi4wSUr6NyCYfaucAQdwA27ADbgBN+AG3IAbcANuoLiBNJjcgWdMG1qS0mByBtZ9c0HZaBYoJVVmVv0pnDZA02ZwVOQaeoqu+QfOqREwccBDCgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_time {\n  float: left;\n  height: 40px;\n  line-height: 40px;\n  color: #F1F1F1;\n  padding: 0 10px;\n  font-size: 13px;\n}\n\n.operate_bar .ob_voice_box {\n  height: 40px;\n  float: right;\n}\n\n.operate_bar .ob_voice_box .ob_voice_big {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACCklEQVRYR8VX0VXCQBCcqUA7ECoQKxAqUCsQOsAKlArUCsQK1ArUCsQKhA60gvXNvb14RELIgxz7RS7kdm53dnaP2IGZ2RjAnORz0+3Y9IP0/2Z2COAVQE/rJBvv1/iDCMDM5PQJQCeuZQNgZn13rggUlgWAmQ0BPCR+PwEcZ0mBmU0BXLrzHwDnABSN61YBONmUbzmTLeSc5MzMbloF4GRTyAPTASjkfZLfetgUgJfqLYAJSYEOFqrAzMTk05TRSY5V45FsjyTFgcIaAJBGnPmHI5JKJ7iCVOn+6e8rknfll3UAfP85gJnECsABAEXvhORcALR4VOUVgMg2rFK5dQC8XCVUsoE7/vDnEE0BMF9Yys0aQEuvagAotTp5PHUXgKIYK6nbKgDnl0pVFSSbAFDuvwoutBmBGCoze3OSq2F1k7S/tB4Bj0KqnjENqoj3XAAkYCkZ/9QzUwr2DmDvKYgkXJDsZCWhme2vDL3HSPnUS6SoEqZ/QlQnxdJtNY+VA2eNEqqDRumtlOLyhFOlwmOS91s2IylgjEYvNKOkHatUigGz1I6l5bIpyVEKoq4bJmq4uh3XNR0fSKTfYe7z5jLY6UCyAQiFTSfQ0CITby6yjGSlcKdDaSCnj2rtDqUlEGXSqt/nvRn5pKOURHIGjFkuJgmrdeqUnHkBePmKnNL5PDejqmrZ5nr+C4l+ZfAT3jHnAAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_voice_box .ob_voice_process {\n  width: 80px;\n  height: 5px;\n  background: rgba(125, 125, 125, 0.7);\n  margin-top: 17px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_setting {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADUklEQVRYR7WXgVHcQAxFvyoIVBCoIFABUAGkAqCCQAUhFQAV5KggSQUhFSRUAFQQrgJlnkfyrO3d8x1DPMNwvltr/0r/f8mmDS93v5B0LOmwePRF0h9Jd2a22CSkbbKYte5+H8+w0VN83pF0xmczK4HNhl8JIE67MDNO2F0B4N7Mrsro7s79YQnA3fckHZjZbQtJFYC7b0n6KYkApPYoQbg7998bAI7NbD+A8iwxiEXWPpYHSUATAIGaB58jraTa2VQS9Sfg+bjW7k4JvkZZWMs9MXjmJmIAIsvWYRgAiJM/SnqQdALi+I4TsPHVKpLF2hPWSaJslKSMwUH6bNYAkF6u7sGi7lu19K1iGGDGMaKcj2Z2NClBEO5a0r6ZJZBZFm+ywN1RCOXtS9iXoEj1JE2bbNJaWxCbPfsM1zhAvWdBBFk/xIYPq7LW2nzCgZAPBDozM8xlcrk7JKNU/L6MBe+C/ZdmhgJqz8H+CYlrMoR8FzW2uzuSPJX0RRIG1UnK3QGD3D5JAgSyG1wh089mtlv+YIW38z1S2zUz/o8DcPJvYSitU6YXoPfBmijD3zCljH0HgPT2/P/UOD2n5dQDC64AJUvY7+Ckkak0Mm5RxAsAINzE2crAQbjfkZ2Bk1UAYMGza/veEQBwp8xAjUCk9qZWmgbhUkVzMa8zA+sAuDaz7ZbORxlbBwCcWgCgyfoM+r9LkMaT6Xp+AxLu1AaTUByekSRcpgxJR8oQd9seN58wIGTYJGzRkiclLWRIp81Gt6gZUdWxChnhgkjtNu03SoQJQdYqwGA9BjfwmBoAdH5a03GAIFs43fsRIX+F1U6YH6dHmgytAx+pNSPa5aBjNaSG/Wa/wLya/rCq047b8VqbryPFikHlbDjotCWA9PGVnvCazQs550DSN6xxCagfMhnMbePxah0QjZEMHizNDLvurtmBpBgmuqFU0o/WfBhrUw1IrTtIEQMn3Sufb43lyIxMnMfwwTq+o5vB/tpYzm9IlFGctaiFel/GuE4MJu3BvLnqxYR+fhAjej/DzbyYsEGX3oL5GBsS7cb8cfnmXs0gJm9Br301o2yMd5MJqcqBNclV9g7SySb4AQy3N305bRgQWeGPVGdjYTjNd8bmaWvx/gHH7QmmUfWGPwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n", ""]);
+exports.push([module.i, ".operate_bar {\n  width: 100%;\n  height: 40px;\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.8);\n  z-index: 1000;\n}\n\n.operate_bar .ob_process {\n  position: absolute;\n  width: 100%;\n  top: -5px;\n  background: rgba(0, 0, 0, 0.5);\n  height: 5px;\n  cursor: pointer;\n}\n\n.operate_bar .ob_process .ob_process_load {\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background: #828282;\n  z-index: 97;\n}\n\n.operate_bar .ob_process .ob_process_play {\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  transition: height .2s;\n  z-index: 98;\n}\n\n.operate_bar .ob_process .ob_process_btn {\n  width: 11px;\n  height: 11px;\n  position: absolute;\n  left: 0;\n  top: -3px;\n  z-index: 99;\n  border-radius: 50%;\n  background: #FFF;\n  box-shadow: -1px 0 5px #626262;\n  -webkit-box-shadow: -1px 0 5px #626262;\n  -moz-box-shadow: -1px 0 5px #626262;\n  -o-box-shadow: -1px 0 5px #626262;\n}\n\n.operate_bar .ob_switch {\n  width: 40px;\n  height: 40px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_play_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABKklEQVRYR8XX/00CQRCG4ffrwE6wA0pQOtAOpAPoADuADrQDS5AOpAOs4MyYW3OBhbg7s8v+d5dL5sk3++tEZgzDcAfMgL2kY+6bqHe6AHgDHoAvYCnJnpuMS4APYD6paACDGCh0/BdgRa0VG0nrSEEJINW1FJ4lWUruUQNIRUPa4gGEtMULcLclClDdlmhAcVtaAIra0hIwbYst2+yW3gOQ2rKS9Hq6cfQCpLqf45b+t4n1BiTIIh1wtwKsJa1M0xvwDdhc2KQoegJ2wMvpaugB2I+Fs6dnS8BZ3LmzuxUgG3cPwNW4WwIsbruu/S6tkhHRgvdxklVdWD2AA/DkvRvWAKrjjpgDrrg9gJC4SwDp1yw07hLAPfAIbFv8jk0h2UlYso69394c8APtY7Ah+hvDbwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_pause_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwUlEQVRYR+2XwQ3CMAxF/TboBsAkwAQwAiPAJLACG8AEwCZlg27wUVCQAmpKW5Bysa924qfn08cKF7n9kqahB9S/MH77pxVA0sLMLnHxDjiMgZC0NbN9fLsErp//5ABOZraKwzUwGwkQ7E3i2yOw6QsQSOevYSB7qi4wSUr6NyCYfaucAQdwA27ADbgBN+AG3IAbcANuoLiBNJjcgWdMG1qS0mByBtZ9c0HZaBYoJVVmVv0pnDZA02ZwVOQaeoqu+QfOqREwccBDCgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_time {\n  float: left;\n  height: 40px;\n  line-height: 40px;\n  color: #F1F1F1;\n  padding: 0 10px;\n  font-size: 13px;\n}\n\n.operate_bar .ob_voice_box {\n  height: 40px;\n  float: right;\n}\n\n.operate_bar .ob_voice_box .ob_voice_big {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACCklEQVRYR8VX0VXCQBCcqUA7ECoQKxAqUCsQOsAKlArUCsQK1ArUCsQKhA60gvXNvb14RELIgxz7RS7kdm53dnaP2IGZ2RjAnORz0+3Y9IP0/2Z2COAVQE/rJBvv1/iDCMDM5PQJQCeuZQNgZn13rggUlgWAmQ0BPCR+PwEcZ0mBmU0BXLrzHwDnABSN61YBONmUbzmTLeSc5MzMbloF4GRTyAPTASjkfZLfetgUgJfqLYAJSYEOFqrAzMTk05TRSY5V45FsjyTFgcIaAJBGnPmHI5JKJ7iCVOn+6e8rknfll3UAfP85gJnECsABAEXvhORcALR4VOUVgMg2rFK5dQC8XCVUsoE7/vDnEE0BMF9Yys0aQEuvagAotTp5PHUXgKIYK6nbKgDnl0pVFSSbAFDuvwoutBmBGCoze3OSq2F1k7S/tB4Bj0KqnjENqoj3XAAkYCkZ/9QzUwr2DmDvKYgkXJDsZCWhme2vDL3HSPnUS6SoEqZ/QlQnxdJtNY+VA2eNEqqDRumtlOLyhFOlwmOS91s2IylgjEYvNKOkHatUigGz1I6l5bIpyVEKoq4bJmq4uh3XNR0fSKTfYe7z5jLY6UCyAQiFTSfQ0CITby6yjGSlcKdDaSCnj2rtDqUlEGXSqt/nvRn5pKOURHIGjFkuJgmrdeqUnHkBePmKnNL5PDejqmrZ5nr+C4l+ZfAT3jHnAAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_voice_box .ob_voice_process {\n  width: 80px;\n  height: 5px;\n  background: rgba(125, 125, 125, 0.7);\n  margin-top: 17px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_setting {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADUklEQVRYR7WXgVHcQAxFvyoIVBCoIFABUAGkAqCCQAUhFQAV5KggSQUhFSRUAFQQrgJlnkfyrO3d8x1DPMNwvltr/0r/f8mmDS93v5B0LOmwePRF0h9Jd2a22CSkbbKYte5+H8+w0VN83pF0xmczK4HNhl8JIE67MDNO2F0B4N7Mrsro7s79YQnA3fckHZjZbQtJFYC7b0n6KYkApPYoQbg7998bAI7NbD+A8iwxiEXWPpYHSUATAIGaB58jraTa2VQS9Sfg+bjW7k4JvkZZWMs9MXjmJmIAIsvWYRgAiJM/SnqQdALi+I4TsPHVKpLF2hPWSaJslKSMwUH6bNYAkF6u7sGi7lu19K1iGGDGMaKcj2Z2NClBEO5a0r6ZJZBZFm+ywN1RCOXtS9iXoEj1JE2bbNJaWxCbPfsM1zhAvWdBBFk/xIYPq7LW2nzCgZAPBDozM8xlcrk7JKNU/L6MBe+C/ZdmhgJqz8H+CYlrMoR8FzW2uzuSPJX0RRIG1UnK3QGD3D5JAgSyG1wh089mtlv+YIW38z1S2zUz/o8DcPJvYSitU6YXoPfBmijD3zCljH0HgPT2/P/UOD2n5dQDC64AJUvY7+Ckkak0Mm5RxAsAINzE2crAQbjfkZ2Bk1UAYMGza/veEQBwp8xAjUCk9qZWmgbhUkVzMa8zA+sAuDaz7ZbORxlbBwCcWgCgyfoM+r9LkMaT6Xp+AxLu1AaTUByekSRcpgxJR8oQd9seN58wIGTYJGzRkiclLWRIp81Gt6gZUdWxChnhgkjtNu03SoQJQdYqwGA9BjfwmBoAdH5a03GAIFs43fsRIX+F1U6YH6dHmgytAx+pNSPa5aBjNaSG/Wa/wLya/rCq047b8VqbryPFikHlbDjotCWA9PGVnvCazQs550DSN6xxCagfMhnMbePxah0QjZEMHizNDLvurtmBpBgmuqFU0o/WfBhrUw1IrTtIEQMn3Sufb43lyIxMnMfwwTq+o5vB/tpYzm9IlFGctaiFel/GuE4MJu3BvLnqxYR+fhAjej/DzbyYsEGX3oL5GBsS7cb8cfnmXs0gJm9Br301o2yMd5MJqcqBNclV9g7SySb4AQy3N305bRgQWeGPVGdjYTjNd8bmaWvx/gHH7QmmUfWGPwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n", ""]);
 
 // exports
 
@@ -27322,41 +27324,7 @@ var panel = function () {
 }
 panel.prototype = {
     panelCode: function () {
-        var FZFVIDEO = '<div class="videoState">'+
-                        '<div class="videoStateBox">'+
-                        '<div class="playOrStop">'+
-                        '<i class="play-btn icon-play"></i></div>'+
-                        '<div class="currentTimeBox">'+
-                        '<span class="currentTimers">0:00</span>'+
-                        '<span>/</span>'+
-                        '<span class="allTimers">0:00</span></div>'+
-                        '<div class="percentage">'+
-                        '<div class="currentPerc"></div>'+
-                        '<div class="currentPercentage"></div>'+
-                        '<div class="currentAll"></div>'+
-                        '<div class="currentBG"></div>'+
-                        '</div>'+
-                        '<div class="videoSpeed">'+
-                        '<div class="videoBoxRe">'+
-                        '<i class="icon-set"></i>'+
-                        '<ul class="videoSpeedList">'+
-                        '<li class="videoSpeedStup" class="bs4">2.5倍</li>'+
-                        '<li class="videoSpeedStup" class="bs3">2.0倍</li>'+
-                        '<li class="videoSpeedStup" class="bs2">1.5倍</li>'+
-                        '<li class="videoSpeedStup" class="bs1">默认</li></ul>'+
-                        '</div>'+
-                        '</div>'+
-                        '<div class="videoSound">'+
-                        '<div class="videoSoundBox">'+
-                        '<i class="sound-btn icon-sound"></i>'+
-                        '<div class="soundBar">'+
-                        '<div class="currentSound"></div>'+
-                        '</div>'+
-                        '</div>'+
-                        '</div>'+
-                        '<div class="fullscreen"></div>'+
-                        '</div>'+
-                        '</div>';
+        var FZFVIDEO = '';
         return FZFVIDEO;
     },
     init: function () {
