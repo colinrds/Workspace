@@ -10897,23 +10897,49 @@ function sVideo(options){
 }
 sVideo.prototype = {
     panelEvent: function(){
-        $(this.id).parents('body').find('.ob_switch').click(this.playOrStop.bind(this));
+        this.parentDom.find('.ob_switch').click(this.playOrStop.bind(this));
     },
     playOrStop: function(){
         if(this.playOrStop){
             this.id.play();
-            $(this.id).parents('body').find('.ob_switch').removeClass('ob_play_icon').addClass('ob_pause_icon');
+            this.parentDom.find('.ob_switch').removeClass('ob_play_icon').addClass('ob_pause_icon');
             this.playOrStop = false;
         }else{
             this.id.pause();
-            $(this.id).parents('body').find('.ob_switch').removeClass('ob_pause_icon').addClass('ob_play_icon');
+            this.parentDom.find('.ob_switch').removeClass('ob_pause_icon').addClass('ob_play_icon');
             this.playOrStop = true;
         }
     },
     playInit: function(){
         this.id.style.cssText = "width:"+this.config.widthSize+"px;";
-        $(this.id).parents('.s_video').find('.allTimers').text();
+        this.id.ontimeupdate = this.update.bind(this);
     },
+	//计算鼠标相对元素X坐标
+	mouseCurrentX: function(dmNm,event){
+		var e = event || window.event;
+		var dom = document.getElementById(dmNm);
+		var p_Left  = parseInt(dom.getBoundingClientRect().left);
+		return e.clientX - p_Left;
+	},	
+    //获取元素的宽度
+	getDomWidth: function(dmNm){
+		var dom = document.getElementById(dmNm);
+		return parseInt(dom.width||dom.offsetWidth||dom.clientWidth);
+	},
+    // 时时监听播放进度
+    update: function(){
+        var currentTime = Math.floor(this.id.currentTime);
+        this.parentDom.find('.ob_time-recent').text(this.timeConversion(currentTime));
+        this.parentDom.find('.ob_process_play').css('width',this.currentTime()+'%')
+        this.parentDom.find('.ob_process_btn').css('left',this.currentTime()+'%');
+    },
+	//当前播放进度
+	currentTime: function(){
+		return (this.id.currentTime / this.allTime()).toFixed(3) * 100;
+	},
+    allTime: function(){
+		return this.id.duration;
+	},
     create: function(){
         var that = this;
         this._hls.on(Hls.Events.MEDIA_ATTACHED,this.onMediaAttached.bind(this));
@@ -10922,10 +10948,10 @@ sVideo.prototype = {
         this._hls.on(Hls.Events.LEVEL_LOADED,this.onLevelLoaded.bind(this));
         this._hls.on(Hls.Events.ERROR,this.onError.bind(this));
     },
+    //添加总时长
     onBuffered:function(){
         var duration = this.timeConversion(this.id.duration);
-        console.log($(this.id).parents('body').find('.ob_time-all'));
-        $(this.id).parents('body').find('.ob_time-all').text(duration);
+        this.parentDom.find('.ob_time-all').text(duration);
     },
     // 转换秒为分钟
     timeConversion: function(tim){
@@ -10939,6 +10965,7 @@ sVideo.prototype = {
         this._hls.loadSource(this.config.url);
         $(this.config.id).wrap('<div class="s_video" style="position: relative;display:inline-block;width:'+this.config.widthSize+'px"></div>');
         $(this.id).after(panelCode);
+        this.parentDom = $(this.id).parents('.s_video');
         this.playInit();
         this.panelEvent();
     },
@@ -10984,7 +11011,8 @@ sVideo.prototype = {
 
 new sVideo({
     id: '#video_one',
-    url: 'https://www.ifreesec.com/test/3001090.m3u8'
+    url: 'http://cdn.sanjieke.cn/hahahaha/ori.m3u8'
+    // url: 'https://www.ifreesec.com/test/3001090.m3u8'
 })
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
 
@@ -11009,8 +11037,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/_css-loader@0.28.4@css-loader/index.js!./v_style.css", function() {
-			var newContent = require("!!../../node_modules/_css-loader@0.28.4@css-loader/index.js!./v_style.css");
+		module.hot.accept("!!../../node_modules/.0.28.4@css-loader/index.js!./v_style.css", function() {
+			var newContent = require("!!../../node_modules/.0.28.4@css-loader/index.js!./v_style.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -27324,7 +27352,24 @@ var panel = function () {
 }
 panel.prototype = {
     panelCode: function () {
-        var FZFVIDEO = '';
+        var FZFVIDEO = '<div class="operate_bar">'+
+            '<div class="ob_process">'+
+            '<div class="ob_process_load" style="width:50%;"></div>'+
+            '<div class="ob_process_play"></div>'+
+            '<div class="ob_process_btn"></div>'+
+            '</div>'+
+            '<div class="ob_switch ob_play_icon"></div>'+
+            '<div class="ob_time">'+
+            '<span class="ob_time-recent">00:00</span>'+
+            '<span>/</span>'+
+            '<span class="ob_time-all">00:00</span>'+
+            '</div>'+
+            '<div class="ob_setting"></div>'+
+            '<div class="ob_voice_box">'+
+            '<i class="ob_voice ob_voice_big"></i>'+
+            '<div class="ob_voice_process"></div>'+
+            '</div>'+
+            '</div>';
         return FZFVIDEO;
     },
     init: function () {
