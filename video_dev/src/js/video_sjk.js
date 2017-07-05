@@ -23,7 +23,17 @@ function sVideo(options){
 sVideo.prototype = {
     panelEvent: function(){
         this.parentDom.find('.ob_switch').click(this.playOrStop.bind(this));
+        this.parentDom.find('.ob_process').on('click',this.percentage.bind(this));
+        this.id.onwaiting = function(){
+			console.log("加载中");
+		}
+
+		//缓冲完毕继续播放事件
+		this.id.onplaying = function(){
+			console.log("加载完成");
+		}
     },
+    //播放和暂停事件
     playOrStop: function(){
         if(this.playOrStop){
             this.id.play();
@@ -35,16 +45,21 @@ sVideo.prototype = {
             this.playOrStop = true;
         }
     },
+    //播放控制器初始化 
     playInit: function(){
         this.id.style.cssText = "width:"+this.config.widthSize+"px;";
         this.id.ontimeupdate = this.update.bind(this);
     },
+    //进度条点击事件
+    percentage: function(){
+        var widthCurr = this.mouseCurrentX('ob_process') / this.parentDom.find('.ob_process').width()
+        this.id.currentTime = widthCurr*this.allTime();
+    },
 	//计算鼠标相对元素X坐标
 	mouseCurrentX: function(dmNm,event){
 		var e = event || window.event;
-		var dom = document.getElementById(dmNm);
-		var p_Left  = parseInt(dom.getBoundingClientRect().left);
-		return e.clientX - p_Left;
+        var dom = this.parentDom.find('.'+dmNm);
+        return e.clientX - parseInt(dom.offset().left);
 	},	
     //获取元素的宽度
 	getDomWidth: function(dmNm){
@@ -53,7 +68,10 @@ sVideo.prototype = {
 	},
     // 时时监听播放进度
     update: function(){
+        var duration = this.timeConversion(parseInt(this.allTime()));
         var currentTime = Math.floor(this.id.currentTime);
+        this.parentDom.find('.ob_time-all').text(duration);
+        this.parentDom.find('.ob_process_load').css('width',this.bufferedTime()+'%')
         this.parentDom.find('.ob_time-recent').text(this.timeConversion(currentTime));
         this.parentDom.find('.ob_process_play').css('width',this.currentTime()+'%')
         this.parentDom.find('.ob_process_btn').css('left',this.currentTime()+'%');
@@ -62,9 +80,15 @@ sVideo.prototype = {
 	currentTime: function(){
 		return (this.id.currentTime / this.allTime()).toFixed(3) * 100;
 	},
+    //当前缓存加载进度
+    bufferedTime: function(){
+        return (this.id.buffered.end(0) / this.allTime()).toFixed(2) * 100;
+    },
+    //视频总长度
     allTime: function(){
 		return this.id.duration;
 	},
+    //初始化hls错误事件绑定
     create: function(){
         var that = this;
         this._hls.on(Hls.Events.MEDIA_ATTACHED,this.onMediaAttached.bind(this));
@@ -73,10 +97,8 @@ sVideo.prototype = {
         this._hls.on(Hls.Events.LEVEL_LOADED,this.onLevelLoaded.bind(this));
         this._hls.on(Hls.Events.ERROR,this.onError.bind(this));
     },
-    //添加总时长
     onBuffered:function(){
-        var duration = this.timeConversion(this.id.duration);
-        this.parentDom.find('.ob_time-all').text(duration);
+
     },
     // 转换秒为分钟
     timeConversion: function(tim){

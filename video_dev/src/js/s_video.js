@@ -166,6 +166,7 @@ sVideo.prototype = {
         fullscreenToggle: true
       }
     }, function () {
+  console.log(this);
       var that = this;
       this.ready(function () {
         console.log(2222);
@@ -193,6 +194,6 @@ sVideo.prototype = {
 
 new sVideo({
   id: 'video456585',
-  videoUrl: 'https://www.ifreesec.com/test/3001090.m3u8'
+  videoUrl: 'http://cdn.sanjieke.cn/hahahaha/ori.m3u8'
 })
 // fire up the plugin
