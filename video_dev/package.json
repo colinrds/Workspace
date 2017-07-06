@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --watch",
+    "gulp_dev": "gulp dev",
+    "wp_dev": "webpack --watch",
     "build": "webpack -p --config webpack.config.dev.js"
   },
   "author": "colin",
