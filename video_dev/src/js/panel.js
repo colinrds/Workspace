@@ -31,7 +31,7 @@ panel.prototype = {
             '<div class="ob_voice_process"></div>'+
             '</div>'+
             '</div>'+
-            '<div class="ob_setting"></div>'+
+            // '<div class="ob_setting"></div>'+
             '</div>';
         return FZFVIDEO;
     },

@@ -26,7 +26,8 @@ sVideo.prototype = {
         this.parentDom.find('.ob_switch').click(this.playOrStop.bind(this));
         this.parentDom.find('.ob_process').on('click', this.percentage.bind(this));
         this.parentDom.find('.ob_voice').on('click', this.soundPlayOrStop.bind(this));
-        this.parentDom.find('.ob_voice_bar').on('click', this.onvolumechange.bind(this))
+        this.parentDom.find('.ob_voice_bar').on('click', this.onvolumechange.bind(this));
+        this.parentDom.find('.ob_display').on('click',this.fullScreen.bind(this));
         this.id.onwaiting = function () {
             panel.loadCode(that.parentDom);
         }
@@ -81,6 +82,31 @@ sVideo.prototype = {
         var e = event || window.event;
         var dom = this.parentDom.find('.' + dmNm);
         return e.clientX - parseInt(dom.offset().left);
+    },
+    //全屏
+    fullScreen: function() {
+        var fullBtn = this.parentDom.find('.ob_display');
+        if(fullBtn.hasClass('ob_full_screen')){
+            if(this.id.requestFullscreen) { 
+                this.id.requestFullscreen(); 
+            } else if(this.id.mozRequestFullScreen) { 
+                this.id.mozRequestFullScreen(); 
+            } else if(this.id.webkitRequestFullscreen) { 
+                this.id.webkitRequestFullscreen(); 
+            } else if(this.id.msRequestFullscreen) { 
+                this.id.msRequestFullscreen(); 
+            } 
+            this.parentDom.find('.ob_display').removeClass('ob_full_screen').addClass('ob_regain');
+        }else{
+            if(document.exitFullscreen) { 
+                document.exitFullscreen(); 
+            } else if(document.mozExitFullScreen) { 
+                document.mozExitFullScreen(); 
+            } else if(document.webkitExitFullscreen) { 
+                document.webkitExitFullscreen(); 
+            } 
+            this.parentDom.find('.ob_display').removeClass('ob_regain').addClass('ob_full_screen');
+        }
     },
     //获取元素的宽度
     getDomWidth: function (dmNm) {
