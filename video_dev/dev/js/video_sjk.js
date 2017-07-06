@@ -10877,11 +10877,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var Hls = __webpack_require__(13);
 var panel = __webpack_require__(14);
 
-$('#level').click(function(){
+$('#level').click(function () {
     hls.currentLevel = 1;
 })
 
-function sVideo(options){
+function sVideo(options) {
     var defaults = {
         widthSize: '800',
         heightSize: '',
@@ -10896,111 +10896,133 @@ function sVideo(options){
     this.init();
 }
 sVideo.prototype = {
-    panelEvent: function(){
+    panelEvent: function () {
+        var that = this;
         this.parentDom.find('.ob_switch').click(this.playOrStop.bind(this));
-        this.parentDom.find('.ob_process').on('click',this.percentage.bind(this));
-        this.id.onwaiting = function(){
-			console.log("加载中");
-		}
-
-		//缓冲完毕继续播放事件
-		this.id.onplaying = function(){
-			console.log("加载完成");
-		}
+        this.parentDom.find('.ob_process').on('click', this.percentage.bind(this));
+        this.parentDom.find('.ob_voice').on('click', this.soundPlayOrStop.bind(this));
+        this.parentDom.find('.ob_voice_bar').on('click', this.onvolumechange.bind(this))
+        this.id.onwaiting = function () {
+            panel.loadCode(that.parentDom);
+        }
+        //缓冲完毕继续播放事件
+        this.id.onplaying = function () {
+            panel.removeLoadCode(that.parentDom);
+        }
     },
     //播放和暂停事件
-    playOrStop: function(){
-        if(this.playOrStop){
+    playOrStop: function () {
+        if (this.playOrStop) {
             this.id.play();
             this.parentDom.find('.ob_switch').removeClass('ob_play_icon').addClass('ob_pause_icon');
             this.playOrStop = false;
-        }else{
+        } else {
             this.id.pause();
             this.parentDom.find('.ob_switch').removeClass('ob_pause_icon').addClass('ob_play_icon');
             this.playOrStop = true;
         }
     },
+    //音量按钮
+    soundPlayOrStop: function () {
+        if (this.id.muted) {
+            this.id.muted = false;
+            this.id.volume = 0.99;
+            this.parentDom.find('.ob_voice').removeClass('ob_voice_mute').addClass('ob_voice_big');
+        } else {
+            this.id.muted = true;
+            this.id.volume = 0;
+            this.parentDom.find('.ob_voice').removeClass('ob_voice_big').addClass('ob_voice_mute');
+        }
+    },
+    //音量改变事件
+    onvolumechange: function () {
+        var soundBarWidth = this.getDomWidth('ob_voice_bar');
+        var clickWidth = this.mouseCurrentX('ob_voice_bar');
+        this.parentDom.find('.ob_voice_process').css('width', clickWidth / soundBarWidth.toFixed(2) * 100 + '%');
+        this.id.volume = clickWidth / soundBarWidth.toFixed(2);
+    },
     //播放控制器初始化 
-    playInit: function(){
-        this.id.style.cssText = "width:"+this.config.widthSize+"px;";
+    playInit: function () {
+        this.id.style.cssText = "width:" + this.config.widthSize + "px;";
         this.id.ontimeupdate = this.update.bind(this);
     },
     //进度条点击事件
-    percentage: function(){
+    percentage: function () {
         var widthCurr = this.mouseCurrentX('ob_process') / this.parentDom.find('.ob_process').width()
-        this.id.currentTime = widthCurr*this.allTime();
+        this.id.currentTime = widthCurr * this.allTime();
     },
-	//计算鼠标相对元素X坐标
-	mouseCurrentX: function(dmNm,event){
-		var e = event || window.event;
-        var dom = this.parentDom.find('.'+dmNm);
+    //计算鼠标相对元素X坐标
+    mouseCurrentX: function (dmNm, event) {
+        var e = event || window.event;
+        var dom = this.parentDom.find('.' + dmNm);
         return e.clientX - parseInt(dom.offset().left);
-	},	
+    },
     //获取元素的宽度
-	getDomWidth: function(dmNm){
-		var dom = document.getElementById(dmNm);
-		return parseInt(dom.width||dom.offsetWidth||dom.clientWidth);
-	},
+    getDomWidth: function (dmNm) {
+        var dom = this.parentDom.find('.' + dmNm);
+        return parseInt(dom.width());
+    },
     // 时时监听播放进度
-    update: function(){
+    update: function () {
         var duration = this.timeConversion(parseInt(this.allTime()));
         var currentTime = Math.floor(this.id.currentTime);
         this.parentDom.find('.ob_time-all').text(duration);
-        this.parentDom.find('.ob_process_load').css('width',this.bufferedTime()+'%')
+        this.parentDom.find('.ob_process_load').css('width', this.bufferedTime() + '%')
         this.parentDom.find('.ob_time-recent').text(this.timeConversion(currentTime));
-        this.parentDom.find('.ob_process_play').css('width',this.currentTime()+'%')
-        this.parentDom.find('.ob_process_btn').css('left',this.currentTime()+'%');
+        this.parentDom.find('.ob_process_play').css('width', this.currentTime() + '%')
+        this.parentDom.find('.ob_process_btn').css('left', this.currentTime() + '%');
+        this.parentDom.find('.ob_voice_process').css('width', this.id.volume * 100 + '%');
     },
-	//当前播放进度
-	currentTime: function(){
-		return (this.id.currentTime / this.allTime()).toFixed(3) * 100;
-	},
+    //当前播放进度
+    currentTime: function () {
+        return (this.id.currentTime / this.allTime()).toFixed(3) * 100;
+    },
     //当前缓存加载进度
-    bufferedTime: function(){
+    bufferedTime: function () {
         return (this.id.buffered.end(0) / this.allTime()).toFixed(2) * 100;
     },
     //视频总长度
-    allTime: function(){
-		return this.id.duration;
-	},
-    //初始化hls错误事件绑定
-    create: function(){
-        var that = this;
-        this._hls.on(Hls.Events.MEDIA_ATTACHED,this.onMediaAttached.bind(this));
-        this._hls.on(Hls.Events.MANIFEST_PARSED,this.onManifestParsed.bind(this));
-        this._hls.on(Hls.Events.FRAG_BUFFERED,this.onBuffered.bind(this))
-        this._hls.on(Hls.Events.LEVEL_LOADED,this.onLevelLoaded.bind(this));
-        this._hls.on(Hls.Events.ERROR,this.onError.bind(this));
+    allTime: function () {
+        return this.id.duration;
     },
-    onBuffered:function(){
+    //初始化hls错误事件绑定
+    create: function () {
+        var that = this;
+        this._hls.on(Hls.Events.MEDIA_ATTACHED, this.onMediaAttached.bind(this));
+        this._hls.on(Hls.Events.MANIFEST_PARSED, this.onManifestParsed.bind(this));
+        this._hls.on(Hls.Events.FRAG_BUFFERED, this.onBuffered.bind(this))
+        this._hls.on(Hls.Events.LEVEL_LOADED, this.onLevelLoaded.bind(this));
+        this._hls.on(Hls.Events.ERROR, this.onError.bind(this));
+    },
+    onBuffered: function () {
 
     },
     // 转换秒为分钟
-    timeConversion: function(tim){
-		var second = tim % 60;				// 秒
-		var min = parseInt(tim / 60);	// 分 
-		return (Array(2).join(0)+min).slice(-2) + ':' + (Array(2).join(0)+second).slice(-2);
-	},
+    timeConversion: function (tim) {
+        var second = tim % 60; // 秒
+        var min = parseInt(tim / 60); // 分 
+        return (Array(2).join(0) + min).slice(-2) + ':' + (Array(2).join(0) + second).slice(-2);
+    },
     // 连接到媒体元素时触发
-    onMediaAttached: function(){
+    onMediaAttached: function () {
         var panelCode = this.panel.panelCode();
         this._hls.loadSource(this.config.url);
-        $(this.config.id).wrap('<div class="s_video" style="position: relative;display:inline-block;width:'+this.config.widthSize+'px"></div>');
+        $(this.config.id).wrap('<div class="s_video" style="position: relative;display:inline-block;width:' + this.config.widthSize + 'px"></div>');
         $(this.id).after(panelCode);
         this.parentDom = $(this.id).parents('.s_video');
         this.playInit();
         this.panelEvent();
     },
     // 显示播放列表信息
-    onManifestParsed: function(event, data){
+    onManifestParsed: function (event, data) {
         console.log(data.levels);
     },
     // 主播放列表加载完成时触发
-    onLevelLoaded: function(event, data){
+    onLevelLoaded: function (event, data) {
 
     },
     // HLS错误反馈
-    onError: function(event, data){
+    onError: function (event, data) {
         if (data.fatal) {
             switch (data.type) {
                 case Hls.ErrorTypes.NETWORK_ERROR:
@@ -11019,10 +11041,10 @@ sVideo.prototype = {
         }
     },
     // 错误处理
-    error: function(data){
+    error: function (data) {
         console.log(data);
     },
-    init: function(){
+    init: function () {
         var that = this;
         console.log(this);
         this._hls.attachMedia(this.id);
@@ -11030,6 +11052,30 @@ sVideo.prototype = {
         this.create();
     }
 }
+
+
+//反射调用
+var invokeFieldOrMethod = function (element, method) {
+    var usablePrefixMethod;
+    ["webkit", "moz", "ms", "o", ""].forEach(function (prefix) {
+        if (usablePrefixMethod) return;
+        if (prefix === "") {
+            // 无前缀，方法首字母小写
+            method = method.slice(0, 1).toLowerCase() + method.slice(1);
+        }
+        var typePrefixMethod = typeof element[prefix + method];
+        if (typePrefixMethod + "" !== "undefined") {
+            if (typePrefixMethod === "function") {
+                usablePrefixMethod = element[prefix + method]();
+            } else {
+                usablePrefixMethod = element[prefix + method];
+            }
+        }
+    });
+
+    return usablePrefixMethod;
+};
+
 
 new sVideo({
     id: '#video_one',
@@ -11059,8 +11105,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/_css-loader@0.28.4@css-loader/index.js!./v_style.css", function() {
-			var newContent = require("!!../../node_modules/_css-loader@0.28.4@css-loader/index.js!./v_style.css");
+		module.hot.accept("!!../../node_modules/.0.28.4@css-loader/index.js!./v_style.css", function() {
+			var newContent = require("!!../../node_modules/.0.28.4@css-loader/index.js!./v_style.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -11078,7 +11124,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, ".operate_bar {\n  width: 100%;\n  height: 40px;\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.8);\n  z-index: 1000;\n}\n\n.operate_bar .ob_process {\n  position: absolute;\n  width: 100%;\n  top: -5px;\n  background: rgba(0, 0, 0, 0.5);\n  height: 5px;\n  cursor: pointer;\n}\n\n.operate_bar .ob_process .ob_process_load {\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background: #929292;\n  z-index: 97;\n}\n\n.operate_bar .ob_process .ob_process_play {\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  transition: height .2s;\n  z-index: 98;\n}\n\n.operate_bar .ob_process .ob_process_btn {\n  width: 11px;\n  height: 11px;\n  position: absolute;\n  left: 0;\n  top: -3px;\n  z-index: 99;\n  border-radius: 50%;\n  background: #FFF;\n  box-shadow: -1px 0 5px #626262;\n  -webkit-box-shadow: -1px 0 5px #626262;\n  -moz-box-shadow: -1px 0 5px #626262;\n  -o-box-shadow: -1px 0 5px #626262;\n}\n\n.operate_bar .ob_switch {\n  width: 40px;\n  height: 40px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_play_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABKklEQVRYR8XX/00CQRCG4ffrwE6wA0pQOtAOpAPoADuADrQDS5AOpAOs4MyYW3OBhbg7s8v+d5dL5sk3++tEZgzDcAfMgL2kY+6bqHe6AHgDHoAvYCnJnpuMS4APYD6paACDGCh0/BdgRa0VG0nrSEEJINW1FJ4lWUruUQNIRUPa4gGEtMULcLclClDdlmhAcVtaAIra0hIwbYst2+yW3gOQ2rKS9Hq6cfQCpLqf45b+t4n1BiTIIh1wtwKsJa1M0xvwDdhc2KQoegJ2wMvpaugB2I+Fs6dnS8BZ3LmzuxUgG3cPwNW4WwIsbruu/S6tkhHRgvdxklVdWD2AA/DkvRvWAKrjjpgDrrg9gJC4SwDp1yw07hLAPfAIbFv8jk0h2UlYso69394c8APtY7Ah+hvDbwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_pause_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwUlEQVRYR+2XwQ3CMAxF/TboBsAkwAQwAiPAJLACG8AEwCZlg27wUVCQAmpKW5Bysa924qfn08cKF7n9kqahB9S/MH77pxVA0sLMLnHxDjiMgZC0NbN9fLsErp//5ABOZraKwzUwGwkQ7E3i2yOw6QsQSOevYSB7qi4wSUr6NyCYfaucAQdwA27ADbgBN+AG3IAbcANuoLiBNJjcgWdMG1qS0mByBtZ9c0HZaBYoJVVmVv0pnDZA02ZwVOQaeoqu+QfOqREwccBDCgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_time {\n  float: left;\n  height: 40px;\n  line-height: 40px;\n  color: #F1F1F1;\n  padding: 0 10px;\n  font-size: 13px;\n}\n\n.operate_bar .ob_voice_box {\n  height: 40px;\n  float: right;\n}\n\n.operate_bar .ob_voice_box .ob_voice_big {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACCklEQVRYR8VX0VXCQBCcqUA7ECoQKxAqUCsQOsAKlArUCsQK1ArUCsQKhA60gvXNvb14RELIgxz7RS7kdm53dnaP2IGZ2RjAnORz0+3Y9IP0/2Z2COAVQE/rJBvv1/iDCMDM5PQJQCeuZQNgZn13rggUlgWAmQ0BPCR+PwEcZ0mBmU0BXLrzHwDnABSN61YBONmUbzmTLeSc5MzMbloF4GRTyAPTASjkfZLfetgUgJfqLYAJSYEOFqrAzMTk05TRSY5V45FsjyTFgcIaAJBGnPmHI5JKJ7iCVOn+6e8rknfll3UAfP85gJnECsABAEXvhORcALR4VOUVgMg2rFK5dQC8XCVUsoE7/vDnEE0BMF9Yys0aQEuvagAotTp5PHUXgKIYK6nbKgDnl0pVFSSbAFDuvwoutBmBGCoze3OSq2F1k7S/tB4Bj0KqnjENqoj3XAAkYCkZ/9QzUwr2DmDvKYgkXJDsZCWhme2vDL3HSPnUS6SoEqZ/QlQnxdJtNY+VA2eNEqqDRumtlOLyhFOlwmOS91s2IylgjEYvNKOkHatUigGz1I6l5bIpyVEKoq4bJmq4uh3XNR0fSKTfYe7z5jLY6UCyAQiFTSfQ0CITby6yjGSlcKdDaSCnj2rtDqUlEGXSqt/nvRn5pKOURHIGjFkuJgmrdeqUnHkBePmKnNL5PDejqmrZ5nr+C4l+ZfAT3jHnAAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_voice_box .ob_voice_process {\n  width: 80px;\n  height: 5px;\n  background: rgba(125, 125, 125, 0.7);\n  margin-top: 17px;\n  float: left;\n  cursor: pointer;\n}\n\n.operate_bar .ob_setting {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADUklEQVRYR7WXgVHcQAxFvyoIVBCoIFABUAGkAqCCQAUhFQAV5KggSQUhFSRUAFQQrgJlnkfyrO3d8x1DPMNwvltr/0r/f8mmDS93v5B0LOmwePRF0h9Jd2a22CSkbbKYte5+H8+w0VN83pF0xmczK4HNhl8JIE67MDNO2F0B4N7Mrsro7s79YQnA3fckHZjZbQtJFYC7b0n6KYkApPYoQbg7998bAI7NbD+A8iwxiEXWPpYHSUATAIGaB58jraTa2VQS9Sfg+bjW7k4JvkZZWMs9MXjmJmIAIsvWYRgAiJM/SnqQdALi+I4TsPHVKpLF2hPWSaJslKSMwUH6bNYAkF6u7sGi7lu19K1iGGDGMaKcj2Z2NClBEO5a0r6ZJZBZFm+ywN1RCOXtS9iXoEj1JE2bbNJaWxCbPfsM1zhAvWdBBFk/xIYPq7LW2nzCgZAPBDozM8xlcrk7JKNU/L6MBe+C/ZdmhgJqz8H+CYlrMoR8FzW2uzuSPJX0RRIG1UnK3QGD3D5JAgSyG1wh089mtlv+YIW38z1S2zUz/o8DcPJvYSitU6YXoPfBmijD3zCljH0HgPT2/P/UOD2n5dQDC64AJUvY7+Ckkak0Mm5RxAsAINzE2crAQbjfkZ2Bk1UAYMGza/veEQBwp8xAjUCk9qZWmgbhUkVzMa8zA+sAuDaz7ZbORxlbBwCcWgCgyfoM+r9LkMaT6Xp+AxLu1AaTUByekSRcpgxJR8oQd9seN58wIGTYJGzRkiclLWRIp81Gt6gZUdWxChnhgkjtNu03SoQJQdYqwGA9BjfwmBoAdH5a03GAIFs43fsRIX+F1U6YH6dHmgytAx+pNSPa5aBjNaSG/Wa/wLya/rCq047b8VqbryPFikHlbDjotCWA9PGVnvCazQs550DSN6xxCagfMhnMbePxah0QjZEMHizNDLvurtmBpBgmuqFU0o/WfBhrUw1IrTtIEQMn3Sufb43lyIxMnMfwwTq+o5vB/tpYzm9IlFGctaiFel/GuE4MJu3BvLnqxYR+fhAjej/DzbyYsEGX3oL5GBsS7cb8cfnmXs0gJm9Br301o2yMd5MJqcqBNclV9g7SySb4AQy3N305bRgQWeGPVGdjYTjNd8bmaWvx/gHH7QmmUfWGPwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_display {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n}\n\n.operate_bar .ob_full_screen {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABzUlEQVRYR+2XbVEDMRCG31UADsABrQKKAnAAOAAFUAXggOIAFFAUUBwUB62CZV7YK9dMkk3uboAfzUz/9JLss5v9FPzxkrZ8VZ0AUIfpQ0SWsT2qegjgwDm/FpFFs2cDoKr886jAIFMRuU0A8P+bgjsWIjLmvi8A0/zFDj4D2BBGLpuLyDwBQAvyl1ojAKf28YT3xABWAPgxB1Gg5PYWVaVwKrmfA6D2jR8MBtESToVpPVohaoEpgCfbRGfsDREIp3Jn5idxADqYHSJpL4hQOJ9VVRtHTQOYY/LNOkPEhNu9ZQB9IFLCqwG6QOSEdwKIQIydTPhm+WUSC+WUDzCFXvDNM0mGPnHPfQ7ADMBVKo9Y0mM0zHjPVi2ozi4DHNgB7CzwPyxgncw5gFcnDO8AXDph+ADg2gnDYwCPmzBsNSTRbifIbiMHgH1EsogVF6MmxL3UGqYCr5JWAdQKD6CjlbQYoKtwD6IIoK/wHIQLYC0Zm0eGaLSi1ZSA0Ce8loz9ICvVIMITlqBvsC9MtuXrITTPRMeeNxfQCrmZIJesaD0mmdxgQu25fixgXc9vjmbvIsIG53s0C96qmVxSWiydTMjuKrdW0eG0xrOH3PsJ316HMJ+wvXgAAAAASUVORK5CYII=\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.operate_bar .ob_regain {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABlklEQVRYR+2X4VXDMAyE7zaASWAEmAS6QTsBMAHdoGUSGKFMAhuIp74qzySS5cZA+dH8jGXriyKfz8SJH1p+EbkmufsLnjLXHkBELgB8ANiSXHgQOgnAM4AXktsg5h7AHYBV9DEionM15pLkZ1kBG3AhROQGwCuAJ5KPAYC+fwBwS/JtHFMk149QWAwAh0qEEL0AXvIJQA2iByBK7gJEEHMBaslDAA9iDkCWvAowhtDuP6YJAdiOGBrOa9xvTRh0tjWmaoRuxZZdYLHV5GkFCpEyCH3VAqBxafIBoPi/LUK4SIRo07KIaYUpoZZ23TBxR3JZixMRXUfXy56lqmXaA9kqveNngHMF/kcFCrORNbVuw1XDNrzKFjLTYjpgZqNhHn5eiLKsxal2jBSH9q7Ml/ZAkfwdgJa25Syw2BSiClCe52pYZx7HVYgQYGwmOg1JCOECeE5mDkDNY1ofTAAiGzUXIIOIbPnETPQA1CC8i4nrZHoBIojx1Sy0UQe1VLOhDVW7mqkZ3ZuNxGNOrmanu5xmSvib419EDG4w/oXoRgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n", ""]);
+exports.push([module.i, ".s_video {\n  overflow: hidden;\n}\n\n.s_video .operate_bar {\n  display: none;\n}\n\n.s_video:hover .operate_bar {\n  width: 100%;\n  height: 40px;\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.8);\n  z-index: 1000;\n  display: block;\n  animation: videoFadeInUp .2s both;\n  -webkit-animation: videoFadeInUp .2s both;\n  -moz-animation: videoFadeInUp .2s both;\n}\n\n.s_video:hover .operate_bar .ob_process {\n  position: absolute;\n  width: 100%;\n  top: -5px;\n  background: rgba(0, 0, 0, 0.5);\n  height: 5px;\n  cursor: pointer;\n}\n\n.s_video:hover .operate_bar .ob_process .ob_process_load {\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background: #929292;\n  z-index: 97;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video:hover .operate_bar .ob_process .ob_process_play {\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  transition: height .2s;\n  z-index: 98;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video:hover .operate_bar .ob_process .ob_pb_box {\n  width: calc(100% - 11px);\n  height: 1px;\n  position: relative;\n}\n\n.s_video:hover .operate_bar .ob_process .ob_process_btn {\n  width: 11px;\n  height: 11px;\n  position: absolute;\n  left: 0;\n  top: -3px;\n  z-index: 99;\n  border-radius: 50%;\n  background: #FFF;\n  box-shadow: -1px 0 5px #626262;\n  -webkit-box-shadow: -1px 0 5px #626262;\n  -moz-box-shadow: -1px 0 5px #626262;\n  -o-box-shadow: -1px 0 5px #626262;\n  -webkit-transition: left .3s;\n  -moz-transition: left .3s;\n  transition: left .3s;\n}\n\n.s_video:hover .operate_bar .ob_switch {\n  width: 40px;\n  height: 40px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video:hover .operate_bar .ob_play_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABKklEQVRYR8XX/00CQRCG4ffrwE6wA0pQOtAOpAPoADuADrQDS5AOpAOs4MyYW3OBhbg7s8v+d5dL5sk3++tEZgzDcAfMgL2kY+6bqHe6AHgDHoAvYCnJnpuMS4APYD6paACDGCh0/BdgRa0VG0nrSEEJINW1FJ4lWUruUQNIRUPa4gGEtMULcLclClDdlmhAcVtaAIra0hIwbYst2+yW3gOQ2rKS9Hq6cfQCpLqf45b+t4n1BiTIIh1wtwKsJa1M0xvwDdhc2KQoegJ2wMvpaugB2I+Fs6dnS8BZ3LmzuxUgG3cPwNW4WwIsbruu/S6tkhHRgvdxklVdWD2AA/DkvRvWAKrjjpgDrrg9gJC4SwDp1yw07hLAPfAIbFv8jk0h2UlYso69394c8APtY7Ah+hvDbwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video:hover .operate_bar .ob_pause_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwUlEQVRYR+2XwQ3CMAxF/TboBsAkwAQwAiPAJLACG8AEwCZlg27wUVCQAmpKW5Bysa924qfn08cKF7n9kqahB9S/MH77pxVA0sLMLnHxDjiMgZC0NbN9fLsErp//5ABOZraKwzUwGwkQ7E3i2yOw6QsQSOevYSB7qi4wSUr6NyCYfaucAQdwA27ADbgBN+AG3IAbcANuoLiBNJjcgWdMG1qS0mByBtZ9c0HZaBYoJVVmVv0pnDZA02ZwVOQaeoqu+QfOqREwccBDCgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video:hover .operate_bar .ob_time {\n  float: left;\n  height: 40px;\n  line-height: 40px;\n  color: #F1F1F1;\n  padding: 0 10px;\n  font-size: 13px;\n}\n\n.s_video:hover .operate_bar .ob_voice_box {\n  height: 40px;\n  float: right;\n}\n\n.s_video:hover .operate_bar .ob_voice_box .ob_voice_big {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACCklEQVRYR8VX0VXCQBCcqUA7ECoQKxAqUCsQOsAKlArUCsQK1ArUCsQKhA60gvXNvb14RELIgxz7RS7kdm53dnaP2IGZ2RjAnORz0+3Y9IP0/2Z2COAVQE/rJBvv1/iDCMDM5PQJQCeuZQNgZn13rggUlgWAmQ0BPCR+PwEcZ0mBmU0BXLrzHwDnABSN61YBONmUbzmTLeSc5MzMbloF4GRTyAPTASjkfZLfetgUgJfqLYAJSYEOFqrAzMTk05TRSY5V45FsjyTFgcIaAJBGnPmHI5JKJ7iCVOn+6e8rknfll3UAfP85gJnECsABAEXvhORcALR4VOUVgMg2rFK5dQC8XCVUsoE7/vDnEE0BMF9Yys0aQEuvagAotTp5PHUXgKIYK6nbKgDnl0pVFSSbAFDuvwoutBmBGCoze3OSq2F1k7S/tB4Bj0KqnjENqoj3XAAkYCkZ/9QzUwr2DmDvKYgkXJDsZCWhme2vDL3HSPnUS6SoEqZ/QlQnxdJtNY+VA2eNEqqDRumtlOLyhFOlwmOS91s2IylgjEYvNKOkHatUigGz1I6l5bIpyVEKoq4bJmq4uh3XNR0fSKTfYe7z5jLY6UCyAQiFTSfQ0CITby6yjGSlcKdDaSCnj2rtDqUlEGXSqt/nvRn5pKOURHIGjFkuJgmrdeqUnHkBePmKnNL5PDejqmrZ5nr+C4l+ZfAT3jHnAAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video:hover .operate_bar .ob_voice_box .ob_voice_mute {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACf0lEQVRYR71X7VUcMRCTKoBUEK6CkAoCHUAFhAqSqwCoIEkFgQogFYQOAhXk6AAqGJ7MeJ9vz+uPvXv4337Ykmc08pjYwTCz7wBWJO96l2PvhPR/M9sH8BfAod6T7F6ve0IkYGYCvQVwEN/VCPicM5LLYc6cCJjZkYMrAsMoEXBwRUtzfpFU2tAdATP7CuB3gvsI4FMpBSPwFwBHJB+6CZjZNYAzB9dCIqNUXEwRKIE3E3CxKd8KvcYTgBPtwswupwjUwJsI+CIKeVA6AIVcIXzWwxSBFvCBgJlJyV9SRSc5llii2G5IKuzDSAick1SKREpko+DWcu4a2if5MxDIiGqqMJZxUoaATKgF/MSrR9H7THIlAisAHwvlGMQ25XLSR5KO0s4VRUX6n2OFaIqA+YsrkhLUrNEQ9h8AFgAU+lhJi50QqIBr1//jJgEoVfF5uTWBFrWbmUxHZvVM8kPy/GcrAi3gXhWpeyoNqqxvAB5mE2gFdwIyMJWlxrEb2pt7zhFhD/jOCfSCOwGFXFWgoRSo2lQJj10RqJVaNKNxHZvZvTvtE8mDWSKsgeuIzvUDI6e9mlWGFfBorxstmZ8xcj65oBxVnrBhRDkrbjpYPL+14zhar9SvM2DDiscdTjN4jUDiAdqkzEjgsYdchMPIf9JL1aqcKrTWrWovNSSjUzPtpoZNZnvChpzf1xqSTCXEUhwa0mBEmR9rzYS6I4X0tNaStRyrawRqYR81pRLUea0prZEYCNTA40KZDkri2v5mZGaqT51Qaz1cbgd+MZFY99LvtZtRbq1xCkTiOl4aSuHziEnZ4VISBPWed0MvVTmcfL54MyptpPtqNpGS2dfzV7aM4i+ndp30AAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video:hover .operate_bar .ob_voice_box .ob_voice_bar {\n  width: 80px;\n  height: 5px;\n  background: rgba(125, 125, 125, 0.7);\n  margin-top: 17px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video:hover .operate_bar .ob_voice_box .ob_voice_process {\n  width: 0;\n  height: 5px;\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  cursor: pointer;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video:hover .operate_bar .ob_setting {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADUklEQVRYR7WXgVHcQAxFvyoIVBCoIFABUAGkAqCCQAUhFQAV5KggSQUhFSRUAFQQrgJlnkfyrO3d8x1DPMNwvltr/0r/f8mmDS93v5B0LOmwePRF0h9Jd2a22CSkbbKYte5+H8+w0VN83pF0xmczK4HNhl8JIE67MDNO2F0B4N7Mrsro7s79YQnA3fckHZjZbQtJFYC7b0n6KYkApPYoQbg7998bAI7NbD+A8iwxiEXWPpYHSUATAIGaB58jraTa2VQS9Sfg+bjW7k4JvkZZWMs9MXjmJmIAIsvWYRgAiJM/SnqQdALi+I4TsPHVKpLF2hPWSaJslKSMwUH6bNYAkF6u7sGi7lu19K1iGGDGMaKcj2Z2NClBEO5a0r6ZJZBZFm+ywN1RCOXtS9iXoEj1JE2bbNJaWxCbPfsM1zhAvWdBBFk/xIYPq7LW2nzCgZAPBDozM8xlcrk7JKNU/L6MBe+C/ZdmhgJqz8H+CYlrMoR8FzW2uzuSPJX0RRIG1UnK3QGD3D5JAgSyG1wh089mtlv+YIW38z1S2zUz/o8DcPJvYSitU6YXoPfBmijD3zCljH0HgPT2/P/UOD2n5dQDC64AJUvY7+Ckkak0Mm5RxAsAINzE2crAQbjfkZ2Bk1UAYMGza/veEQBwp8xAjUCk9qZWmgbhUkVzMa8zA+sAuDaz7ZbORxlbBwCcWgCgyfoM+r9LkMaT6Xp+AxLu1AaTUByekSRcpgxJR8oQd9seN58wIGTYJGzRkiclLWRIp81Gt6gZUdWxChnhgkjtNu03SoQJQdYqwGA9BjfwmBoAdH5a03GAIFs43fsRIX+F1U6YH6dHmgytAx+pNSPa5aBjNaSG/Wa/wLya/rCq047b8VqbryPFikHlbDjotCWA9PGVnvCazQs550DSN6xxCagfMhnMbePxah0QjZEMHizNDLvurtmBpBgmuqFU0o/WfBhrUw1IrTtIEQMn3Sufb43lyIxMnMfwwTq+o5vB/tpYzm9IlFGctaiFel/GuE4MJu3BvLnqxYR+fhAjej/DzbyYsEGX3oL5GBsS7cb8cfnmXs0gJm9Br301o2yMd5MJqcqBNclV9g7SySb4AQy3N305bRgQWeGPVGdjYTjNd8bmaWvx/gHH7QmmUfWGPwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video:hover .operate_bar .ob_display {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n}\n\n.s_video:hover .operate_bar .ob_full_screen {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABzUlEQVRYR+2XbVEDMRCG31UADsABrQKKAnAAOAAFUAXggOIAFFAUUBwUB62CZV7YK9dMkk3uboAfzUz/9JLss5v9FPzxkrZ8VZ0AUIfpQ0SWsT2qegjgwDm/FpFFs2cDoKr886jAIFMRuU0A8P+bgjsWIjLmvi8A0/zFDj4D2BBGLpuLyDwBQAvyl1ojAKf28YT3xABWAPgxB1Gg5PYWVaVwKrmfA6D2jR8MBtESToVpPVohaoEpgCfbRGfsDREIp3Jn5idxADqYHSJpL4hQOJ9VVRtHTQOYY/LNOkPEhNu9ZQB9IFLCqwG6QOSEdwKIQIydTPhm+WUSC+WUDzCFXvDNM0mGPnHPfQ7ADMBVKo9Y0mM0zHjPVi2ozi4DHNgB7CzwPyxgncw5gFcnDO8AXDph+ADg2gnDYwCPmzBsNSTRbifIbiMHgH1EsogVF6MmxL3UGqYCr5JWAdQKD6CjlbQYoKtwD6IIoK/wHIQLYC0Zm0eGaLSi1ZSA0Ce8loz9ICvVIMITlqBvsC9MtuXrITTPRMeeNxfQCrmZIJesaD0mmdxgQu25fixgXc9vjmbvIsIG53s0C96qmVxSWiydTMjuKrdW0eG0xrOH3PsJ316HMJ+wvXgAAAAASUVORK5CYII=\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video:hover .operate_bar .ob_regain {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABlklEQVRYR+2X4VXDMAyE7zaASWAEmAS6QTsBMAHdoGUSGKFMAhuIp74qzySS5cZA+dH8jGXriyKfz8SJH1p+EbkmufsLnjLXHkBELgB8ANiSXHgQOgnAM4AXktsg5h7AHYBV9DEionM15pLkZ1kBG3AhROQGwCuAJ5KPAYC+fwBwS/JtHFMk149QWAwAh0qEEL0AXvIJQA2iByBK7gJEEHMBaslDAA9iDkCWvAowhtDuP6YJAdiOGBrOa9xvTRh0tjWmaoRuxZZdYLHV5GkFCpEyCH3VAqBxafIBoPi/LUK4SIRo07KIaYUpoZZ23TBxR3JZixMRXUfXy56lqmXaA9kqveNngHMF/kcFCrORNbVuw1XDNrzKFjLTYjpgZqNhHn5eiLKsxal2jBSH9q7Ml/ZAkfwdgJa25Syw2BSiClCe52pYZx7HVYgQYGwmOg1JCOECeE5mDkDNY1ofTAAiGzUXIIOIbPnETPQA1CC8i4nrZHoBIojx1Sy0UQe1VLOhDVW7mqkZ3ZuNxGNOrmanu5xmSvib419EDG4w/oXoRgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video:hover .ob_load {\n  width: 80px;\n  height: 80px;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  margin: -40px 0 0 -40px;\n}\n\n.s_video:hover .ob_load span {\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  background: #888;\n  position: absolute;\n  animation: video_load 1.04s ease infinite;\n  -webkit-animation: video_load 1.04s ease infinite;\n}\n\n.s_video:hover .ob_load span:nth-child(1) {\n  left: 0;\n  top: 50%;\n  margin-top: -8px;\n  animation-delay: 0.13s;\n  -webkit-animation-delay: 0.13s;\n}\n\n.s_video:hover .ob_load span:nth-child(2) {\n  left: 10px;\n  top: 10px;\n  animation-delay: 0.26s;\n  -webkit-animation-delay: 0.26s;\n}\n\n.s_video:hover .ob_load span:nth-child(3) {\n  left: 50%;\n  top: 0;\n  margin-left: -8px;\n  animation-delay: 0.39s;\n  -webkit-animation-delay: 0.39s;\n}\n\n.s_video:hover .ob_load span:nth-child(4) {\n  top: 10px;\n  right: 10px;\n  animation-delay: 0.52s;\n  -webkit-animation-delay: 0.52s;\n}\n\n.s_video:hover .ob_load span:nth-child(5) {\n  right: 0;\n  top: 50%;\n  margin-top: -8px;\n  animation-delay: 0.65s;\n  -webkit-animation-delay: 0.65s;\n}\n\n.s_video:hover .ob_load span:nth-child(6) {\n  right: 10px;\n  bottom: 10px;\n  animation-delay: 0.78s;\n  -webkit-animation-delay: 0.78s;\n}\n\n.s_video:hover .ob_load span:nth-child(7) {\n  bottom: 0;\n  left: 50%;\n  margin-left: -8px;\n  animation-delay: 0.91s;\n  -webkit-animation-delay: 0.91s;\n}\n\n.s_video:hover .ob_load span:nth-child(8) {\n  bottom: 10px;\n  left: 10px;\n  animation-delay: 1.04s;\n  -webkit-animation-delay: 1.04s;\n}\n\n@keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@-webkit-keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@-moz-keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@keyframes videoFadeInUp {\n  0% {\n    -webkit-transform: translateY(40px);\n  }\n  100% {\n    -webkit-transform: translateY(0);\n  }\n}\n\n@-webkit-keyframes videoFadeInUp {\n  0% {\n    -webkit-transform: translateY(40px);\n  }\n  100% {\n    -webkit-transform: translateY(0);\n  }\n}\n\n@-moz-keyframes videoFadeInUp {\n  0% {\n    -moz-transform: translateY(40px);\n  }\n  100% {\n    -moz-transform: translateY(0);\n  }\n}\n", ""]);
 
 // exports
 
@@ -27373,12 +27419,21 @@ var panel = function () {
 
 }
 panel.prototype = {
+    loadCode: function(that){
+        var loadHtml = '<div class="ob_load"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>';
+        that.append(loadHtml);
+    },
+    removeLoadCode: function(that){
+        that.find('.ob_load').remove();
+    },
     panelCode: function () {
         var FZFVIDEO = '<div class="operate_bar">'+
             '<div class="ob_process">'+
             '<div class="ob_process_load""></div>'+
             '<div class="ob_process_play"></div>'+
+            '<div class="ob_pb_box">'+
             '<div class="ob_process_btn"></div>'+
+            '</div>'+
             '</div>'+
             '<div class="ob_switch ob_play_icon"></div>'+
             '<div class="ob_time">'+
@@ -27389,7 +27444,9 @@ panel.prototype = {
             '<div class="ob_display ob_full_screen"></div>'+
             '<div class="ob_voice_box">'+
             '<i class="ob_voice ob_voice_big"></i>'+
+            '<div class="ob_voice_bar">'+
             '<div class="ob_voice_process"></div>'+
+            '</div>'+
             '</div>'+
             '<div class="ob_setting"></div>'+
             '</div>';

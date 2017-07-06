@@ -127,6 +127,7 @@ function createVideo(dn,obj){
 
 		//音量改变事件
 		fzPools.VIDEO_DOM.onvolumechange = function(){
+			console.log(getDomWidth('soundBar'));
 			var soundSize 		= fzPools.VIDEO_DOM.volume;
 			var soundBarWidth 	= getDomWidth('soundBar') * soundSize;
 			fzPools.soundBar.style.width = soundBarWidth + "px";
