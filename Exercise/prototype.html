@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>prototype</title>
+</head>
+
+<body>
+    <script>
+        //原型链实例化
+        function pro(){};
+        pro.prototype.text = 'a';
+        pro.prototype.a = function(){
+            
+        }
+
+        var a1 = new pro();
+        var a2 = new pro();
+
+        console.log(a1.__proto__)
+        a2.__proto__.text = 'b';
+        console.log(a1.__proto__)
+        console.log(a1.a===a2.a)
+
+        //对象实例化
+        function pr(){
+            this.a = function(){
+
+            }
+        }
+        
+        var b1 = new pr();
+        var b2 = new pr();
+
+        console.log(b1.a===b2.a)
+    </script>
+</body>
+
+</html>
