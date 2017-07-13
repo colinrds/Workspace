@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fullscreen</title>
+</head>
+<video poster="vs.png" id="content" controls>
+  <source src="http://www.jplayer.org/video/m4v/Incredibles_Teaser.m4v" type="video/mp4">
+  <!-- <source src="/path/to/video.webm" type="video/webm">-->
+  <!-- Captions are optional -->
+</video>
+    <div>312312</div>
+    <button id="fullScreen">全屏</button>
+<body>
+    <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="jquery.fullscreen.js"></script>
+    <script>
+    if($.support.fullscreen){
+	    $('#fullScreen').click(function(e){
+            console.log(111);
+            $('#content').fullScreen({
+                'background': '#FFF'
+            });
+                
+            // You can also pass a hash with properties:
+            // $('#content').fullScreen({
+            //	'background'	: '#111',
+            //	'callback'		: function(isFullScreen){
+            //		// ...
+            //		// Do some cleaning up here
+            //		// ...
+            //	}
+            // });
+        });
+    }
+    </script>
+</body>
+
+</html>

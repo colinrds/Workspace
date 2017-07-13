@@ -5,13 +5,13 @@
         height: 40px;
         position: absolute;
         left: 0;
-        bottom: 0;
+        bottom: -50px;
         background: rgba(0, 0, 0, .8);
         display: block;
-        animation:videoFadeInUp .2s both;
-        -webkit-animation:videoFadeInUp .2s both;
-        -moz-animation:videoFadeInUp .2s both;
         z-index: 3000000000;
+        -webkit-transition: all .3s;
+        -moz-transition: all .3s;
+        transition: all .3s;
         .ob_process {
             position: absolute;
             width: 100%;
@@ -232,6 +232,9 @@
             -webkit-animation-delay: 1.04s;
         }
     }
+    video::-webkit-media-controls-start-playback-button {
+        display: none;
+    }
     video::-webkit-media-controls-enclosure {
         /*禁用播放器控制栏的样式*/
         display: none !important;
@@ -272,30 +275,6 @@
     }
     100% {
         opacity: 0.2;
-    }
-}
-@keyframes videoFadeInUp {
-    0% {
-        -webkit-transform: translateY(40px)
-    }
-    100% {
-        -webkit-transform: translateY(0)
-    }
-}
-@-webkit-keyframes videoFadeInUp {
-    0% {
-        -webkit-transform: translateY(40px)
-    }
-    100% {
-        -webkit-transform: translateY(0)
-    }
-}
-@-moz-keyframes videoFadeInUp {
-    0% {
-        -moz-transform: translateY(40px)
-    }
-    100% {
-        -moz-transform: translateY(0)
     }
 }
 

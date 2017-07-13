@@ -12,7 +12,8 @@ function sVideo(options) {
         heightSize: '',
         autoStartLoad: true,
         maxBufferSize: 10, //最大缓冲区大小
-        playOrStop: true
+        playOrStop: true,
+        volume: 0
     };
     this.config = $.extend(defaults, options);
     this.id = document.querySelector(this.config.id);
@@ -23,6 +24,29 @@ function sVideo(options) {
 sVideo.prototype = {
     panelEvent: function () {
         var that = this;
+        var timeOut;
+        $(this.id).hover(
+            function(){
+                clearTimeout(timeOut)
+                that.showOrHide('show');
+            },
+            function(){
+                timeOut =setTimeout(function(){
+                    that.showOrHide('hide')
+                },3000)
+            }
+        )
+        this.parentDom.find('.operate_bar').hover(
+            function(){
+                clearTimeout(timeOut)
+                that.showOrHide('show');
+            },
+            function(){
+                timeOut =setTimeout(function(){
+                    that.showOrHide('hide')
+                },3000)
+            }
+        )
         this.parentDom.find('.ob_switch').click(this.playOrStop.bind(this));
         this.parentDom.find('.ob_process').on('click', this.percentage.bind(this));
         this.parentDom.find('.ob_voice').on('click', this.soundPlayOrStop.bind(this));
@@ -34,6 +58,19 @@ sVideo.prototype = {
         //缓冲完毕继续播放事件
         this.id.onplaying = function () {
             panel.removeLoadCode(that.parentDom);
+        }
+        $(this.id).click(this.playOrStop.bind(this));
+        this.id.addEventListener("ended",function(){
+         console.log("结束");
+    })
+    },
+    //显示隐藏bar
+    showOrHide: function(state){
+        if(state == 'show'){
+            this.parentDom.find('.operate_bar').css('bottom','0');
+        }
+        if(state == 'hide'){
+            this.parentDom.find('.operate_bar').css('bottom','-50px');
         }
     },
     //播放和暂停事件
@@ -50,9 +87,14 @@ sVideo.prototype = {
     },
     //音量按钮
     soundPlayOrStop: function () {
+        if(this.id.volume != 0){
+            this.volume = this.id.volume;
+            console.log('记录');
+        }
+        console.log(this.id.muted);
         if (this.id.muted) {
             this.id.muted = false;
-            this.id.volume = 0.99;
+            this.id.volume = this.volume;
             this.parentDom.find('.ob_voice').removeClass('ob_voice_mute').addClass('ob_voice_big');
         } else {
             this.id.muted = true;
@@ -60,10 +102,39 @@ sVideo.prototype = {
             this.parentDom.find('.ob_voice').removeClass('ob_voice_big').addClass('ob_voice_mute');
         }
     },
+    _is: {
+        object: function(input) {
+            return input !== null && typeof(input) === 'object';
+        },
+        array: function(input) {
+            return input !== null && (typeof(input) === 'object' && input.constructor === Array);
+        },
+        number: function(input) {
+            return input !== null && (typeof(input) === 'number' && !isNaN(input - 0) || (typeof input === 'object' && input.constructor === Number));
+        },
+        string: function(input) {
+            return input !== null && (typeof input === 'string' || (typeof input === 'object' && input.constructor === String));
+        },
+        boolean: function(input) {
+            return input !== null && typeof input === 'boolean';
+        },
+        nodeList: function(input) {
+            return input !== null && input instanceof NodeList;
+        },
+        htmlElement: function(input) {
+            return input !== null && input instanceof HTMLElement;
+        },
+        function: function(input) {
+            return input !== null && typeof input === 'function';
+        },
+        undefined: function(input) {
+            return input !== null && typeof input === 'undefined';
+        }
+    },
     //音量改变事件
-    onvolumechange: function () {
+    onvolumechange: function (event) {
         var soundBarWidth = this.getDomWidth('ob_voice_bar');
-        var clickWidth = this.mouseCurrentX('ob_voice_bar');
+        var clickWidth = this.mouseCurrentX('ob_voice_bar',event);
         this.parentDom.find('.ob_voice_process').css('width', clickWidth / soundBarWidth.toFixed(2) * 100 + '%');
         this.id.volume = clickWidth / soundBarWidth.toFixed(2);
     },
@@ -73,12 +144,12 @@ sVideo.prototype = {
         this.id.ontimeupdate = this.update.bind(this);
     },
     //进度条点击事件
-    percentage: function () {
-        var widthCurr = this.mouseCurrentX('ob_process') / this.parentDom.find('.ob_process').width()
+    percentage: function (event) {
+        var widthCurr = this.mouseCurrentX('ob_process',event) / this.parentDom.find('.ob_process').width()
         this.id.currentTime = widthCurr * this.allTime();
     },
     //计算鼠标相对元素X坐标
-    mouseCurrentX: function (dmNm, event) {
+    mouseCurrentX: function (dmNm,event) {
         var e = event || window.event;
         var dom = this.parentDom.find('.' + dmNm);
         return e.clientX - parseInt(dom.offset().left);
@@ -179,14 +250,16 @@ sVideo.prototype = {
                 case Hls.ErrorTypes.NETWORK_ERROR:
                     // try to recover network error
                     console.log('fatal network error encountered, try to recover');
+                    this.hls_.startLoad();
                     break;
                 case Hls.ErrorTypes.MEDIA_ERROR:
                     console.log('fatal media error encountered, try to recover');
-                    // this.hls_.recoverMediaError();
+                    this.hls_.recoverMediaError();
                     break;
                 default:
                     // cannot recover
                     this.error(data);
+                    this.hls_.destroy();
                     break;
             }
         }

@@ -10887,7 +10887,8 @@ function sVideo(options) {
         heightSize: '',
         autoStartLoad: true,
         maxBufferSize: 10, //最大缓冲区大小
-        playOrStop: true
+        playOrStop: true,
+        volume: 0
     };
     this.config = $.extend(defaults, options);
     this.id = document.querySelector(this.config.id);
@@ -10898,6 +10899,29 @@ function sVideo(options) {
 sVideo.prototype = {
     panelEvent: function () {
         var that = this;
+        var timeOut;
+        $(this.id).hover(
+            function(){
+                clearTimeout(timeOut)
+                that.showOrHide('show');
+            },
+            function(){
+                timeOut =setTimeout(function(){
+                    that.showOrHide('hide')
+                },3000)
+            }
+        )
+        this.parentDom.find('.operate_bar').hover(
+            function(){
+                clearTimeout(timeOut)
+                that.showOrHide('show');
+            },
+            function(){
+                timeOut =setTimeout(function(){
+                    that.showOrHide('hide')
+                },3000)
+            }
+        )
         this.parentDom.find('.ob_switch').click(this.playOrStop.bind(this));
         this.parentDom.find('.ob_process').on('click', this.percentage.bind(this));
         this.parentDom.find('.ob_voice').on('click', this.soundPlayOrStop.bind(this));
@@ -10909,6 +10933,19 @@ sVideo.prototype = {
         //缓冲完毕继续播放事件
         this.id.onplaying = function () {
             panel.removeLoadCode(that.parentDom);
+        }
+        $(this.id).click(this.playOrStop.bind(this));
+        this.id.addEventListener("ended",function(){
+         console.log("结束");
+    })
+    },
+    //显示隐藏bar
+    showOrHide: function(state){
+        if(state == 'show'){
+            this.parentDom.find('.operate_bar').css('bottom','0');
+        }
+        if(state == 'hide'){
+            this.parentDom.find('.operate_bar').css('bottom','-50px');
         }
     },
     //播放和暂停事件
@@ -10925,9 +10962,14 @@ sVideo.prototype = {
     },
     //音量按钮
     soundPlayOrStop: function () {
+        if(this.id.volume != 0){
+            this.volume = this.id.volume;
+            console.log('记录');
+        }
+        console.log(this.id.muted);
         if (this.id.muted) {
             this.id.muted = false;
-            this.id.volume = 0.99;
+            this.id.volume = this.volume;
             this.parentDom.find('.ob_voice').removeClass('ob_voice_mute').addClass('ob_voice_big');
         } else {
             this.id.muted = true;
@@ -10935,10 +10977,39 @@ sVideo.prototype = {
             this.parentDom.find('.ob_voice').removeClass('ob_voice_big').addClass('ob_voice_mute');
         }
     },
+    _is: {
+        object: function(input) {
+            return input !== null && typeof(input) === 'object';
+        },
+        array: function(input) {
+            return input !== null && (typeof(input) === 'object' && input.constructor === Array);
+        },
+        number: function(input) {
+            return input !== null && (typeof(input) === 'number' && !isNaN(input - 0) || (typeof input === 'object' && input.constructor === Number));
+        },
+        string: function(input) {
+            return input !== null && (typeof input === 'string' || (typeof input === 'object' && input.constructor === String));
+        },
+        boolean: function(input) {
+            return input !== null && typeof input === 'boolean';
+        },
+        nodeList: function(input) {
+            return input !== null && input instanceof NodeList;
+        },
+        htmlElement: function(input) {
+            return input !== null && input instanceof HTMLElement;
+        },
+        function: function(input) {
+            return input !== null && typeof input === 'function';
+        },
+        undefined: function(input) {
+            return input !== null && typeof input === 'undefined';
+        }
+    },
     //音量改变事件
-    onvolumechange: function () {
+    onvolumechange: function (event) {
         var soundBarWidth = this.getDomWidth('ob_voice_bar');
-        var clickWidth = this.mouseCurrentX('ob_voice_bar');
+        var clickWidth = this.mouseCurrentX('ob_voice_bar',event);
         this.parentDom.find('.ob_voice_process').css('width', clickWidth / soundBarWidth.toFixed(2) * 100 + '%');
         this.id.volume = clickWidth / soundBarWidth.toFixed(2);
     },
@@ -10948,12 +11019,12 @@ sVideo.prototype = {
         this.id.ontimeupdate = this.update.bind(this);
     },
     //进度条点击事件
-    percentage: function () {
-        var widthCurr = this.mouseCurrentX('ob_process') / this.parentDom.find('.ob_process').width()
+    percentage: function (event) {
+        var widthCurr = this.mouseCurrentX('ob_process',event) / this.parentDom.find('.ob_process').width()
         this.id.currentTime = widthCurr * this.allTime();
     },
     //计算鼠标相对元素X坐标
-    mouseCurrentX: function (dmNm, event) {
+    mouseCurrentX: function (dmNm,event) {
         var e = event || window.event;
         var dom = this.parentDom.find('.' + dmNm);
         return e.clientX - parseInt(dom.offset().left);
@@ -11054,14 +11125,16 @@ sVideo.prototype = {
                 case Hls.ErrorTypes.NETWORK_ERROR:
                     // try to recover network error
                     console.log('fatal network error encountered, try to recover');
+                    this.hls_.startLoad();
                     break;
                 case Hls.ErrorTypes.MEDIA_ERROR:
                     console.log('fatal media error encountered, try to recover');
-                    // this.hls_.recoverMediaError();
+                    this.hls_.recoverMediaError();
                     break;
                 default:
                     // cannot recover
                     this.error(data);
+                    this.hls_.destroy();
                     break;
             }
         }
@@ -11131,8 +11204,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/_css-loader@0.28.4@css-loader/index.js!./v_style.css", function() {
-			var newContent = require("!!../../node_modules/_css-loader@0.28.4@css-loader/index.js!./v_style.css");
+		module.hot.accept("!!../../node_modules/.0.28.4@css-loader/index.js!./v_style.css", function() {
+			var newContent = require("!!../../node_modules/.0.28.4@css-loader/index.js!./v_style.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -11150,7 +11223,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.s_video {\n  overflow: hidden;\n}\n\n.s_video .operate_bar {\n  width: 100%;\n  height: 40px;\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.8);\n  display: block;\n  animation: videoFadeInUp .2s both;\n  -webkit-animation: videoFadeInUp .2s both;\n  -moz-animation: videoFadeInUp .2s both;\n  z-index: 3000000000;\n}\n\n.s_video .operate_bar .ob_process {\n  position: absolute;\n  width: 100%;\n  top: -5px;\n  background: rgba(0, 0, 0, 0.5);\n  height: 5px;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_process .ob_process_load {\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background: #929292;\n  z-index: 3000000001;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video .operate_bar .ob_process .ob_process_play {\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  transition: height .2s;\n  z-index: 3000000002;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video .operate_bar .ob_process .ob_pb_box {\n  width: calc(100% - 11px);\n  height: 1px;\n  position: relative;\n}\n\n.s_video .operate_bar .ob_process .ob_process_btn {\n  width: 11px;\n  height: 11px;\n  position: absolute;\n  left: 0;\n  top: -3px;\n  z-index: 3000000003;\n  border-radius: 50%;\n  background: #FFF;\n  box-shadow: -1px 0 5px #626262;\n  -webkit-box-shadow: -1px 0 5px #626262;\n  -moz-box-shadow: -1px 0 5px #626262;\n  -o-box-shadow: -1px 0 5px #626262;\n  -webkit-transition: left .3s;\n  -moz-transition: left .3s;\n  transition: left .3s;\n}\n\n.s_video .operate_bar .ob_switch {\n  width: 40px;\n  height: 40px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_play_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABKklEQVRYR8XX/00CQRCG4ffrwE6wA0pQOtAOpAPoADuADrQDS5AOpAOs4MyYW3OBhbg7s8v+d5dL5sk3++tEZgzDcAfMgL2kY+6bqHe6AHgDHoAvYCnJnpuMS4APYD6paACDGCh0/BdgRa0VG0nrSEEJINW1FJ4lWUruUQNIRUPa4gGEtMULcLclClDdlmhAcVtaAIra0hIwbYst2+yW3gOQ2rKS9Hq6cfQCpLqf45b+t4n1BiTIIh1wtwKsJa1M0xvwDdhc2KQoegJ2wMvpaugB2I+Fs6dnS8BZ3LmzuxUgG3cPwNW4WwIsbruu/S6tkhHRgvdxklVdWD2AA/DkvRvWAKrjjpgDrrg9gJC4SwDp1yw07hLAPfAIbFv8jk0h2UlYso69394c8APtY7Ah+hvDbwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_pause_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwUlEQVRYR+2XwQ3CMAxF/TboBsAkwAQwAiPAJLACG8AEwCZlg27wUVCQAmpKW5Bysa924qfn08cKF7n9kqahB9S/MH77pxVA0sLMLnHxDjiMgZC0NbN9fLsErp//5ABOZraKwzUwGwkQ7E3i2yOw6QsQSOevYSB7qi4wSUr6NyCYfaucAQdwA27ADbgBN+AG3IAbcANuoLiBNJjcgWdMG1qS0mByBtZ9c0HZaBYoJVVmVv0pnDZA02ZwVOQaeoqu+QfOqREwccBDCgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_time {\n  float: left;\n  height: 40px;\n  line-height: 40px;\n  color: #F1F1F1;\n  padding: 0 10px;\n  font-size: 13px;\n}\n\n.s_video .operate_bar .ob_voice_box {\n  height: 40px;\n  float: right;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_big {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACCklEQVRYR8VX0VXCQBCcqUA7ECoQKxAqUCsQOsAKlArUCsQK1ArUCsQKhA60gvXNvb14RELIgxz7RS7kdm53dnaP2IGZ2RjAnORz0+3Y9IP0/2Z2COAVQE/rJBvv1/iDCMDM5PQJQCeuZQNgZn13rggUlgWAmQ0BPCR+PwEcZ0mBmU0BXLrzHwDnABSN61YBONmUbzmTLeSc5MzMbloF4GRTyAPTASjkfZLfetgUgJfqLYAJSYEOFqrAzMTk05TRSY5V45FsjyTFgcIaAJBGnPmHI5JKJ7iCVOn+6e8rknfll3UAfP85gJnECsABAEXvhORcALR4VOUVgMg2rFK5dQC8XCVUsoE7/vDnEE0BMF9Yys0aQEuvagAotTp5PHUXgKIYK6nbKgDnl0pVFSSbAFDuvwoutBmBGCoze3OSq2F1k7S/tB4Bj0KqnjENqoj3XAAkYCkZ/9QzUwr2DmDvKYgkXJDsZCWhme2vDL3HSPnUS6SoEqZ/QlQnxdJtNY+VA2eNEqqDRumtlOLyhFOlwmOS91s2IylgjEYvNKOkHatUigGz1I6l5bIpyVEKoq4bJmq4uh3XNR0fSKTfYe7z5jLY6UCyAQiFTSfQ0CITby6yjGSlcKdDaSCnj2rtDqUlEGXSqt/nvRn5pKOURHIGjFkuJgmrdeqUnHkBePmKnNL5PDejqmrZ5nr+C4l+ZfAT3jHnAAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_mute {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACf0lEQVRYR71X7VUcMRCTKoBUEK6CkAoCHUAFhAqSqwCoIEkFgQogFYQOAhXk6AAqGJ7MeJ9vz+uPvXv4337Ykmc08pjYwTCz7wBWJO96l2PvhPR/M9sH8BfAod6T7F6ve0IkYGYCvQVwEN/VCPicM5LLYc6cCJjZkYMrAsMoEXBwRUtzfpFU2tAdATP7CuB3gvsI4FMpBSPwFwBHJB+6CZjZNYAzB9dCIqNUXEwRKIE3E3CxKd8KvcYTgBPtwswupwjUwJsI+CIKeVA6AIVcIXzWwxSBFvCBgJlJyV9SRSc5llii2G5IKuzDSAick1SKREpko+DWcu4a2if5MxDIiGqqMJZxUoaATKgF/MSrR9H7THIlAisAHwvlGMQ25XLSR5KO0s4VRUX6n2OFaIqA+YsrkhLUrNEQ9h8AFgAU+lhJi50QqIBr1//jJgEoVfF5uTWBFrWbmUxHZvVM8kPy/GcrAi3gXhWpeyoNqqxvAB5mE2gFdwIyMJWlxrEb2pt7zhFhD/jOCfSCOwGFXFWgoRSo2lQJj10RqJVaNKNxHZvZvTvtE8mDWSKsgeuIzvUDI6e9mlWGFfBorxstmZ8xcj65oBxVnrBhRDkrbjpYPL+14zhar9SvM2DDiscdTjN4jUDiAdqkzEjgsYdchMPIf9JL1aqcKrTWrWovNSSjUzPtpoZNZnvChpzf1xqSTCXEUhwa0mBEmR9rzYS6I4X0tNaStRyrawRqYR81pRLUea0prZEYCNTA40KZDkri2v5mZGaqT51Qaz1cbgd+MZFY99LvtZtRbq1xCkTiOl4aSuHziEnZ4VISBPWed0MvVTmcfL54MyptpPtqNpGS2dfzV7aM4i+ndp30AAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_bar {\n  width: 80px;\n  height: 5px;\n  background: rgba(125, 125, 125, 0.7);\n  margin-top: 17px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_process {\n  width: 0;\n  height: 5px;\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  cursor: pointer;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video .operate_bar .ob_setting {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADUklEQVRYR7WXgVHcQAxFvyoIVBCoIFABUAGkAqCCQAUhFQAV5KggSQUhFSRUAFQQrgJlnkfyrO3d8x1DPMNwvltr/0r/f8mmDS93v5B0LOmwePRF0h9Jd2a22CSkbbKYte5+H8+w0VN83pF0xmczK4HNhl8JIE67MDNO2F0B4N7Mrsro7s79YQnA3fckHZjZbQtJFYC7b0n6KYkApPYoQbg7998bAI7NbD+A8iwxiEXWPpYHSUATAIGaB58jraTa2VQS9Sfg+bjW7k4JvkZZWMs9MXjmJmIAIsvWYRgAiJM/SnqQdALi+I4TsPHVKpLF2hPWSaJslKSMwUH6bNYAkF6u7sGi7lu19K1iGGDGMaKcj2Z2NClBEO5a0r6ZJZBZFm+ywN1RCOXtS9iXoEj1JE2bbNJaWxCbPfsM1zhAvWdBBFk/xIYPq7LW2nzCgZAPBDozM8xlcrk7JKNU/L6MBe+C/ZdmhgJqz8H+CYlrMoR8FzW2uzuSPJX0RRIG1UnK3QGD3D5JAgSyG1wh089mtlv+YIW38z1S2zUz/o8DcPJvYSitU6YXoPfBmijD3zCljH0HgPT2/P/UOD2n5dQDC64AJUvY7+Ckkak0Mm5RxAsAINzE2crAQbjfkZ2Bk1UAYMGza/veEQBwp8xAjUCk9qZWmgbhUkVzMa8zA+sAuDaz7ZbORxlbBwCcWgCgyfoM+r9LkMaT6Xp+AxLu1AaTUByekSRcpgxJR8oQd9seN58wIGTYJGzRkiclLWRIp81Gt6gZUdWxChnhgkjtNu03SoQJQdYqwGA9BjfwmBoAdH5a03GAIFs43fsRIX+F1U6YH6dHmgytAx+pNSPa5aBjNaSG/Wa/wLya/rCq047b8VqbryPFikHlbDjotCWA9PGVnvCazQs550DSN6xxCagfMhnMbePxah0QjZEMHizNDLvurtmBpBgmuqFU0o/WfBhrUw1IrTtIEQMn3Sufb43lyIxMnMfwwTq+o5vB/tpYzm9IlFGctaiFel/GuE4MJu3BvLnqxYR+fhAjej/DzbyYsEGX3oL5GBsS7cb8cfnmXs0gJm9Br301o2yMd5MJqcqBNclV9g7SySb4AQy3N305bRgQWeGPVGdjYTjNd8bmaWvx/gHH7QmmUfWGPwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_display {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_full_screen {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABzUlEQVRYR+2XbVEDMRCG31UADsABrQKKAnAAOAAFUAXggOIAFFAUUBwUB62CZV7YK9dMkk3uboAfzUz/9JLss5v9FPzxkrZ8VZ0AUIfpQ0SWsT2qegjgwDm/FpFFs2cDoKr886jAIFMRuU0A8P+bgjsWIjLmvi8A0/zFDj4D2BBGLpuLyDwBQAvyl1ojAKf28YT3xABWAPgxB1Gg5PYWVaVwKrmfA6D2jR8MBtESToVpPVohaoEpgCfbRGfsDREIp3Jn5idxADqYHSJpL4hQOJ9VVRtHTQOYY/LNOkPEhNu9ZQB9IFLCqwG6QOSEdwKIQIydTPhm+WUSC+WUDzCFXvDNM0mGPnHPfQ7ADMBVKo9Y0mM0zHjPVi2ozi4DHNgB7CzwPyxgncw5gFcnDO8AXDph+ADg2gnDYwCPmzBsNSTRbifIbiMHgH1EsogVF6MmxL3UGqYCr5JWAdQKD6CjlbQYoKtwD6IIoK/wHIQLYC0Zm0eGaLSi1ZSA0Ce8loz9ICvVIMITlqBvsC9MtuXrITTPRMeeNxfQCrmZIJesaD0mmdxgQu25fixgXc9vjmbvIsIG53s0C96qmVxSWiydTMjuKrdW0eG0xrOH3PsJ316HMJ+wvXgAAAAASUVORK5CYII=\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_regain {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABlklEQVRYR+2X4VXDMAyE7zaASWAEmAS6QTsBMAHdoGUSGKFMAhuIp74qzySS5cZA+dH8jGXriyKfz8SJH1p+EbkmufsLnjLXHkBELgB8ANiSXHgQOgnAM4AXktsg5h7AHYBV9DEionM15pLkZ1kBG3AhROQGwCuAJ5KPAYC+fwBwS/JtHFMk149QWAwAh0qEEL0AXvIJQA2iByBK7gJEEHMBaslDAA9iDkCWvAowhtDuP6YJAdiOGBrOa9xvTRh0tjWmaoRuxZZdYLHV5GkFCpEyCH3VAqBxafIBoPi/LUK4SIRo07KIaYUpoZZ23TBxR3JZixMRXUfXy56lqmXaA9kqveNngHMF/kcFCrORNbVuw1XDNrzKFjLTYjpgZqNhHn5eiLKsxal2jBSH9q7Ml/ZAkfwdgJa25Syw2BSiClCe52pYZx7HVYgQYGwmOg1JCOECeE5mDkDNY1ofTAAiGzUXIIOIbPnETPQA1CC8i4nrZHoBIojx1Sy0UQe1VLOhDVW7mqkZ3ZuNxGNOrmanu5xmSvib419EDG4w/oXoRgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .ob_load {\n  width: 80px;\n  height: 80px;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  margin: -40px 0 0 -40px;\n}\n\n.s_video .ob_load span {\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  background: #888;\n  position: absolute;\n  animation: video_load 1.04s ease infinite;\n  -webkit-animation: video_load 1.04s ease infinite;\n}\n\n.s_video .ob_load span:nth-child(1) {\n  left: 0;\n  top: 50%;\n  margin-top: -8px;\n  animation-delay: 0.13s;\n  -webkit-animation-delay: 0.13s;\n}\n\n.s_video .ob_load span:nth-child(2) {\n  left: 10px;\n  top: 10px;\n  animation-delay: 0.26s;\n  -webkit-animation-delay: 0.26s;\n}\n\n.s_video .ob_load span:nth-child(3) {\n  left: 50%;\n  top: 0;\n  margin-left: -8px;\n  animation-delay: 0.39s;\n  -webkit-animation-delay: 0.39s;\n}\n\n.s_video .ob_load span:nth-child(4) {\n  top: 10px;\n  right: 10px;\n  animation-delay: 0.52s;\n  -webkit-animation-delay: 0.52s;\n}\n\n.s_video .ob_load span:nth-child(5) {\n  right: 0;\n  top: 50%;\n  margin-top: -8px;\n  animation-delay: 0.65s;\n  -webkit-animation-delay: 0.65s;\n}\n\n.s_video .ob_load span:nth-child(6) {\n  right: 10px;\n  bottom: 10px;\n  animation-delay: 0.78s;\n  -webkit-animation-delay: 0.78s;\n}\n\n.s_video .ob_load span:nth-child(7) {\n  bottom: 0;\n  left: 50%;\n  margin-left: -8px;\n  animation-delay: 0.91s;\n  -webkit-animation-delay: 0.91s;\n}\n\n.s_video .ob_load span:nth-child(8) {\n  bottom: 10px;\n  left: 10px;\n  animation-delay: 1.04s;\n  -webkit-animation-delay: 1.04s;\n}\n\n.s_video video::-webkit-media-controls-enclosure {\n  /*禁用播放器控制栏的样式*/\n  display: none !important;\n}\n\n.s_video video:-webkit-full-screen video {\n  width: 100%;\n  height: 100%;\n}\n\n.s_video video:-moz-full-screen video {\n  width: 100%;\n  height: 100%;\n}\n\n.s_video video:-webkit-full-screen, .s_video video:-webkit-full-screen {\n  z-index: 995 !important;\n}\n\n@keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@-webkit-keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@-moz-keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@keyframes videoFadeInUp {\n  0% {\n    -webkit-transform: translateY(40px);\n  }\n  100% {\n    -webkit-transform: translateY(0);\n  }\n}\n\n@-webkit-keyframes videoFadeInUp {\n  0% {\n    -webkit-transform: translateY(40px);\n  }\n  100% {\n    -webkit-transform: translateY(0);\n  }\n}\n\n@-moz-keyframes videoFadeInUp {\n  0% {\n    -moz-transform: translateY(40px);\n  }\n  100% {\n    -moz-transform: translateY(0);\n  }\n}\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.s_video {\n  overflow: hidden;\n}\n\n.s_video .operate_bar {\n  width: 100%;\n  height: 40px;\n  position: absolute;\n  left: 0;\n  bottom: -50px;\n  background: rgba(0, 0, 0, 0.8);\n  display: block;\n  z-index: 3000000000;\n  -webkit-transition: all .3s;\n  -moz-transition: all .3s;\n  transition: all .3s;\n}\n\n.s_video .operate_bar .ob_process {\n  position: absolute;\n  width: 100%;\n  top: -5px;\n  background: rgba(0, 0, 0, 0.5);\n  height: 5px;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_process .ob_process_load {\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  background: #929292;\n  z-index: 3000000001;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video .operate_bar .ob_process .ob_process_play {\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  height: 5px;\n  position: absolute;\n  left: 0;\n  top: 0;\n  cursor: pointer;\n  transition: height .2s;\n  z-index: 3000000002;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video .operate_bar .ob_process .ob_pb_box {\n  width: calc(100% - 11px);\n  height: 1px;\n  position: relative;\n}\n\n.s_video .operate_bar .ob_process .ob_process_btn {\n  width: 11px;\n  height: 11px;\n  position: absolute;\n  left: 0;\n  top: -3px;\n  z-index: 3000000003;\n  border-radius: 50%;\n  background: #FFF;\n  box-shadow: -1px 0 5px #626262;\n  -webkit-box-shadow: -1px 0 5px #626262;\n  -moz-box-shadow: -1px 0 5px #626262;\n  -o-box-shadow: -1px 0 5px #626262;\n  -webkit-transition: left .3s;\n  -moz-transition: left .3s;\n  transition: left .3s;\n}\n\n.s_video .operate_bar .ob_switch {\n  width: 40px;\n  height: 40px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_play_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABKklEQVRYR8XX/00CQRCG4ffrwE6wA0pQOtAOpAPoADuADrQDS5AOpAOs4MyYW3OBhbg7s8v+d5dL5sk3++tEZgzDcAfMgL2kY+6bqHe6AHgDHoAvYCnJnpuMS4APYD6paACDGCh0/BdgRa0VG0nrSEEJINW1FJ4lWUruUQNIRUPa4gGEtMULcLclClDdlmhAcVtaAIra0hIwbYst2+yW3gOQ2rKS9Hq6cfQCpLqf45b+t4n1BiTIIh1wtwKsJa1M0xvwDdhc2KQoegJ2wMvpaugB2I+Fs6dnS8BZ3LmzuxUgG3cPwNW4WwIsbruu/S6tkhHRgvdxklVdWD2AA/DkvRvWAKrjjpgDrrg9gJC4SwDp1yw07hLAPfAIbFv8jk0h2UlYso69394c8APtY7Ah+hvDbwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_pause_icon {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAwUlEQVRYR+2XwQ3CMAxF/TboBsAkwAQwAiPAJLACG8AEwCZlg27wUVCQAmpKW5Bysa924qfn08cKF7n9kqahB9S/MH77pxVA0sLMLnHxDjiMgZC0NbN9fLsErp//5ABOZraKwzUwGwkQ7E3i2yOw6QsQSOevYSB7qi4wSUr6NyCYfaucAQdwA27ADbgBN+AG3IAbcANuoLiBNJjcgWdMG1qS0mByBtZ9c0HZaBYoJVVmVv0pnDZA02ZwVOQaeoqu+QfOqREwccBDCgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_time {\n  float: left;\n  height: 40px;\n  line-height: 40px;\n  color: #F1F1F1;\n  padding: 0 10px;\n  font-size: 13px;\n}\n\n.s_video .operate_bar .ob_voice_box {\n  height: 40px;\n  float: right;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_big {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACCklEQVRYR8VX0VXCQBCcqUA7ECoQKxAqUCsQOsAKlArUCsQK1ArUCsQKhA60gvXNvb14RELIgxz7RS7kdm53dnaP2IGZ2RjAnORz0+3Y9IP0/2Z2COAVQE/rJBvv1/iDCMDM5PQJQCeuZQNgZn13rggUlgWAmQ0BPCR+PwEcZ0mBmU0BXLrzHwDnABSN61YBONmUbzmTLeSc5MzMbloF4GRTyAPTASjkfZLfetgUgJfqLYAJSYEOFqrAzMTk05TRSY5V45FsjyTFgcIaAJBGnPmHI5JKJ7iCVOn+6e8rknfll3UAfP85gJnECsABAEXvhORcALR4VOUVgMg2rFK5dQC8XCVUsoE7/vDnEE0BMF9Yys0aQEuvagAotTp5PHUXgKIYK6nbKgDnl0pVFSSbAFDuvwoutBmBGCoze3OSq2F1k7S/tB4Bj0KqnjENqoj3XAAkYCkZ/9QzUwr2DmDvKYgkXJDsZCWhme2vDL3HSPnUS6SoEqZ/QlQnxdJtNY+VA2eNEqqDRumtlOLyhFOlwmOS91s2IylgjEYvNKOkHatUigGz1I6l5bIpyVEKoq4bJmq4uh3XNR0fSKTfYe7z5jLY6UCyAQiFTSfQ0CITby6yjGSlcKdDaSCnj2rtDqUlEGXSqt/nvRn5pKOURHIGjFkuJgmrdeqUnHkBePmKnNL5PDejqmrZ5nr+C4l+ZfAT3jHnAAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_mute {\n  width: 40px;\n  height: 40px;\n  display: block;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACf0lEQVRYR71X7VUcMRCTKoBUEK6CkAoCHUAFhAqSqwCoIEkFgQogFYQOAhXk6AAqGJ7MeJ9vz+uPvXv4337Ykmc08pjYwTCz7wBWJO96l2PvhPR/M9sH8BfAod6T7F6ve0IkYGYCvQVwEN/VCPicM5LLYc6cCJjZkYMrAsMoEXBwRUtzfpFU2tAdATP7CuB3gvsI4FMpBSPwFwBHJB+6CZjZNYAzB9dCIqNUXEwRKIE3E3CxKd8KvcYTgBPtwswupwjUwJsI+CIKeVA6AIVcIXzWwxSBFvCBgJlJyV9SRSc5llii2G5IKuzDSAick1SKREpko+DWcu4a2if5MxDIiGqqMJZxUoaATKgF/MSrR9H7THIlAisAHwvlGMQ25XLSR5KO0s4VRUX6n2OFaIqA+YsrkhLUrNEQ9h8AFgAU+lhJi50QqIBr1//jJgEoVfF5uTWBFrWbmUxHZvVM8kPy/GcrAi3gXhWpeyoNqqxvAB5mE2gFdwIyMJWlxrEb2pt7zhFhD/jOCfSCOwGFXFWgoRSo2lQJj10RqJVaNKNxHZvZvTvtE8mDWSKsgeuIzvUDI6e9mlWGFfBorxstmZ8xcj65oBxVnrBhRDkrbjpYPL+14zhar9SvM2DDiscdTjN4jUDiAdqkzEjgsYdchMPIf9JL1aqcKrTWrWovNSSjUzPtpoZNZnvChpzf1xqSTCXEUhwa0mBEmR9rzYS6I4X0tNaStRyrawRqYR81pRLUea0prZEYCNTA40KZDkri2v5mZGaqT51Qaz1cbgd+MZFY99LvtZtRbq1xCkTiOl4aSuHziEnZ4VISBPWed0MvVTmcfL54MyptpPtqNpGS2dfzV7aM4i+ndp30AAAAAElFTkSuQmCC\") no-repeat center center;\n  background-size: 16px 16px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_bar {\n  width: 80px;\n  height: 5px;\n  background: rgba(125, 125, 125, 0.7);\n  margin-top: 17px;\n  float: left;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_voice_box .ob_voice_process {\n  width: 0;\n  height: 5px;\n  background-image: linear-gradient(to right, #57a900, #97ff00 80%, #dee2da);\n  background-image: -webkit-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -moz-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  background-image: -o-linear-gradient(left, #57a900, #97ff00 80%, #dee2da);\n  cursor: pointer;\n  -webkit-transition: width .3s;\n  -moz-transition: width .3s;\n  transition: width .3s;\n}\n\n.s_video .operate_bar .ob_setting {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADUklEQVRYR7WXgVHcQAxFvyoIVBCoIFABUAGkAqCCQAUhFQAV5KggSQUhFSRUAFQQrgJlnkfyrO3d8x1DPMNwvltr/0r/f8mmDS93v5B0LOmwePRF0h9Jd2a22CSkbbKYte5+H8+w0VN83pF0xmczK4HNhl8JIE67MDNO2F0B4N7Mrsro7s79YQnA3fckHZjZbQtJFYC7b0n6KYkApPYoQbg7998bAI7NbD+A8iwxiEXWPpYHSUATAIGaB58jraTa2VQS9Sfg+bjW7k4JvkZZWMs9MXjmJmIAIsvWYRgAiJM/SnqQdALi+I4TsPHVKpLF2hPWSaJslKSMwUH6bNYAkF6u7sGi7lu19K1iGGDGMaKcj2Z2NClBEO5a0r6ZJZBZFm+ywN1RCOXtS9iXoEj1JE2bbNJaWxCbPfsM1zhAvWdBBFk/xIYPq7LW2nzCgZAPBDozM8xlcrk7JKNU/L6MBe+C/ZdmhgJqz8H+CYlrMoR8FzW2uzuSPJX0RRIG1UnK3QGD3D5JAgSyG1wh089mtlv+YIW38z1S2zUz/o8DcPJvYSitU6YXoPfBmijD3zCljH0HgPT2/P/UOD2n5dQDC64AJUvY7+Ckkak0Mm5RxAsAINzE2crAQbjfkZ2Bk1UAYMGza/veEQBwp8xAjUCk9qZWmgbhUkVzMa8zA+sAuDaz7ZbORxlbBwCcWgCgyfoM+r9LkMaT6Xp+AxLu1AaTUByekSRcpgxJR8oQd9seN58wIGTYJGzRkiclLWRIp81Gt6gZUdWxChnhgkjtNu03SoQJQdYqwGA9BjfwmBoAdH5a03GAIFs43fsRIX+F1U6YH6dHmgytAx+pNSPa5aBjNaSG/Wa/wLya/rCq047b8VqbryPFikHlbDjotCWA9PGVnvCazQs550DSN6xxCagfMhnMbePxah0QjZEMHizNDLvurtmBpBgmuqFU0o/WfBhrUw1IrTtIEQMn3Sufb43lyIxMnMfwwTq+o5vB/tpYzm9IlFGctaiFel/GuE4MJu3BvLnqxYR+fhAjej/DzbyYsEGX3oL5GBsS7cb8cfnmXs0gJm9Br301o2yMd5MJqcqBNclV9g7SySb4AQy3N305bRgQWeGPVGdjYTjNd8bmaWvx/gHH7QmmUfWGPwAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_display {\n  width: 40px;\n  height: 40px;\n  float: right;\n  cursor: pointer;\n}\n\n.s_video .operate_bar .ob_full_screen {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABzUlEQVRYR+2XbVEDMRCG31UADsABrQKKAnAAOAAFUAXggOIAFFAUUBwUB62CZV7YK9dMkk3uboAfzUz/9JLss5v9FPzxkrZ8VZ0AUIfpQ0SWsT2qegjgwDm/FpFFs2cDoKr886jAIFMRuU0A8P+bgjsWIjLmvi8A0/zFDj4D2BBGLpuLyDwBQAvyl1ojAKf28YT3xABWAPgxB1Gg5PYWVaVwKrmfA6D2jR8MBtESToVpPVohaoEpgCfbRGfsDREIp3Jn5idxADqYHSJpL4hQOJ9VVRtHTQOYY/LNOkPEhNu9ZQB9IFLCqwG6QOSEdwKIQIydTPhm+WUSC+WUDzCFXvDNM0mGPnHPfQ7ADMBVKo9Y0mM0zHjPVi2ozi4DHNgB7CzwPyxgncw5gFcnDO8AXDph+ADg2gnDYwCPmzBsNSTRbifIbiMHgH1EsogVF6MmxL3UGqYCr5JWAdQKD6CjlbQYoKtwD6IIoK/wHIQLYC0Zm0eGaLSi1ZSA0Ce8loz9ICvVIMITlqBvsC9MtuXrITTPRMeeNxfQCrmZIJesaD0mmdxgQu25fixgXc9vjmbvIsIG53s0C96qmVxSWiydTMjuKrdW0eG0xrOH3PsJ316HMJ+wvXgAAAAASUVORK5CYII=\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .operate_bar .ob_regain {\n  background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABlklEQVRYR+2X4VXDMAyE7zaASWAEmAS6QTsBMAHdoGUSGKFMAhuIp74qzySS5cZA+dH8jGXriyKfz8SJH1p+EbkmufsLnjLXHkBELgB8ANiSXHgQOgnAM4AXktsg5h7AHYBV9DEionM15pLkZ1kBG3AhROQGwCuAJ5KPAYC+fwBwS/JtHFMk149QWAwAh0qEEL0AXvIJQA2iByBK7gJEEHMBaslDAA9iDkCWvAowhtDuP6YJAdiOGBrOa9xvTRh0tjWmaoRuxZZdYLHV5GkFCpEyCH3VAqBxafIBoPi/LUK4SIRo07KIaYUpoZZ23TBxR3JZixMRXUfXy56lqmXaA9kqveNngHMF/kcFCrORNbVuw1XDNrzKFjLTYjpgZqNhHn5eiLKsxal2jBSH9q7Ml/ZAkfwdgJa25Syw2BSiClCe52pYZx7HVYgQYGwmOg1JCOECeE5mDkDNY1ofTAAiGzUXIIOIbPnETPQA1CC8i4nrZHoBIojx1Sy0UQe1VLOhDVW7mqkZ3ZuNxGNOrmanu5xmSvib419EDG4w/oXoRgAAAABJRU5ErkJggg==\") no-repeat center center;\n  background-size: 16px 16px;\n}\n\n.s_video .ob_load {\n  width: 80px;\n  height: 80px;\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  margin: -40px 0 0 -40px;\n}\n\n.s_video .ob_load span {\n  display: inline-block;\n  width: 16px;\n  height: 16px;\n  border-radius: 50%;\n  background: #888;\n  position: absolute;\n  animation: video_load 1.04s ease infinite;\n  -webkit-animation: video_load 1.04s ease infinite;\n}\n\n.s_video .ob_load span:nth-child(1) {\n  left: 0;\n  top: 50%;\n  margin-top: -8px;\n  animation-delay: 0.13s;\n  -webkit-animation-delay: 0.13s;\n}\n\n.s_video .ob_load span:nth-child(2) {\n  left: 10px;\n  top: 10px;\n  animation-delay: 0.26s;\n  -webkit-animation-delay: 0.26s;\n}\n\n.s_video .ob_load span:nth-child(3) {\n  left: 50%;\n  top: 0;\n  margin-left: -8px;\n  animation-delay: 0.39s;\n  -webkit-animation-delay: 0.39s;\n}\n\n.s_video .ob_load span:nth-child(4) {\n  top: 10px;\n  right: 10px;\n  animation-delay: 0.52s;\n  -webkit-animation-delay: 0.52s;\n}\n\n.s_video .ob_load span:nth-child(5) {\n  right: 0;\n  top: 50%;\n  margin-top: -8px;\n  animation-delay: 0.65s;\n  -webkit-animation-delay: 0.65s;\n}\n\n.s_video .ob_load span:nth-child(6) {\n  right: 10px;\n  bottom: 10px;\n  animation-delay: 0.78s;\n  -webkit-animation-delay: 0.78s;\n}\n\n.s_video .ob_load span:nth-child(7) {\n  bottom: 0;\n  left: 50%;\n  margin-left: -8px;\n  animation-delay: 0.91s;\n  -webkit-animation-delay: 0.91s;\n}\n\n.s_video .ob_load span:nth-child(8) {\n  bottom: 10px;\n  left: 10px;\n  animation-delay: 1.04s;\n  -webkit-animation-delay: 1.04s;\n}\n\n.s_video video::-webkit-media-controls-start-playback-button {\n  display: none;\n}\n\n.s_video video::-webkit-media-controls-enclosure {\n  /*禁用播放器控制栏的样式*/\n  display: none !important;\n}\n\n.s_video video:-webkit-full-screen video {\n  width: 100%;\n  height: 100%;\n}\n\n.s_video video:-moz-full-screen video {\n  width: 100%;\n  height: 100%;\n}\n\n.s_video video:-webkit-full-screen, .s_video video:-webkit-full-screen {\n  z-index: 995 !important;\n}\n\n@keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@-webkit-keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n\n@-moz-keyframes video_load {\n  0% {\n    opacity: 1;\n  }\n  100% {\n    opacity: 0.2;\n  }\n}\n", ""]);
 
 // exports
 
@@ -21795,6 +21868,7 @@ var Hls = function () {
   }, {
     key: 'attachMedia',
     value: function attachMedia(media) {
+      console.log('attachMedia',attachMedia);
       _logger.logger.log('attachMedia');
       this.media = media;
       this.trigger(_events2.default.MEDIA_ATTACHING, { media: media });

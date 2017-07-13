@@ -10634,6 +10634,7 @@ var Hls = function () {
   }, {
     key: 'attachMedia',
     value: function attachMedia(media) {
+      console.log('attachMedia',attachMedia);
       _logger.logger.log('attachMedia');
       this.media = media;
       this.trigger(_events2.default.MEDIA_ATTACHING, { media: media });
