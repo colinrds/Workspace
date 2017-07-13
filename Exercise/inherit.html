@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>inherit</title>
+</head>
+
+<body>
+    <script>
+        // ; (function () {
+        //     var pet = {
+        //         words:'...',
+        //         say:function(){
+        //             console.log(this);
+        //             console.log('Say:' + this.words)
+        //         }
+        //     }
+
+        //     var cat = {
+        //         words: 'miao',
+        //         wo: function(){
+
+        //         }
+        //     }
+        //     //父类
+        //     var Animal = function () {
+        //         //可以在构造函数里面直接设置属性~
+        //         this.name = 'animal';
+        //         this.c = function(){
+        //             console.log('I Call');
+        //         }
+        //     }
+        //     //也可以通过prototype
+        //     Animal.prototype.say = function () {
+        //         console.log('Animal here');
+        //     }
+
+        //     //子类
+        //     var Dog = function () {
+
+        //     }
+        //     Dog.prototype = new Animal();
+        //     //改写父类prototype
+        //     Dog.prototype.name = 'dog';
+        //     Dog.prototype.game = function(){
+        //         console.log('game');
+        //     }
+
+        //     var Colin = function(){
+
+        //     }
+
+        //     Colin.prototype = new Dog();
+
+        //     //父类还是一样样的
+        //     var Call = function(){
+        //         Animal.call(this);
+        //         this.name = 'dog';
+        //     }
+
+        //     var pets = function(){
+        //         this.name = 'colin';
+        //         this.age = 33;
+        //         this.go = function(){
+        //             console.log('My Name:'+this.name);
+        //         }
+        //     }
+
+
+        //     pet.say() //"Say: ..."
+        //     pet.say.call(cat) //miao
+        //     pets.call(cat) //miao
+        //     console.log(cat);
+
+        //     var dogeCall = new Call();
+        //     console.log(dogeCall.name) //'dog';
+        //     dogeCall.c() //error;
+
+        //     //创建实例
+        //     var doge = new Colin();
+        //     doge.game()  //'dog';
+        //     doge.say()  //'Animal here';
+
+
+        //     var parents = function(){
+        //         this.name = 'pjx'
+        //         this.sex = 'boy' 
+        //     }
+        //     var child = {};
+        //     console.log(child);//{} 
+
+        //     parents.call(child);
+        //     console.log(child); //{name: "pjx", sex: 'boy'}
+        // })();
+        function Parent(n) {     //父构造函数
+            this.name = n || 'Adam';
+        }
+        Parent.prototype.say = function () {
+            return this.name;
+        }
+        function Child(n) {
+            this.name = n;
+        }
+
+        function inherit(Child, Parent) {
+            var F = function () { };        //空的临时构造函数
+            F.prototype = Parent.prototype;
+            Child.prototype = new F();
+            Child.uber = Parent.prototype;    //uber表示super，因为super是保留的关键字
+        }
+
+        inherit(Child, Parent); //继承
+
+        Child.prototype.setName1 = function (n) {
+            return this.name = n;
+        }
+        Child.uber.setName2 = function (n) {
+            return this.name = n;
+        }
+
+        var c8 = new Child("Patrick");
+        c8.setName1("Jack");
+
+        console.log(c8)
+
+        console.log(c8.name);     //Jack
+        console.log(c8.say());    //Jack
+        c8.setName2("Betty");
+        console.log(c8.name);     //Betty
+        console.log(c8.say());    //Betty
+
+        var c9 = new Parent();
+        c9.setName1("Andy");      //error，未定义
+        c9.setName2("Andy");
+        console.log(c9.name);     //Andy
+        console.log(c9.say());    //Andy
+    </script>
+</body>
+
+</html>
