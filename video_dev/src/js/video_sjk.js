@@ -1,6 +1,8 @@
 import css from '../css/v_style.css';
 var Hls = require('./s_hls.js');
 var panel = require('./panel.js');
+var fullscreen = require('./fullscreen.js');
+console.log(fullscreen);
 
 $('#level').click(function () {
     hls.currentLevel = 1;
@@ -26,32 +28,33 @@ sVideo.prototype = {
         var that = this;
         var timeOut;
         $(this.id).hover(
-            function(){
+            function () {
                 clearTimeout(timeOut)
                 that.showOrHide('show');
             },
-            function(){
-                timeOut =setTimeout(function(){
+            function () {
+                timeOut = setTimeout(function () {
                     that.showOrHide('hide')
-                },3000)
+                }, 3000)
             }
         )
         this.parentDom.find('.operate_bar').hover(
-            function(){
+            function () {
                 clearTimeout(timeOut)
                 that.showOrHide('show');
             },
-            function(){
-                timeOut =setTimeout(function(){
+            function () {
+                timeOut = setTimeout(function () {
                     that.showOrHide('hide')
-                },3000)
+                }, 3000)
             }
         )
         this.parentDom.find('.ob_switch').click(this.playOrStop.bind(this));
         this.parentDom.find('.ob_process').on('click', this.percentage.bind(this));
         this.parentDom.find('.ob_voice').on('click', this.soundPlayOrStop.bind(this));
         this.parentDom.find('.ob_voice_bar').on('click', this.onvolumechange.bind(this));
-        this.parentDom.find('.ob_display').on('click',this.fullScreen.bind(this));
+        this.parentDom.find('.ob_full_screen').on('click', fullscreen.enterFullScreen.bind(this));
+        this.parentDom.find('.ob_regain').on('click', fullscreen.exitFullScreen.bind(this));
         this.id.onwaiting = function () {
             panel.loadCode(that.parentDom);
         }
@@ -60,17 +63,17 @@ sVideo.prototype = {
             panel.removeLoadCode(that.parentDom);
         }
         $(this.id).click(this.playOrStop.bind(this));
-        this.id.addEventListener("ended",function(){
-         console.log("结束");
-    })
+        this.id.addEventListener("ended", function () {
+            console.log("结束");
+        })
     },
     //显示隐藏bar
-    showOrHide: function(state){
-        if(state == 'show'){
-            this.parentDom.find('.operate_bar').css('bottom','0');
+    showOrHide: function (state) {
+        if (state == 'show') {
+            this.parentDom.find('.operate_bar').css('bottom', '0');
         }
-        if(state == 'hide'){
-            this.parentDom.find('.operate_bar').css('bottom','-50px');
+        if (state == 'hide') {
+            this.parentDom.find('.operate_bar').css('bottom', '-50px');
         }
     },
     //播放和暂停事件
@@ -87,7 +90,7 @@ sVideo.prototype = {
     },
     //音量按钮
     soundPlayOrStop: function () {
-        if(this.id.volume != 0){
+        if (this.id.volume != 0) {
             this.volume = this.id.volume;
             console.log('记录');
         }
@@ -103,38 +106,38 @@ sVideo.prototype = {
         }
     },
     _is: {
-        object: function(input) {
-            return input !== null && typeof(input) === 'object';
+        object: function (input) {
+            return input !== null && typeof (input) === 'object';
         },
-        array: function(input) {
-            return input !== null && (typeof(input) === 'object' && input.constructor === Array);
+        array: function (input) {
+            return input !== null && (typeof (input) === 'object' && input.constructor === Array);
         },
-        number: function(input) {
-            return input !== null && (typeof(input) === 'number' && !isNaN(input - 0) || (typeof input === 'object' && input.constructor === Number));
+        number: function (input) {
+            return input !== null && (typeof (input) === 'number' && !isNaN(input - 0) || (typeof input === 'object' && input.constructor === Number));
         },
-        string: function(input) {
+        string: function (input) {
             return input !== null && (typeof input === 'string' || (typeof input === 'object' && input.constructor === String));
         },
-        boolean: function(input) {
+        boolean: function (input) {
             return input !== null && typeof input === 'boolean';
         },
-        nodeList: function(input) {
+        nodeList: function (input) {
             return input !== null && input instanceof NodeList;
         },
-        htmlElement: function(input) {
+        htmlElement: function (input) {
             return input !== null && input instanceof HTMLElement;
         },
-        function: function(input) {
+        function: function (input) {
             return input !== null && typeof input === 'function';
         },
-        undefined: function(input) {
+        undefined: function (input) {
             return input !== null && typeof input === 'undefined';
         }
     },
     //音量改变事件
     onvolumechange: function (event) {
         var soundBarWidth = this.getDomWidth('ob_voice_bar');
-        var clickWidth = this.mouseCurrentX('ob_voice_bar',event);
+        var clickWidth = this.mouseCurrentX('ob_voice_bar', event);
         this.parentDom.find('.ob_voice_process').css('width', clickWidth / soundBarWidth.toFixed(2) * 100 + '%');
         this.id.volume = clickWidth / soundBarWidth.toFixed(2);
     },
@@ -142,42 +145,19 @@ sVideo.prototype = {
     playInit: function () {
         this.id.style.cssText = "width:" + this.config.widthSize + "px;";
         this.id.ontimeupdate = this.update.bind(this);
+        fullscreen.fullscreenchange(this);
+
     },
     //进度条点击事件
     percentage: function (event) {
-        var widthCurr = this.mouseCurrentX('ob_process',event) / this.parentDom.find('.ob_process').width()
+        var widthCurr = this.mouseCurrentX('ob_process', event) / this.parentDom.find('.ob_process').width()
         this.id.currentTime = widthCurr * this.allTime();
     },
     //计算鼠标相对元素X坐标
-    mouseCurrentX: function (dmNm,event) {
+    mouseCurrentX: function (dmNm, event) {
         var e = event || window.event;
         var dom = this.parentDom.find('.' + dmNm);
         return e.clientX - parseInt(dom.offset().left);
-    },
-    //全屏
-    fullScreen: function() {
-        var fullBtn = this.parentDom.find('.ob_display');
-        if(fullBtn.hasClass('ob_full_screen')){
-            if(this.id.requestFullscreen) { 
-                this.id.requestFullscreen(); 
-            } else if(this.id.mozRequestFullScreen) { 
-                this.id.mozRequestFullScreen(); 
-            } else if(this.id.webkitRequestFullscreen) { 
-                this.id.webkitRequestFullscreen(); 
-            } else if(this.id.msRequestFullscreen) { 
-                this.id.msRequestFullscreen(); 
-            } 
-            this.parentDom.find('.ob_display').removeClass('ob_full_screen').addClass('ob_regain');
-        }else{
-            if(document.exitFullscreen) { 
-                document.exitFullscreen(); 
-            } else if(document.mozExitFullScreen) { 
-                document.mozExitFullScreen(); 
-            } else if(document.webkitExitFullscreen) { 
-                document.webkitExitFullscreen(); 
-            } 
-            this.parentDom.find('.ob_display').removeClass('ob_regain').addClass('ob_full_screen');
-        }
     },
     //获取元素的宽度
     getDomWidth: function (dmNm) {
@@ -229,7 +209,7 @@ sVideo.prototype = {
     onMediaAttached: function () {
         var panelCode = this.panel.panelCode();
         this._hls.loadSource(this.config.url);
-        $(this.config.id).wrap('<div class="s_video" style="position: relative;display:inline-block;width:' + this.config.widthSize + 'px"></div>');
+        $(this.config.id).wrap('<div class="s_video" style="position: relative;display:inline-block;"></div>');
         $(this.id).after(panelCode);
         this.parentDom = $(this.id).parents('.s_video');
         this.playInit();
