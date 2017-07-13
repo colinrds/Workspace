@@ -2,10 +2,7 @@ var htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: [
-            'webpack-dev-server/client?http://localhost:8585/',
-            './src/js/index.js'
-        ]
+        index:'./src/js/index.js'
     },
     output: {
         path: __dirname + '/dist',
@@ -22,7 +19,7 @@ module.exports = {
                     presets: ['es2015']
                 }
             },
-            { 
+            {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
             }
@@ -33,8 +30,12 @@ module.exports = {
             // inject: 'head',  //嵌入到某个标签
             filename: 'index.html',  //设置文件名
             title: 'Webpack_index',  //设置指定标签内容
-            chunks: ['app'],  //指定引入js文件
-            template: "./src/index.html"  //指定html模版文件
+            chunks: ['index'],  //指定引入js文件
+            template: "./src/index.html",  //指定html模版文件
+            minify: { //压缩HTML文件
+                removeComments: true, //移除HTML中的注释
+                collapseWhitespace: false //删除空白符与换行符
+            }
         }),
     ]
 }

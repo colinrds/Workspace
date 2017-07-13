@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --hot --inline --content-base --watch --port 8585"
+    "dev": "webpack-dev-server --config webpack.config.dev.js --hot --inline --content-base --watch --port 8585",
+    "build": "webpack --config webpack.config.prod.js"
   },
   "author": "colin",
   "license": "ISC",

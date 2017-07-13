@@ -67,10 +67,13 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 __webpack_require__(1);
 
-function Hello(name){
-    return 'Hello'+name;
+function Hello(name) {
+    return 'Hello' + name;
 }
 
 /***/ }),
@@ -113,7 +116,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "html{\r\n    width: 100%;\r\n    height: 100%;\r\n    background: rosybrown;\r\n}", ""]);
+exports.push([module.i, "html{\r\n    width: 100%;\r\n    height: 100%;\r\n    background: #EEE;\r\n}", ""]);
 
 // exports
 
