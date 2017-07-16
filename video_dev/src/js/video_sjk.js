@@ -283,6 +283,7 @@ var invokeFieldOrMethod = function (element, method) {
 
 new sVideo({
     id: '#video_one',
-    url: 'http://cdn.sanjieke.cn/hahahaha/ori.m3u8'
+    url: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8'
+    // url: 'http://cdn.sanjieke.cn/hahahaha/ori.m3u8'
     // url: 'https://www.ifreesec.com/test/3001090.m3u8'
 })
