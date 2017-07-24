@@ -1,15 +1,16 @@
 var htmlWebpackPlugin = require('html-webpack-plugin');
+var path=require("path");
 
 module.exports = {
-    entry: {
+    entry: { 
         app: [
             'webpack-dev-server/client?http://localhost:8585/',
             './src/js/index.js'
         ]
     },
     output: {
-        path: __dirname + '/dist',
-        filename: 'bundle.js'
+        path:path.join(__dirname,"dist"),
+        filename: 'js/bundle.js'
     },
     devtool: 'source-map',
     module: {

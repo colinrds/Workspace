@@ -40,10 +40,10 @@ fullScreen.prototype = {
         console.log(that);
         var DOM = that.id.parentNode;
         if (state) {
-            DOM.style.width = window.screen.width + 'px';
-            DOM.style.height = window.screen.height + 'px';
-            that.id.style.width = window.screen.width + 'px';
-            that.id.style.height = window.screen.height + 'px';
+            DOM.style.width = '100%';
+            DOM.style.height = '100%';
+            DOM.style.top = '0';
+            DOM.style.left = '0';
             that.parentDom.find('.ob_display').removeClass('ob_full_screen').addClass('ob_regain');
         } else {
             if (DOM.requestFullscreen) {
@@ -55,22 +55,21 @@ fullScreen.prototype = {
             } else if (DOM.msRequestFullscreen) {
                 DOM.msRequestFullscreen();
             }
-            DOM.style.width = window.screen.width + 'px';
-            DOM.style.height = window.screen.height + 'px';
-            that.id.style.width = window.screen.width + 'px';
-            that.id.style.height = window.screen.height + 'px';
+            DOM.style.width = '100%';
+            DOM.style.height = '100%';
+            DOM.style.top = '0';
+            DOM.style.left = '0';
             that.parentDom.find('.ob_display').removeClass('ob_full_screen').addClass('ob_regain');
         }
     },
     exitFullScreen: function (t, state) {
+        console.log(t);
         var that = state == undefined ? this : t;
         var DOM = that.id.parentNode;
         if (state) {
             console.log(that.id);
-            DOM.style.width = '';
-            DOM.style.height = '';
-            that.id.style.width = that.config.widthSize + "px";
-            that.id.style.height = '';
+            DOM.style.width = that.config.width + "px";
+            DOM.style.height = that.config.height + "px";
             that.parentDom.find('.ob_display').removeClass('ob_regain').addClass('ob_full_screen');
         } else {
             if (document.exitFullscreen) {
@@ -80,10 +79,8 @@ fullScreen.prototype = {
             } else if (document.webkitExitFullscreen) {
                 document.webkitExitFullscreen();
             }
-            DOM.style.width = '';
-            DOM.style.height = '';
-            that.id.style.width = that.config.widthSize + "px;";
-            that.id.style.height = '';
+            DOM.style.width =  that.config.width + "px";
+            DOM.style.height =  that.config.height + "px";
             that.parentDom.find('.ob_display').removeClass('ob_regain').addClass('ob_full_screen');
         }
     }

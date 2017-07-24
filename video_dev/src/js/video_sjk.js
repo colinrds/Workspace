@@ -2,7 +2,6 @@ import css from '../css/v_style.css';
 var Hls = require('./s_hls.js');
 var panel = require('./panel.js');
 var fullscreen = require('./fullscreen.js');
-console.log(fullscreen);
 
 $('#level').click(function () {
     hls.currentLevel = 1;
@@ -10,7 +9,8 @@ $('#level').click(function () {
 
 function sVideo(options) {
     var defaults = {
-        widthSize: '800',
+        width: 640,
+        height: 360,
         heightSize: '',
         autoStartLoad: true,
         maxBufferSize: 10, //最大缓冲区大小
@@ -143,7 +143,6 @@ sVideo.prototype = {
     },
     //播放控制器初始化 
     playInit: function () {
-        this.id.style.cssText = "width:" + this.config.widthSize + "px;";
         this.id.ontimeupdate = this.update.bind(this);
         fullscreen.fullscreenchange(this);
 
@@ -209,9 +208,13 @@ sVideo.prototype = {
     onMediaAttached: function () {
         var panelCode = this.panel.panelCode();
         this._hls.loadSource(this.config.url);
-        $(this.config.id).wrap('<div class="s_video" style="position: relative;display:inline-block;"></div>');
+        $(this.config.id).wrap('<div class="s_video"></div>');
         $(this.id).after(panelCode);
         this.parentDom = $(this.id).parents('.s_video');
+        this.parentDom.css({
+            'width': this.config.width+'px',
+            'height': this.config.height+'px'
+        })
         this.playInit();
         this.panelEvent();
     },
@@ -283,7 +286,9 @@ var invokeFieldOrMethod = function (element, method) {
 
 new sVideo({
     id: '#video_one',
-    url: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8'
+    url: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
+    width: '640',
+    height: '360'
     // url: 'http://cdn.sanjieke.cn/hahahaha/ori.m3u8'
     // url: 'https://www.ifreesec.com/test/3001090.m3u8'
 })

@@ -1,5 +1,44 @@
+html,body{
+    width: 100%;
+    height: 100%;
+}
 .s_video {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
     overflow: hidden;
+    font-size: 100%;
+    font-family: "Roboto", "Open Sans", Arial, sans-serif;
+    text-shadow: 0 0 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+    display: block;
+    video{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        display: block;
+    }
     .operate_bar {
         width: 100%;
         height: 40px;
@@ -16,7 +55,7 @@
             position: absolute;
             width: 100%;
             top: -5px;
-            background: rgba(0, 0, 0, .5);
+            background: #888;
             height: 5px;
             cursor: pointer;
             .ob_process_load {
@@ -24,7 +63,7 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                background: #929292;
+                background: #666;
                 z-index: 3000000001;
                 -webkit-transition: width .3s;
                 -moz-transition: width .3s;
