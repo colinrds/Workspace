@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JS-Document</title>
+</head>
+
+<body>
+    <script type="text/javascript" src="data.js"></script>
+    <script>
+        var title;
+        for (var i = 0; documentData.length > i; i++) {
+            var table = document.createElement('table');
+            table.width = "100%";
+            table.border = "0";
+            table.cellPadding = "16";
+            table.cellSpacing = "1";
+            table.bgColor = "#EEE";
+            table.insertRow(0);
+            table.rows[0].insertCell(0);
+            table.rows[0].bgColor = "#EEE";
+            table.rows[0].cells[0].colSpan = 2;
+            table.rows[0].cells[0].appendChild(document.createTextNode(documentData[i].title));
+            for (var j = 0; documentData[i].attribute.length > j; j++) {
+                table.insertRow(j + 1);
+                table.rows[j + 1].insertCell(0);
+                table.rows[j + 1].bgColor = "#FFFFFF"
+                table.rows[j + 1].cells[0].appendChild(document.createTextNode(documentData[i].attribute[j].name));
+                table.rows[j + 1].insertCell(1);
+                table.rows[j + 1].cells[1].appendChild(document.createTextNode(documentData[i].attribute[j].description));
+            }
+            // tab.id = 'ddd';
+            // title = documentData[i].title;
+
+            document.body.appendChild(table);
+        }
+    </script>
+</body>
+
+</html>
