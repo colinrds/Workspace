@@ -1,0 +1,35 @@
+<!--index.wxml-->
+<view class="tab">
+    <view class="tab-li tab-hover">所有(60)</view>
+    <view class="tab-li">未学(24)</view>
+    <view class="tab-li">已学(24)</view>
+</view>
+<scroll-view class="container" scroll-y="true" enable-back-to-top="true" style="height:{{scrollHeight}}px">
+    <view class="list">
+        <view class="list-li">
+            <view class="list-title">constructor</view>
+            <view class="list-content">返回对创建此对象的数组函数的引用。</view>
+        </view>
+        <view class="list-li">
+            <view class="list-title">constructor</view>
+            <view class="list-content">返回对创建此对象的数组函数的引用。</view>
+        </view>
+        <view class="list-li">
+            <view class="list-title">constructor</view>
+            <view class="list-content">返回对创建此对象的数组函数的引用。</view>
+        </view>
+        <view class="list-li">
+            <view class="list-title">constructor</view>
+            <view class="list-content">返回对创建此对象的数组函数的引用。</view>
+        </view>
+        <view class="list-li">
+            <view class="list-title">constructor</view>
+            <view class="list-content">返回对创建此对象的数组函数的引用。</view>
+        </view>
+    </view>
+</scroll-view>
+<view class="add-btn"></view>
+<view class="footer">
+    <view class="footer-li hover">单词列表</view>
+    <view class="footer-li">单词测验</view>
+</view>

@@ -9,8 +9,17 @@
 </head>
 
 <body>
+    <div class="header">
+        <div class="logo"></div>
+        <div class="nav"></div>
+    </div>
+    <div class="footer"></div>
+    <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script>
+        var dd = document.querySelector('.header');
+        var aa = dd.querySelector('.logo');
+        console.log(aa);
         var title;
         for (var i = 0; documentData.length > i; i++) {
             var table = document.createElement('table');
@@ -27,10 +36,14 @@
             for (var j = 0; documentData[i].attribute.length > j; j++) {
                 table.insertRow(j + 1);
                 table.rows[j + 1].insertCell(0);
-                table.rows[j + 1].bgColor = "#FFFFFF"
+                table.rows[j + 1].bgColor = "#FFFFFF";
+                table.rows[j + 1].cells[0].width = 140;
                 table.rows[j + 1].cells[0].appendChild(document.createTextNode(documentData[i].attribute[j].name));
                 table.rows[j + 1].insertCell(1);
-                table.rows[j + 1].cells[1].appendChild(document.createTextNode(documentData[i].attribute[j].description));
+                table.rows[j + 1].cells[1].width = 220;
+                table.rows[j + 1].cells[1].appendChild(document.createTextNode(documentData[i].attribute[j].grammar));
+                table.rows[j + 1].insertCell(2);
+                table.rows[j + 1].cells[2].appendChild(document.createTextNode(documentData[i].attribute[j].description));
             }
             // tab.id = 'ddd';
             // title = documentData[i].title;

@@ -1,0 +1,12 @@
+{
+    "pages": [
+        "pages/add/add",
+        "pages/index/index"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#44B1AC",
+        "navigationBarTitleText": "猿单词",
+        "navigationBarTextStyle": "#FFFFFF"
+    }
+}

@@ -1,0 +1,26 @@
+/**app.wxss**/
+page{
+    font-size:26rpx;
+}
+.footer{
+    width: 100%;
+    height: 100rpx;
+    position: fixed;
+    left: 0;
+    bottom:0;
+    background: #C7CFD1;
+}
+.footer .footer-li{
+    width: 50%;
+    height: 92rpx;
+    line-height: 100rpx;
+    text-align: center;
+    font-size:32rpx;
+    color: #FFF;
+    float:left;
+    border-bottom: 8rpx solid #b5bdbf;
+}
+.footer .hover{
+    background: #44B1AC;
+    border-bottom: 8rpx solid #3ea29d;
+}
