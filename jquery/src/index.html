@@ -8,21 +8,30 @@
     <title>jquery</title>
 </head>
     <div id="header">
-        <div class="logo">3213123123</div>
+        <div class="logo">3213123123<a href="#">logo</a></div>
         <div class="logo">aaa</div>
-        <div class="nav"></div>
     </div>
-    <div id="main"></div>
+    <div id="main">
+        <div class="nav">111</div>
+        <div class="nav">222</div>
+    </div>
     <div id="footer"></div>
 <body>
+    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/cquery.js"></script>
     <script>
-        console.log($('.logo'));
-        var aaa = $('.logo');
+        console.log($());
+        // console.log($$('#header').html('aaaa'));1
+        console.log($$('.nav').eq(1));
+        console.log($('.nav').eq(1));
+        // var aaa = $$('.logo');
         
-        for(var i=0;aaa.length>i;i++){
-            console.log(aaa[i].innerHTML);
-        }
+        // for(var i=0;aaa.length>i;i++){
+        //     console.log(aaa[i].innerHTML);
+        // }
+
+        // var cla = document.getElementsByClassName('logo')[0];
+        // console.log(cla.parentNode);
         
     </script>
 </body>

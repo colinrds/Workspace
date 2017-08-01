@@ -4,12 +4,12 @@
     } else if (typeof define === "function") {
         define(fn(document));
     } else {
-        this.$ = cquery = fn(document);
+        this.$$ = cquery = fn(document);
     }
 })(function (root) {
     var cquery = function (selector, context) {
         context = (context && root.querySelector(context)) || root;
-        return cquery.fn.init.call(context.querySelectorAll(selector),selector,context);
+        return cquery.fn.init.call(context.querySelectorAll(selector), selector, context);
     };
 
     cquery.fn = cquery.prototype = {
@@ -22,7 +22,18 @@
                 return this;
             }
         },
-        init: function(selector, context){
+        hide: function () {
+            this.style.display = "none";
+            return this;
+        },
+        show: function () {
+            this.style.display = "block";
+            return this;
+        },
+        eq: function (i) {
+            return this;
+        },
+        init: function (selector, context) {
             this['content'] = document;
             this['selector'] = selector;
             this['size'] = this.length;
@@ -34,7 +45,7 @@
     }
 
     var original = ["push"];
-    original.forEach(function(method) {
+    original.forEach(function (method) {
         cquery.fn[method] = Array.prototype[method];
     });
 
