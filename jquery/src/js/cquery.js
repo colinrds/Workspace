@@ -4,49 +4,457 @@
     } else if (typeof define === "function") {
         define(fn(document));
     } else {
-        this.$$ = cquery = fn(document);
+        this.$ = cquery = fn(document);
     }
-})(function (root) {
+})(function (document) {
     var cquery = function (selector, context) {
-        context = (context && root.querySelector(context)) || root;
-        return cquery.fn.init.call(context.querySelectorAll(selector), selector, context);
+        return new cquery.fn.init(selector, context);
     };
-
-    cquery.fn = cquery.prototype = {
-        html: function () {
-            if (arguments.length == 0) {
-                return this[0].innerHTML;
-            } else if (arguments.length == 1) {
-                console.log(this);
-                this[0].innerHTML = arguments[0];
-                return this;
+    var isLetter = function (str) {
+        if (str && 'string' == typeof str) {
+            str = str.toUpperCase()
+            for (var i = 0; i < str.length; i++) {
+                var code = str.charCodeAt(i)
+                if (code < 65 || code > 90) {
+                    return false
+                }
             }
-        },
-        hide: function () {
-            this.style.display = "none";
+            return true;
+        }
+        return false;
+    }, classes = 'boolean number string function array date regexp object error'.split(' ');
+
+    // 原型对象处理
+    cquery.fn = cquery.prototype = {
+        version: '0.0.2',
+        constructor: cquery,
+        length: 0,
+        init: function (selector, context) {
+            if (!selector) return this // cquery(null)
+            var len = selector.length
+            if (cquery.isFunction(selector)) {
+                return selector()
+            } else if (selector.nodeType) {
+                // cquery(dom)
+                this.context = this[0] = selector
+                this.length = 1
+            } else if ('string' == typeof selector) {
+                context = context || document;
+                if (context.nodeType) context = cquery(context) // convert dom to cquery(dom)
+                return context.find(selector)
+            } else if (len) {
+                // cquery([dom1, dom2])
+                // should after string, because string, function has length too
+                for (var i = 0; i < len; i++) {
+                    if (selector[i] && selector[i].nodeType) {
+                        this[this.length] = selector[i]
+                        this.length++;
+                    }
+                }
+            }
             return this;
         },
-        show: function () {
-            this.style.display = "block";
-            return this;
+        get: function (i) {
+            return i < 0 ? this[i + this.length] : this[i];
+        },
+        find: function (str) {
+            var f = function (str, context) {
+                var ret = [];
+                if (context && context.length) {
+                    for (var i = 0, node; node = context[i++];) {
+                        ret.push.apply(ret, cquery.findOne(str, node))
+                    }
+                } else {
+                    ret.push.apply(ret, cquery.findOne(str, context))
+                }
+                return ret;
+            };
+            return cquery(f(str, this));
+        },
+        each: function (fn) {
+            return cquery.each(this, fn)
+        },
+        map: function (fn) {
+            return cquery.map(this, fn)
+        },
+        filter: function (fn) {
+            return cquery.filter(this, fn)
+        },
+        pushStack: function (elems) {
+            var ret = cquery.merge(cquery(), elems)
+            ret.prevObject = this
+            ret.context = this.context
+            return ret;
         },
         eq: function (i) {
-            return this;
+            var len = this.length
+            i = +i
+            if (i < 0) {
+                i = len + i
+            }
+            return this.pushStack([this[i]] || []);
         },
-        init: function (selector, context) {
-            this['content'] = document;
-            this['selector'] = selector;
-            this['size'] = this.length;
-            this["__proto__"] = cquery.fn;
-            this['length'] = this.size;
-            delete this.size;
-            return this;
+        first: function () {
+            return this.eq(0)
+        },
+        last: function () {
+            return this.eq(-1)
+        },
+        ready: function (fn) {
+            if (this.context.readyState === 'complete' || this.context.readyState !== 'loading') {
+                fn();
+            } else {
+                this.context.addEventListener('DOMContentLoaded', fn);
+            }
         }
-    }
+    };
 
-    var original = ["push"];
-    original.forEach(function (method) {
-        cquery.fn[method] = Array.prototype[method];
+    cquery.fn.init.prototype = cquery.fn;
+
+    // 继承
+    cquery.extend = cquery.fn.extend = function () {
+        var len = arguments.length;
+        var i = 1, obj
+        var target = arguments[0] || {};
+        if (1 == len) {
+            target = this;
+            i--
+        }
+        for (; i < len; i++) {
+            obj = arguments[i];
+            if (obj && 'object' == typeof obj) {
+                for (var k in obj) {
+                    target[k] = obj[k]
+                }
+            }
+        }
+        return target;
+    };
+
+    // 扩展静态方法
+    cquery.extend({
+        toArray: function (arr, ret) {
+            ret = ret || [];
+            var len = arr.length;
+            for (var i = 0; i < len; i++) {
+                ret.push(arr[i])
+            }
+            return ret
+        },
+        each: function (arr, fn) {
+            var len = arr ? arr.length : 0;
+            if (len && len > 0 && 'function' == typeof fn) {
+                for (var i = 0; i < len; i++) {
+                    if (false === fn.call(arr[i], i, arr[i], arr)) break
+                }
+            }
+            return arr
+        },
+        filter: function (arr, fn) {
+            var ret = [];
+            cquery.each(arr, function (k, v) {
+                if (fn.call(this, k, v, arr)) {
+                    ret.push(v)
+                }
+            });
+            return ret
+        },
+        map: function (arr, fn) {
+            var ret = [];
+            cquery.each(arr, function (k, v) {
+                ret[k] = fn.call(this, k, v, arr)
+            });
+            return ret
+        },
+        trim: function (str) {
+            var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+cquery/g
+            return null == str ? '' : (str + '').replace(rtrim, '')
+        },
+        indexOf: function (arr, val, from) {
+            from = from || 0;
+            if ('string' == typeof arr) {
+                var index = arr.substr(from).indexOf(val);
+                if (-1 == index) return -1;
+                return from + index
+            }
+            var i = from - 1;
+            var len = arr.length;
+            while (++i < len) {
+                if (arr[i] === val) {
+                    return i
+                }
+            }
+            return -1
+        },
+        now: function () {
+            return +new Date()
+        },
+        merge: function (a, b) {
+            var len = +b.length
+                , j = 0
+                , i = a.length;
+            for (; j < len; j++) {
+                a[i++] = b[j]
+            }
+            a.length = i;
+            return a
+        },
+        findOne: function (str, dom) {
+            dom = dom || document
+            var nodes, ret = []
+            if ('#' == str.charAt(0)) {
+                var id = str.substr(1)
+                if (id && dom.getElementById) {
+                    // cquery('#id')
+                    var el = dom.getElementById(id)
+                    if (el) {
+                        return [el]
+                    }
+                }
+            }
+            if (isLetter(str)) {
+                // cquery('tag')
+                nodes = dom.getElementsByTagName(str)
+            } else if (dom.querySelectorAll) {
+                nodes = dom.querySelectorAll(str)
+            }
+            // cannot use slice.call because dom object throw error in ie8-
+            var len = nodes ? nodes.length : 0
+            var ret = []
+            for (var i = 0; i < len; i++) {
+                ret[i] = nodes[i]
+            }
+            return ret;
+        },
+        error: function (msg) {
+            throw new Error(msg)
+        },
+        parseJSON: function (str) {
+            if (window.JSON && JSON.parse) {
+                return JSON.parse(str + '')
+            }
+
+            str = cquery.trim(str + '');
+            var depth, requireNonComma;
+
+            return str && !cquery.trim(str.replace(rvalidtokens, function (token, comma, open, close) {
+                if (requireNonComma && comma) depth = 0;
+                if (depth = 0) return token;
+                requireNonComma = open || comma;
+                depth += !close - !open;
+                return ''
+            })) ? (Function('return ' + str))() : cquery.error("Invalid JSON: " + data)
+        },
+        getClassName: function (val) {
+            var ret = {}.toString.call(val).split(' ')[1];
+            return ret.substr(0, ret.length - 1).toLowerCase()
+        },
+        type: function (val) {
+            var tp = typeof val;
+            if (tp == 'object' || tp == 'function') {
+                var className = cquery.getClassName(val);
+                if (-1 == cquery.indexOf(classes, className)) {
+                    return 'object'
+                }
+                return className
+            }
+            return tp
+        },
+        isArray: function (arr) {
+            return 'array' == cquery.type(arr);
+        },
+        isFunction: function (func) {
+            return 'function' == cquery.type(func);
+        },
+        prop: function (elem, key, val) {
+            if (undefined === val) {
+                return elem[key]
+            }
+            elem[key] = val
+        },
+        handler: function (fn, val) {
+            var elems = this;
+            for (var i = 0; i < elems.length; i++) {
+                var el = elems[i];
+                fn(el, val);
+            }
+            return elems;
+        },
+        handler: function (elems, fn, key, val, isChain) {
+            var i = 0
+            if (key && 'object' === typeof key) {
+                // set multi k, v
+                for (i in key) {
+                    cquery.handler(elems, fn, i, key[i], true)
+                }
+            } else if (undefined === val) {
+                // get value
+                var ret
+                if (elems[0]) { // TODO text, html should be ''
+                    ret = fn(elems[0], key)
+                }
+                if (!isChain) {
+                    return ret
+                }
+            } else {
+                // set one k, v
+                for (i = 0; i < elems.length; i++) {
+                    fn(elems[i], key, val)
+                }
+            }
+            return elems;
+        },
+        ajax: function (options) {
+            var url = options.url;
+            var method = options.method || 'GET';
+            var headers = options.headers || {};
+            var body = options.body;
+            var dataType = options.dataType || 'text';
+            fetch(url, {
+                method: method,
+                headers: headers,
+                body: body
+            }).then(function (response) {
+                if (response.ok) {
+                    var nextRes;
+                    if (dataType == 'text') {
+                        nextRes = response.text();
+                    }
+                    if (dataType == 'json') {
+                        nextRes = response.json();
+                    }
+                    nextRes.then(function (data) {
+                        options.success(data);
+                    });
+                } else {
+                    options.error(response);
+                }
+            }).catch(function (e) {
+                options.fail(e);
+            });
+        },
+        get: function (url, success) {
+            cquery.ajax({
+                url: url,
+                method: 'GET',
+                success: success
+            });
+        },
+        getJSON: function (url, success) {
+            cquery.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'json',
+                success: success
+            });
+        },
+        post: function (url, data, success) {
+            var headers = {
+                "Content-Type": "application/x-www-form-urlencoded"
+            };
+            cquery.ajax({
+                url: url,
+                method: 'POST',
+                headers: headers,
+                success: success,
+                body: data
+            });
+        }
+    });
+
+    cquery.fn.extend({
+        val: function (val) {
+            return cquery.handler(this, function (elem, key, val) {
+                if (undefined === val) {
+                    return elem.value;
+                }
+                elem.value = '' + val;
+            }, null, val);
+        },
+        text: function (val) {
+            return cquery.handler(this, function (elem, key, val) {
+                if (undefined !== val) return elem.textContent = '' + val
+                var nodeType = elem.nodeType
+                if (3 == nodeType || 4 == nodeType) {
+                    return elem.nodeValue
+                }
+                if ('string' == typeof elem.textContent) {
+                    return elem.textContent
+                }
+                var ret = ''
+                for (elem = elem.firstChild; elem; elem = elem.nextSibling) {
+                    ret += cquery.text(elem)
+                }
+                return ret;
+            }, null, val)
+        },
+        html: function (val) {
+            return cquery.handler(this, function (elem, key, val) {
+                if (undefined === val) {
+                    return elem.innerHTML;
+                }
+                elem.innerHTML = '' + val;
+            }, null, val);
+        },
+        attr: function (key, val) {
+            return cquery.handler(this, function (elem, key, val) {
+                if (undefined === val) {
+                    return elem.getAttribute(key)
+                } else if (null === val) {
+                    return elem.removeAttribute(key)
+                }
+                elem.setAttribute(key, '' + val)
+            }, key, val);
+        },
+        prop: function (key, val) {
+            return cquery.handler(this, cquery.prop, key, val)
+        },
+        show: function () {
+            cquery.handler(this, function (elem) {
+                elem.style.display = '' | 'inline' | 'inline-block' | 'inline-table' | 'block';
+            }, null, null);
+        },
+        hide: function () {
+            cquery.handler(this, function (elem) {
+                elem.style.display = 'none';
+            }, null, null);
+        },
+        css: function (key, val) {
+            return cquery.access(this, function (elem, key, val) {
+                var style = elem.style || {}
+                if (undefined === val) {
+                    var ret = style[key]
+                    if (ret) return ret
+                    if (window.getComputedStyle) {
+                        return getComputedStyle(elem, null)[key]
+                    }
+                } else {
+                    style[key] = val
+                }
+            }, key, val)
+        },
+        on: function (ev, fn) {
+            // cquery.handler(function (el) {
+            //     el.addEventListener(ev, fn);
+            // });
+        },
+        trigger: function (elem, ev, data) {
+            cquery.handler(function (el) {
+                var event;
+                if (window.CustomEvent) {
+                    event = new CustomEvent(ev, {detail: data});
+                } else {
+                    event = document.createEvent(ev);
+                    event.initCustomEvent(ev, true, true, data);
+                }
+                el.dispatchEvent(event);
+            });
+        },
+        off: function (elem, ev, fn) {
+            cquery.handler(function (el) {
+                el.removeEventListener(ev, fn);
+            });
+        }
     });
 
     return cquery;
