@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JsManual</title>
+    <style type="text/css">
+        html,
+        body {
+            width: 100%;
+            background: #F1F1F1;
+            padding: 0;
+            margin: 0;
+            font-family: 'Helvetica Neue', 'Helvetica', 'Microsoft Yahei', sans-serif;
+            color: #666;
+        }
+        #main{
+            width: 1300px;
+            background: #FFF;
+            padding: 2%;
+            margin: 20px auto;
+        }
+        .title{
+            width: 100%;
+            line-height: 80px;
+            height: 80px;
+            text-align: center;
+            font-size:30px;
+        } 
+        table,
+        table tr th,
+        table tr td {
+            border: 1px solid #C5E8E1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th{
+            height: 40px;
+            line-height: 40px;
+            background: #C5E8E1;
+        }
+        td{
+            height: 20px;
+            line-height: 20px;
+        }
+        table tbody td:nth-child(1){
+            width: 240px;
+            letter-spacing: .5px;
+        }
+        table tbody td:nth-child(2){
+            width: 400px;
+            letter-spacing: .5px;
+        }
+        table tbody tr:nth-child(even){
+            background:#F9F9F9;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div class="title">DOM操作</div>
+        <table cellpadding="10">
+            <thead>
+                <tr>
+                    <th>代码</th>
+                    <th>语法</th>
+                    <th>描述</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>getElementById</td>
+                    <td>document.getElementById(elementID)</td>
+                    <td>返回对拥有指定id的第一个对象的引用。</td>
+                </tr>
+                <tr>
+                    <td>getElementsByName</td>
+                    <td>document.getElementsByName(name)</td>
+                    <td>返回带有指定名称的对象集合。</td>
+                </tr>
+                <tr>
+                    <td>getElementsByTagName</td>
+                    <td>document.getElementsByTagName(tagname)</td>
+                    <td>返回带有指定标签名的对象集合。</td>
+                </tr>
+                <tr>
+                    <td>getElementsByClassName</td>
+                    <td>document.getElementsByClassName(classname)</td>
+                    <td>返回文档中所有指定类名的元素集合，作为NodeList对象。</td>
+                </tr>
+                <tr>
+                    <td>querySelector</td>
+                    <td>document.querySelector(CSS selectors)</td>
+                    <td>返回文档中匹配指定 CSS 选择器的一个元素。</td>
+                </tr>
+                <tr>
+                    <td>querySelectorAll</td>
+                    <td>document.querySelectorAll(CSS selectors)</td>
+                    <td>返回匹配指定 CSS 选择器元素的所有子元素节点列表</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
