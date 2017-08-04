@@ -21,23 +21,27 @@
         #main {
             width: 900px;
             background: #FFF;
-            padding: 2%;
+            padding: 1% 2% 2% 2%;
             margin: 20px auto;
         }
 
         .title {
+            width:100%;
+            text-align: center;
+            padding-top: 20px;
+        }
+        /* .title:first-of-type{
+            padding-top: 0;
+        } */
+        .title span{
             width: calc(100% - 2px);
             line-height: 80px;
             height: 80px;
-            text-align: center;
-            font-size: 24px;
-            color: #FFF;
+            display: block;
             border-left: 1px solid #C5E8E1;
             border-right: 1px solid #C5E8E1;
-            margin-top: 40px;
-        }
-        .title:first-of-type{
-            margin-top: 0;
+            font-size: 24px;
+            color: #FFF;
         }
         table,
         table tr th,
@@ -137,7 +141,7 @@
                             dataList += '<tr><td>'+v.code+'</td><td>'+v.grammar+'</td><td>'+v.describe+'</td></tr>'
                         });
                         navList += '<li><a href="#'+that.listName[idx]+'">'+val.title+'</a></li>'
-                        main += '<div class="title" id="'+that.listName[idx]+'" style="background:'+that.color[idx]+'">'+val.title+'</div><table cellpadding="10"><thead><tr><th>代码</th><th>语法</th><th>描述</th></tr></thead><tbody>'+dataList+'</tbody></table>'
+                        main += '<div class="title" id="'+that.listName[idx]+'"><span style="background:'+that.color[idx]+'">'+val.title+'</span></div><table cellpadding="10"><thead><tr><th>代码</th><th>语法</th><th>描述</th></tr></thead><tbody>'+dataList+'</tbody></table>'
                         dataList = '';
                     })
                     callback({
