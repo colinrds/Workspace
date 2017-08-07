@@ -5,44 +5,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>JsManual</title>
+    <title>JavaScript手册</title>
     <style type="text/css">
         html,
         body {
             width: 100%;
-            background: #F1F1F1;
-            padding: 0;
             margin: 0;
-            font-family: 'Helvetica Neue', 'Helvetica', 'Microsoft Yahei', sans-serif;
-            color: #666;
+            padding: 0;
             font-size: 14px;
+            font-weight: 300;
+            height: 100%;
+            font-family: 'Segoe UI Light', 'Segoe UI', 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+            background: #3F484F;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #sidebar {
+            width: 300px;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .logo {
+            width: 300px;
+            height: 60px;
+            line-height: 60px;
+            color: #FFF;
+            font-size: 20px;
+            text-align: center;
+            border-bottom: 1px solid #32393f;
+        }
+
+        .nav-list {
+            list-style: none;
+            margin: 0 0 50px 0;
+            padding: 0;
+        }
+
+        .footer {
+            width: 300px;
+            height: 50px;
+            line-height: 50px;
+            border-top: 1px solid #4b555d;
+            background: #3F484F;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            text-align: center;
+            color: #808c96;
+        }
+
+        .nav-list li {
+            width: 100%;
+            border-top: 1px solid #455058;
+            border-bottom: 1px solid #32393f;
+        }
+
+        .nav-list li:first-child {
+            border-top: 0;
+        }
+
+        .nav-list li:last-child {
+            border-bottom: 0;
+        }
+
+        .nav-list li a {
+            width: 90%;
+            height: 50px;
+            line-height: 50px;
+            color: #99A2A9;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 0 5%;
+            display: block;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAAAw0lEQVRYw+3WuxGDMBRE0fWnANdDwKgEuwO7B2VKXkJGD7gDXAIzzBATOqUDl+BEDWjfQqTNpXsiEFBXV7iYLMRkd9V9Z+LMDcAYkz0VgEvpgWWevk0bNgBD04Ztmaf1UEBGrCoEBVAiaIAK4QIoEG6AFyEBeBAyAIuQAhiEHFCKYD7F0p32uDT/JwYAr76z96GAkrgcUBqXApi4DMDGJQBP3A3wxl0ARZwGqOIUIL+IR0UcAK7EmR+AR9/ZxxuvqwOAP+g5n9XC3akOAAAAAElFTkSuQmCC') no-repeat 265px center;
+            background-size: 20px 20px;
+        }
+
+        .nav-list li a:hover {
+            background: #3A434A url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAD1BMVEVHcEyXoqqZo6mXo6eZoqlq5twTAAAABHRSTlMAYFBANyOxfgAAAChJREFUOMtjYBhkgJmJgAImFkYCKhhHVVBbBSEFo/KMlCVagsl+gAAALAsAka/cCAQAAAAASUVORK5CYII=') no-repeat 265px center;
+            background-size: 20px 20px;
+            color: #EEE;
+        }
+
+        .nav-list li a.hover {
+            background: #0898D7 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAD1BMVEVHcEz///////////////8T4DEaAAAABHRSTlMAYFBANyOxfgAAACdJREFUeF5joB4wQhdQEUATYHRkQAMig1kJugCj42BQQCiQjRioCQARbQTJqQ6NjgAAAABJRU5ErkJggg==') no-repeat 265px center;
+            background-size: 20px 20px;
+            color: #EEE;
         }
 
         #main {
-            width: 900px;
+            width: calc(100% - 300px);
+            margin-left: 300px;
+            min-height: 100%;
             background: #FFF;
-            padding: 1% 20px 2% 20px;
-            margin: 20px auto 40px auto;
         }
 
         .title {
-            width: 100%;
-            text-align: center;
-            padding-top: 20px;
-        }
-        /* .title:first-of-type{
-            padding-top: 0;
-        } */
-
-        .title span {
-            width: calc(100% - 2px);
-            line-height: 80px;
-            height: 80px;
-            display: block;
-            border-left: 1px solid #C5E8E1;
-            border-right: 1px solid #C5E8E1;
-            font-size: 24px;
-            color: #FFF;
+            height: 60px;
+            line-height: 60px;
+            padding-left: 20px;
+            font-size: 18px;
+            font-weight: bold;
         }
 
         table,
@@ -53,6 +124,7 @@
 
         table {
             width: 100%;
+            color: #777;
             border-collapse: collapse;
         }
 
@@ -71,77 +143,35 @@
         }
 
         table tbody td:nth-child(1) {
-            width: 180px;
-            letter-spacing: .5px;
+            width: 200px;
+            font-weight: 400;
+            font-size: 15px;
+            font-weight: bold;
         }
 
         table tbody td:nth-child(2) {
             width: 270px;
-            letter-spacing: .5px;
+            /* letter-spacing: .5px; */
         }
 
         table tbody tr:nth-child(even) {
             background: #F9F9F9;
         }
-
-        #sidebar {
-            width: 940px;
-            position: fixed;
-            background: #42353F;
-            bottom: 0;
-            left: 50%;
-            margin-left: -470px;
-            border-top: 1px solid #F1F1F1;
-            border-left: 1px solid #F1F1F1;
-            border-right: 1px solid #F1F1F1;
-        }
-
-        #nav-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: -webkit-flex;
-            /* Safari */
-            display: flex;
-            flex-wrap: nowrap;
-        }
-
-        #nav-list li {
-            width: 100%;
-            height: 50px;
-        }
-
-        #nav-list li a {
-            height: 50px;
-            padding: 0 20px;
-            line-height: 50px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
-            color: #F5F5F5;
-            border-bottom: 1px solid #F1F1F1;
-        }
-
-        #nav-list li a:hover {
-            color: #F5F5F5;
-            background: #555;
-        }
     </style>
 </head>
 
 <body>
-    <div id="main"></div>
     <div id="sidebar">
-        <ul id="nav-list">
-
-        </ul>
+        <div class="logo">JavaScript-Document</div>
+        <ul class="nav-list"></ul>
+        <div class="footer">&copy;2017 Colin. All Rights Reserved.</div>
     </div>
+    <div id="main"></div>
+    <script type="text/javascript" src="smooth.scroll.js"></script>
     <script>
         (function () {
             function Manual() { };
             Manual.prototype = {
-                color: ['#01BF9D', '#5BABE6', '#F59C00', '#EA4B35', '#F3C500', '#2D3D54', '#9C56B9', '#1FCF6D', '#A18E56', '#9E9D9B'],
-                listName: ['dom', 'array', 'object', 'number', 'string', 'math', 'function', 'data', 'Event', 'Global'],
                 changeString: function (str) {
                     str = str.replace(/&/g, '&amp;');
                     str = str.replace(/</g, '&lt;');
@@ -153,17 +183,42 @@
                 enReg: function (text) {
                     return text.replace(/[^A-Za-z]/ig, "").toLocaleUpperCase();
                 },
-                getManual: function (callback) {
+                siblings: function (elem) {
+                    var siblings = Array.prototype.slice.call(elem.parentNode.children);
+
+                    for (var i = siblings.length; i--;) {
+                        if (siblings[i] === elem) {
+                            siblings.splice(i, 1);
+                            break;
+                        }
+                    }
+                    return siblings;
+                },
+                removeClass: function (elements, cName) {
+                    if (elements.className != '') {
+                        elements.className = elements.className.replace(new RegExp("(\\s|^)" + cName + "(\\s|$)"), " ");
+                    };
+                },
+                getManual: function (callback, title) {
                     var main = '';
                     var dataList = '';
                     var that = this;
                     var navList = '';
                     manualData.forEach(function (val, idx) {
-                        val.list.forEach(function (v, i) {
-                            dataList += '<tr><td>' + v.code + '</td><td>' + v.grammar + '</td><td>' + that.changeString(v.describe) + '</td></tr>';
-                        });
-                        navList += '<li><a href="#' + that.listName[idx] + '">' + that.enReg(val.title) + '</a></li>'
-                        main += '<div class="title" id="' + that.listName[idx] + '"><span style="background:' + that.color[idx] + '">' + val.title + '</span></div><table cellpadding="10"><thead><tr><th>代码</th><th>语法</th><th>描述</th></tr></thead><tbody>' + dataList + '</tbody></table>'
+                        if (!title) {
+                            val.list.forEach(function (v, i) {
+                                dataList += '<tr><td>' + v.code + '</td><td>' + v.grammar + '</td><td>' + that.changeString(v.describe) + '</td></tr>';
+                            });
+                            navList += '<li><a href="JavaScript:scrollTo(0,0);" id="' + that.enReg(val.title) + '">' + that.enReg(val.title) + '</a></li>'
+                            main += '<div class="title" id="' + that.enReg(val.title) + '">' + val.title + '</div><table cellpadding="20"><thead><tr><th>代码</th><th>语法</th><th>描述</th></tr></thead><tbody>' + dataList + '</tbody></table>'
+                        } else {
+                            if (title == that.enReg(val.title)) {
+                                val.list.forEach(function (v, i) {
+                                    dataList += '<tr><td>' + v.code + '</td><td>' + v.grammar + '</td><td>' + that.changeString(v.describe) + '</td></tr>';
+                                });
+                                main += '<div class="title" id="' + that.enReg(val.title) + '">' + val.title + '</div><table cellpadding="20"><thead><tr><th>代码</th><th>语法</th><th>描述</th></tr></thead><tbody>' + dataList + '</tbody></table>'
+                            }
+                        }
                         dataList = '';
                     })
                     callback({
@@ -172,14 +227,30 @@
                     });
                 },
                 init: function () {
+                    var that = this;
+                    var $nav = document.querySelector('.nav-list');
+                    var $main = document.querySelector('#main');
                     this.getManual(function (data) {
-                        var mainDom = document.getElementById('main');
-                        var navList = document.getElementById('nav-list');
-                        mainDom.innerHTML = data.main;
-                        navList.innerHTML = data.navList;
+                        $nav.innerHTML = data.navList;
+                        $main.innerHTML = data.main;
                     });
+                    var $navChild = document.getElementsByClassName('nav-list')[0].childNodes;
+                    for (nav in $navChild) {
+                        $navChild[nav].onclick = function (e) {
+                            SmoothScroll();
+                            var $aChild = this.childNodes[0];
+                            for (var i = 0; that.siblings(this).length > i; i++) {
+                                that.removeClass(that.siblings(this)[i].childNodes[0], 'hover');
+                            }
+                            $aChild.setAttribute('class', 'hover');
+                            that.getManual(function (data) {
+                                $main.innerHTML = data.main;
+                            }, $aChild.getAttribute('id'))
+                        }
+                    }
                 }
-            };
+            }
+
             var manualData = [
                 {
                     title: 'DOM属性方法',
@@ -1633,14 +1704,14 @@
                 }
             ]
 
+            var mu = new Manual();
+            mu.init();
             try {
-                var mu = new Manual();
-                mu.init();
             } catch (e) {
                 console.log(e.name)
                 console.log(e.message);
             }
-        })();
+        })()
     </script>
 </body>
 
