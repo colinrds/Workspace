@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jscode</title>
+    <script>
+        function ready(fn) {
+            if (document.readyState != 'loading') {
+                fn();
+            } else {
+                document.addEventListener('DOMContentLoaded', fn);
+            }
+        }
+        ready(function () {
+            console.log(1111)
+        })
+    </script>
+</head>
+
+<body>
+    <textarea rows="20" id="qian">
+body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: #F3F3F3;
+}
+</textarea>
+    <textarea rows="20" id="hou">
+</textarea>
+
+    <button id="button">转换</button>
+    <ul>
+        <li class="a">1</li>
+        <li class="b">2</li>
+        <li class="c">3</li>
+        <li class="d">4</li>
+        <li class="e">5</li>
+    </ul>
+    <div id="ee" class="you" style="float:left"></div>
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script>
+        console.log(222)
+        function yasuoCss(s) {//压缩代码
+            s = s.replace(/\/\*(.|\n)*?\*\//g, ""); //删除注释
+            s = s.replace(/\s*([\{\}\:\;\,])\s*/g, "$1");
+            s = s.replace(/\,[\s\.\#\d]*\{/g, "{"); //容错处理
+            s = s.replace(/;\s*;/g, ";"); //清除连续分号
+            s = s.match(/^\s*(\S+(\s+\S+)*)\s*$/); //去掉首尾空白
+            return (s == null) ? "" : s[1];
+        }
+        var btn = document.getElementsByTagName('li');
+        console.log(eq(btn, 0));
+        function eq(el, index) {
+            for (i in el) {
+                if (i == index) {
+                    value = el[i];
+                };
+            };
+            return value;
+        }
+    </script>
+</body>
+
+</html>
