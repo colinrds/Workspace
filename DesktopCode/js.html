@@ -60,9 +60,11 @@
             color: #EEE;
             font-size: 16px;
         }
-        .item li:nth-of-type(even){
-            background: rgba(255,255,255,.1);
+
+        .item li:nth-of-type(even) {
+            background: rgba(255, 255, 255, .1);
         }
+
         .item li span:nth-child(1) {
             float: left;
             font-weight: 400;
@@ -71,38 +73,46 @@
         .item li span:nth-child(2) {
             float: right;
         }
-        
+
         .item:nth-child(1) {
             background: #B94A48;
         }
+
         .item:nth-child(2) {
             background: #3A87AD;
         }
+
         .item:nth-child(3) {
             background: #468847;
         }
+
         .item:nth-child(4) {
             background: #B94A48;
         }
+
         .item:nth-child(5) {
             background: #3A87AD;
         }
+
         .item:nth-child(6) {
             background: #468847;
         }
+
         .item:nth-child(7) {
             background: #B94A48;
         }
+
         .item:nth-child(8) {
             background: #3A87AD;
         }
+
         .item:nth-child(9) {
             background: #468847;
         }
+
         .item:nth-child(10) {
             background: #B94A48;
         }
-
         /* .item:nth-child(1) {
             background: #5BABE6;
         }
@@ -142,7 +152,6 @@
         .item:nth-child(10) {
             background: #EA4B35;
         } */
-        
     </style>
 </head>
 
@@ -183,27 +192,27 @@
                     {
                         code: 'getElementById',
                         grammar: 'document.getElementById(elementID)',
-                        describe: '返回对拥有指定id的第一个对象的引用'
+                        describe: '返回对拥有指定id的第一个对象的引用。'
                     },
                     {
                         code: 'getElementsByName',
                         grammar: 'document.getElementsByName(name)',
-                        describe: '返回带有指定名称的对象集合'
+                        describe: '返回带有指定名称的对象集合。'
                     },
                     {
                         code: 'getElementsByTagName',
                         grammar: 'document.getElementsByTagName(tagname)',
-                        describe: '返回带有指定标签名的对象集合'
+                        describe: '返回带有指定标签名的对象集合。'
                     },
                     {
                         code: 'getElementsByClassName',
                         grammar: 'document.getElementsByClassName(classname)',
-                        describe: '返回文档中所有指定类名的元素集合'
+                        describe: '返回文档中所有指定类名的元素集合，作为NodeList对象。'
                     },
                     {
                         code: 'querySelector',
                         grammar: 'document.querySelector(CSS selectors)',
-                        describe: '返回文档中匹配指定 CSS 选择器的一个元素'
+                        describe: '返回文档中匹配指定 CSS 选择器的一个元素。'
                     },
                     {
                         code: 'querySelectorAll',
@@ -218,7 +227,7 @@
                     {
                         code: 'lastChild',
                         grammar: 'element.lastChild',
-                        describe: '返回文档的最后一个子节点'
+                        describe: '返回文档的最后一个子节点。'
                     },
                     {
                         code: 'childNodes',
@@ -228,27 +237,27 @@
                     {
                         code: 'previousSibling',
                         grammar: 'element.previousSibling',
-                        describe: '返回选定节点的上一个同级节点'
+                        describe: '返回选定节点的上一个同级节点（在相同树层级中的前一个节点）。'
                     },
                     {
                         code: 'nextSibling',
                         grammar: 'element.nextSibling',
-                        describe: '返回被选节点的下一个同级节点'
+                        describe: '返回被选节点的下一个同级节点（在相同树层级中的下一个节点）。'
                     },
                     {
                         code: 'parentNode',
                         grammar: 'element.parentNode',
-                        describe: '返回指定节点的父节点'
+                        describe: '返回指定节点的父节点。'
                     },
                     {
                         code: 'createElement',
                         grammar: 'createElement(name)',
-                        describe: '创建元素节点返回一个Element对象'
+                        describe: '创建元素节点。返回一个Element对象。'
                     },
                     {
                         code: 'createAttribute',
                         grammar: 'createAttribute(name)',
-                        describe: '创建一个指定名称的属性，并返回Attr对象属性'
+                        describe: '创建一个指定名称的属性，并返回Attr对象属性。'
                     },
                     {
                         code: 'createTextNode',
@@ -258,57 +267,57 @@
                     {
                         code: 'appendChild',
                         grammar: 'node.appendChild(node)',
-                        describe: '向节点添加最后一个子节点'
+                        describe: '向节点添加最后一个子节点。'
                     },
                     {
                         code: 'insertBefore',
                         grammar: 'node.insertBefore(newnode,existingnode)',
-                        describe: '在您指定的已有子节点之前插入新的子节点'
+                        describe: '在您指定的已有子节点之前插入新的子节点。'
                     },
                     {
                         code: 'replaceChild',
                         grammar: 'node.replaceChild(newnode,oldnode)',
-                        describe: '用新节点替换某个子节点'
+                        describe: '用新节点替换某个子节点。'
                     },
                     {
                         code: 'cloneNode',
                         grammar: 'node.cloneNode(Boolean)',
-                        describe: '克隆所有属性以及它们的值'
+                        describe: '克隆所有属性以及它们的值。如果您需要克隆所有后代，请把deep参数设置true，否则设置为false。'
                     },
                     {
                         code: 'removeChild',
                         grammar: 'node.removeChild(node)',
-                        describe: '从元素中移除子节点'
+                        describe: '从元素中移除子节点。'
                     },
                     {
                         code: 'getAttribute',
                         grammar: 'element.getAttribute(attributename)',
-                        describe: '返回元素节点的指定属性值'
+                        describe: '返回元素节点的指定属性值。'
                     },
                     {
                         code: 'getAttributeNode',
                         grammar: 'element.getAttributeNode(attributename)',
-                        describe: '返回指定的属性节点'
+                        describe: '返回指定的属性节点。'
                     },
                     {
                         code: 'setAttribute',
                         grammar: 'element.setAttribute(attributename,attributevalue)',
-                        describe: '把指定属性设置或更改为指定值'
+                        describe: '把指定属性设置或更改为指定值。'
                     },
                     {
                         code: 'setAttributeNode',
                         grammar: 'element.setAttributeNode(attributenode)',
-                        describe: '设置或更改指定属性节点'
+                        describe: '设置或更改指定属性节点。'
                     },
                     {
                         code: 'insertData',
                         grammar: 'insertData(offset,string)',
-                        describe: '向文本节点插入数据'
+                        describe: '向文本节点插入数据。'
                     },
                     {
                         code: 'appendData',
                         grammar: 'textNode.appendData(string)',
-                        describe: '在文本节点的末尾添加一个字符串'
+                        describe: '在文本节点的末尾添加一个字符串。'
                     },
                     {
                         code: 'deleteDate',
@@ -338,12 +347,12 @@
                     {
                         code: 'concat',
                         grammar: 'arrayObject.concat(arrayX,arrayX,......,arrayX)',
-                        describe: '连接两个或更多的数组，并返回结果'
+                        describe: '连接两个或更多的数组，并返回结果。'
                     },
                     {
                         code: 'join',
                         grammar: 'arrayObject.join(separator)',
-                        describe: '把数组的所有元素放入一个字符串'
+                        describe: '把数组的所有元素放入一个字符串。元素通过指定的分隔符进行分隔。'
                     },
                     {
                         code: 'pop',
@@ -353,12 +362,12 @@
                     {
                         code: 'push',
                         grammar: 'arrayObject.push(newelement1,newelement2,....,newelementX)',
-                        describe: '向数组的末尾添加元素，并返回新的长度'
+                        describe: '向数组的末尾添加一个或更多元素，并返回新的长度。'
                     },
                     {
                         code: 'reverse',
                         grammar: 'arrayObject.reverse()',
-                        describe: '颠倒数组中元素的顺序'
+                        describe: '颠倒数组中元素的顺序。'
                     },
                     {
                         code: 'shift',
@@ -378,27 +387,27 @@
                     {
                         code: 'splice',
                         grammar: 'arrayObject.splice(index,howmany,item1,.....,itemX)',
-                        describe: '删除元素，并向数组添加新元素'
+                        describe: '删除元素，并向数组添加新元素。'
                     },
                     {
                         code: 'toSource',
                         grammar: 'object.toSource()',
-                        describe: '返回该对象的源代码'
+                        describe: '返回该对象的源代码。'
                     },
                     {
                         code: 'toString',
                         grammar: 'arrayObject.toString()',
-                        describe: '把数组转换为字符串，并返回结果'
+                        describe: '把数组转换为字符串，并返回结果。'
                     },
                     {
                         code: 'toLocaleString',
                         grammar: 'arrayObject.toLocaleString()',
-                        describe: '把数组转换为本地数组，并返回结果'
+                        describe: '把数组转换为本地数组，并返回结果。'
                     },
                     {
                         code: 'unshift',
                         grammar: 'arrayObject.unshift(newelement1,newelement2,....,newelementX)',
-                        describe: '向数组的开头添加元素，并返回新的长度'
+                        describe: '向数组的开头添加一个或更多元素，并返回新的长度。'
                     },
                     {
                         code: 'valueOf',
@@ -413,97 +422,97 @@
                     {
                         code: 'create',
                         grammar: 'Object.create(proto[,propertiesObject])',
-                        describe: '一种新的对象创建方式'
+                        describe: '一种新的对象创建方式，第一个参数是要继承的原型，如果不是一个子函数，可以传一个null，第二个参数是对象的属性描述符，这个参数是可选的。'
                     },
                     {
                         code: 'defineProperties',
                         grammar: 'object.defineProperties(object, descriptors)',
-                        describe: '属性添加到对象，并/或修改现有属性的特性'
+                        describe: '将一个或多个属性添加到对象，并/或修改现有属性的特性。'
                     },
                     {
                         code: 'defineProperty',
                         grammar: 'Object.defineProperty(object, propertyname, descriptor)',
-                        describe: '将属性添加到对象，或修改现有属性的特性'
+                        describe: '将属性添加到对象，或修改现有属性的特性。'
                     },
                     {
                         code: 'freeze',
                         grammar: 'Object.freeze(object)',
-                        describe: '阻止修改现有属性的特性和值，并阻止添加新属性'
+                        describe: '阻止修改现有属性的特性和值，并阻止添加新属性。'
                     },
                     {
                         code: 'getOwnPropertyDescriptor',
                         grammar: 'Object.getOwnPropertyDescriptor(object, propertyname)',
-                        describe: '获取指定对象的自身属性描述符'
+                        describe: '获取指定对象的自身属性描述符。自身属性描述符是指直接在对象上定义（而非从对象的原型继承）的描述符。'
                     },
                     {
                         code: 'getOwnPropertyNames',
                         grammar: 'Object.getOwnPropertyNames',
-                        describe: '获取指定对象的自身属性描述符'
+                        describe: '获取指定对象的自身属性描述符。自身属性描述符是指直接在对象上定义（而非从对象的原型继承）的描述符。'
                     },
                     {
                         code: 'getPrototypeOf',
                         grammar: 'Object.getPrototypeOf(object)',
-                        describe: '返回对象的原型'
+                        describe: '返回对象的原型。'
                     },
                     {
                         code: 'isExtensible',
                         grammar: 'Object.isExtensible(object)',
-                        describe: '返回一个值，该值指示是否可向对象添加新属性'
+                        describe: '返回一个值，该值指示是否可向对象添加新属性。'
                     },
                     {
                         code: 'isFrozen',
                         grammar: 'Object.isFrozen(object)',
-                        describe: '如果无法在对象中修改现有属性的特性和值，则返回 true'
+                        describe: '如果无法在对象中修改现有属性的特性和值，且无法向对象添加新属性，则返回 true。'
                     },
                     {
                         code: 'isSealed',
                         grammar: 'Object.isSealed(object)',
-                        describe: '如果无法在对象中修改现有属性的特性，则返回 true'
+                        describe: '如果无法在对象中修改现有属性的特性，且无法向对象添加新属性，则返回 true。'
                     },
                     {
                         code: 'keys',
                         grammar: 'Object.keys(object)',
-                        describe: '返回对象的可枚举属性和方法的名称'
+                        describe: '返回对象的可枚举属性和方法的名称。'
                     },
                     {
                         code: 'preventExtensions',
                         grammar: 'Object.preventExtensions(object)',
-                        describe: '阻止向对象添加新属性'
+                        describe: '阻止向对象添加新属性。'
                     },
                     {
                         code: 'seal',
                         grammar: 'Object.seal(object)',
-                        describe: '阻止修改现有属性的特性，并阻止添加新属性'
+                        describe: '阻止修改现有属性的特性，并阻止添加新属性。'
                     },
                     {
                         code: 'hasOwnProperty',
                         grammar: 'object.hasOwnProperty(proName)',
-                        describe: '确定某个对象是否具有带指定名称的属性'
+                        describe: '确定某个对象是否具有带指定名称的属性。'
                     },
                     {
                         code: 'isPrototypeOf',
                         grammar: 'prototype.isPrototypeOf(object)',
-                        describe: '确定一个对象是否存在于另一个对象的原型链中'
+                        describe: '确定一个对象是否存在于另一个对象的原型链中。'
                     },
                     {
                         code: 'propertyIsEnumerable',
                         grammar: 'object. propertyIsEnumerable(proName)',
-                        describe: '确定指定的属性是否可枚举'
+                        describe: '确定指定的属性是否可枚举。'
                     },
                     {
                         code: 'toLocaleString',
                         grammar: 'dateObj.toLocaleString()',
-                        describe: '返回使用当前区域设置转换为字符串的日期'
+                        describe: '返回使用当前区域设置转换为字符串的日期。'
                     },
                     {
                         code: 'toString',
                         grammar: 'objectname.toString([radix])',
-                        describe: '返回对象的字符串表示形式'
+                        describe: '返回对象的字符串表示形式。'
                     },
                     {
                         code: 'valueOf',
                         grammar: 'object.valueOf()',
-                        describe: '返回指定对象的基元值'
+                        describe: '返回指定对象的基元值。'
                     }
                 ]
             },
@@ -513,57 +522,617 @@
                     {
                         code: 'MAX_VALUE',
                         grammar: 'Number.MAX_VALUE',
-                        describe: 'JavaScript里所能表示的最大数值'
+                        describe: '属性表示在 JavaScript 里所能表示的最大数值。'
                     },
                     {
                         code: 'MIN_VALUE',
                         grammar: 'Number.MIN_VALUE',
-                        describe: 'JavaScript中所能表示的最小的正值'
+                        describe: '属性表示在 JavaScript 中所能表示的最小的正值。'
                     },
                     {
                         code: 'NEGATIVE_INFINITY',
                         grammar: 'Number.NEGATIVE_INFINITY',
-                        describe: '属性表示负无穷大'
+                        describe: '属性表示负无穷大。'
                     },
                     {
                         code: 'NaN',
                         grammar: 'Number.NaN',
-                        describe: '表示“非数字”（Not-A-Number）和 NaN 相同'
+                        describe: '表示“非数字”（Not-A-Number）。和 NaN 相同。'
                     },
                     {
                         code: 'POSITIVE_INFINITY',
                         grammar: 'Number.POSITIVE_INFINITY',
-                        describe: '属性表示正无穷大'
+                        describe: '属性表示正无穷大。'
                     },
                     {
                         code: 'toExponential',
                         grammar: 'numObj.toExponential(fractionDigits)',
-                        describe: '以指数表示法返回该数值字符串表示形式'
+                        describe: '以指数表示法返回该数值字符串表示形式。'
                     },
                     {
                         code: 'toFixed',
                         grammar: 'numObj.toFixed(digits)',
-                        describe: '使用定点表示法来格式化一个数'
+                        describe: '使用定点表示法来格式化一个数。'
                     },
                     {
                         code: 'toLocaleString',
                         grammar: 'numObj.toLocaleString([locales [, options]])',
-                        describe: '返回这个数字在特定语言环境下的表示字符串'
+                        describe: '返回这个数字在特定语言环境下的表示字符串。'
                     },
                     {
                         code: 'toPrecision',
                         grammar: 'numObj.toPrecision(precision)',
-                        describe: '以指定的精度返回该数值对象的字符串表示'
+                        describe: '以指定的精度返回该数值对象的字符串表示。'
                     },
                     {
                         code: 'toString',
                         grammar: 'numObj.toString([radix])',
-                        describe: '返回指定 Number 对象的字符串表示形式'
+                        describe: '返回指定 Number 对象的字符串表示形式。'
                     },
                     {
                         code: 'valueOf',
                         grammar: 'numObj.valueOf()',
-                        describe: '返回一个被Number对象包装的原始值'
+                        describe: '返回一个被Number对象包装的原始值。'
+                    }
+                ]
+            },
+            {
+                title: 'String属性方法',
+                list: [
+                    {
+                        code: 'anchor',
+                        grammar: 'stringObject.anchor(anchorname)',
+                        describe: '创建A标签的HTML锚。'
+                    },
+                    {
+                        code: 'blink',
+                        grammar: 'stringObject.blink()',
+                        describe: '使用粗体显示字符串。'
+                    },
+                    {
+                        code: 'charAt',
+                        grammar: 'stringObject.charAt(index)',
+                        describe: '返回在指定位置的字符。'
+                    },
+                    {
+                        code: 'charCodeAt',
+                        grammar: 'stringObject.charCodeAt(index)',
+                        describe: '可返回指定位置的字符的Unicode编码。这个返回值是0-65535之间的整数。'
+                    },
+                    {
+                        code: 'concat',
+                        grammar: 'stringObject.concat(stringX,stringX,...,stringX)',
+                        describe: '用于连接两个或多个字符串。'
+                    },
+                    {
+                        code: 'fixed',
+                        grammar: 'stringObject.fixed()',
+                        describe: '用于把字符串显示为打字机字体。'
+                    },
+                    {
+                        code: 'fontcolor',
+                        grammar: 'stringObject.fontcolor(color)',
+                        describe: '用于按照指定的颜色来显示字符串。'
+                    },
+                    {
+                        code: 'fontsize',
+                        grammar: 'stringObject.fontsize(size)',
+                        describe: '用于按照指定的尺寸来显示字符串。'
+                    },
+                    {
+                        code: 'fromCharCode',
+                        grammar: 'String.fromCharCode(numX,numX,...,numX)',
+                        describe: '可接受一个指定的 Unicode 值，然后返回一个字符串。'
+                    },
+                    {
+                        code: 'indexOf',
+                        grammar: 'stringObject.indexOf(searchvalue,fromindex)',
+                        describe: '可返回某个指定的字符串值在字符串中首次出现的位置。'
+                    },
+                    {
+                        code: 'italics',
+                        grammar: 'stringObject.italics()',
+                        describe: '用于把字符串显示为斜体。'
+                    },
+                    {
+                        code: 'lastIndexOf',
+                        grammar: 'stringObject.lastIndexOf(searchvalue,fromindex)',
+                        describe: '可返回一个指定的字符串值最后出现的位置，在一个字符串中的指定位置从后向前搜索。'
+                    },
+                    {
+                        code: 'link',
+                        grammar: 'stringObject.link(url)',
+                        describe: '把字符串显示为超链接。'
+                    },
+                    {
+                        code: 'localeCompare',
+                        grammar: 'stringObject.localeCompare(target)',
+                        describe: '用本地特定的顺序来比较两个字符串。'
+                    },
+                    {
+                        code: 'match',
+                        grammar: 'stringObject.match(searchvalue),stringObject.match(regexp)',
+                        describe: '可在字符串内检索指定的值，或找到一个或多个正则表达式的匹配。'
+                    },
+                    {
+                        code: 'replace',
+                        grammar: 'stringObject.replace(regexp/substr,replacement)',
+                        describe: '用于在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的子串。'
+                    },
+                    {
+                        code: 'search',
+                        grammar: 'stringObject.search(regexp)',
+                        describe: '用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串。'
+                    },
+                    {
+                        code: 'slice',
+                        grammar: 'stringObject.slice(start,end)',
+                        describe: '可提取字符串的某个部分，并以新的字符串返回被提取的部分。'
+                    },
+                    {
+                        code: 'split',
+                        grammar: 'stringObject.split(separator,howmany)',
+                        describe: '用于把一个字符串分割成字符串数组。'
+                    },
+                    {
+                        code: 'strike',
+                        grammar: 'stringObject.strike()',
+                        describe: '用于显示加删除线的字符串'
+                    },
+                    {
+                        code: 'sub',
+                        grammar: 'stringObject.sub()',
+                        describe: '用于把字符串显示为下标。'
+                    },
+                    {
+                        code: 'sup',
+                        grammar: 'stringObject.sup()',
+                        describe: '用于把字符串显示为上标。'
+                    },
+                    {
+                        code: 'substr',
+                        grammar: 'stringObject.substr(start,length)',
+                        describe: '可在字符串中抽取从start下标开始的指定数目的字符。'
+                    },
+                    {
+                        code: 'substring',
+                        grammar: 'stringObject.substring(start,stop)',
+                        describe: '用于提取字符串中介于两个指定下标之间的字符。'
+                    },
+                    {
+                        code: 'toLocaleLowerCase',
+                        grammar: 'stringObject.toLocaleLowerCase()',
+                        describe: '用于把字符串转换为小写。'
+                    },
+                    {
+                        code: 'toLocaleUpperCase',
+                        grammar: 'stringObject.toLocaleUpperCase()',
+                        describe: '用于把字符串转换为大写。'
+                    },
+                    {
+                        code: 'toLowerCase',
+                        grammar: 'stringObject.toLowerCase()',
+                        describe: '用于把字符串转换为小写。'
+                    },
+                    {
+                        code: 'toUpperCase',
+                        grammar: 'stringObject.toUpperCase()',
+                        describe: '用于把字符串转换为大写。'
+                    },
+                    {
+                        code: 'toString',
+                        grammar: 'stringObject.toString()',
+                        describe: '返回字符串。'
+                    },
+                    {
+                        code: 'valueOf',
+                        grammar: 'stringObject.valueOf()',
+                        describe: '返回某个字符串对象的原始值。'
+                    }
+                ]
+            },
+            {
+                title: 'Math属性方法',
+                list: [
+                    {
+                        code: 'E',
+                        grammar: 'Math.E',
+                        describe: '返回数学常量e，即自然对数的底数(约等于2.718)。'
+                    },
+                    {
+                        code: 'LN10',
+                        grammar: 'Math.LN10',
+                        describe: '返回10的自然对数(约等于2.303)。'
+                    },
+                    {
+                        code: 'LN2',
+                        grammar: 'Math.LN2',
+                        describe: '返回2的自然对数(约等于0.693)。'
+                    },
+                    {
+                        code: 'LOG10E',
+                        grammar: 'Math.LOG10E',
+                        describe: '返回以10为底的e的对数(即log10e，约等于0.434)。'
+                    },
+                    {
+                        code: 'LOG2E',
+                        grammar: 'Math.LOG2E',
+                        describe: '返回以2为底的e的对数(即log2e，约等于1.414)。'
+                    },
+                    {
+                        code: 'PI',
+                        grammar: 'Math.PI',
+                        describe: '返回圆周率π(约等于3.14159)。'
+                    },
+                    {
+                        code: 'SQRT1_2',
+                        grammar: 'Math.SQRT1_2',
+                        describe: '返回0.5的平方根，也就是2的平方根的倒数(约等于0.707)。'
+                    },
+                    {
+                        code: 'SQRT2',
+                        grammar: 'Math.SQRT2',
+                        describe: '返回2的平方根(约等于1.414)。'
+                    },
+                    {
+                        code: 'abs',
+                        grammar: 'abs(x)',
+                        describe: '返回数的绝对值。'
+                    },
+                    {
+                        code: 'acos',
+                        grammar: 'acos(x)',
+                        describe: '返回数的反余弦值。'
+                    },
+                    {
+                        code: 'asin',
+                        grammar: 'asin(x)',
+                        describe: '返回数的反正弦值。'
+                    },
+                    {
+                        code: 'atan',
+                        grammar: 'atan(x)',
+                        describe: '以介于-π/2与π/2弧度之间的数值来返回x的反正切值。'
+                    },
+                    {
+                        code: 'atan2',
+                        grammar: 'atan2(y,x)',
+                        describe: '返回从x轴到点(x,y)的角度(介于-π/2与π/2弧度之间)。'
+                    },
+                    {
+                        code: 'ceil',
+                        grammar: 'ceil(x)',
+                        describe: '对数进行上舍入。'
+                    },
+                    {
+                        code: 'cos',
+                        grammar: 'cos(x)',
+                        describe: '返回数的余弦。'
+                    },
+                    {
+                        code: 'exp',
+                        grammar: 'exp(x)',
+                        describe: '返回e的指数。'
+                    },
+                    {
+                        code: 'floor',
+                        grammar: 'floor(x)',
+                        describe: '对数进行下舍入。'
+                    },
+                    {
+                        code: 'log',
+                        grammar: 'log(x)',
+                        describe: '返回数的自然对数(底为e)，即logex。'
+                    },
+                    {
+                        code: 'max',
+                        grammar: 'max(x,y)',
+                        describe: '返回x和y中的最高值。'
+                    },
+                    {
+                        code: 'min',
+                        grammar: 'min(x,y)',
+                        describe: '返回x和y中的最低值。'
+                    },
+                    {
+                        code: 'pow',
+                        grammar: 'pow(x,y)',
+                        describe: '返回x的y次幂。'
+                    },
+                    {
+                        code: 'random',
+                        grammar: 'random()',
+                        describe: '返回0~1之间(不包括1)的随机数。'
+                    },
+                    {
+                        code: 'round',
+                        grammar: 'round(x)',
+                        describe: '把数四舍五入为最接近的整数。'
+                    },
+                    {
+                        code: 'sin',
+                        grammar: 'sin(x)',
+                        describe: '返回数的正弦值。'
+                    },
+                    {
+                        code: 'sqrt',
+                        grammar: 'sqrt(x)',
+                        describe: '返回数的平方根。'
+                    },
+                    {
+                        code: 'tan',
+                        grammar: 'tan(x)',
+                        describe: '返回角的正切值。'
+                    }
+                ]
+            },
+            {
+                title: 'Function属性方法',
+                list: [
+                    {
+                        code: 'arguments',
+                        grammar: 'functionObject.arguments',
+                        describe: '返回该函数执行时内置的arguments对象。'
+                    },
+                    {
+                        code: 'caller',
+                        grammar: 'functionObject.caller',
+                        describe: '返回调用当前函数的函数。'
+                    },
+                    {
+                        code: 'constructor',
+                        grammar: 'object.constructor',
+                        describe: '返回创建该对象的构造函数。'
+                    },
+                    {
+                        code: 'length',
+                        grammar: 'functionObject.length',
+                        describe: '返回函数定义的参数个数。'
+                    },
+                    {
+                        code: 'prototype',
+                        grammar: 'functionObject.prototype',
+                        describe: '返回创建该对象的函数的原型对象'
+                    },
+                    {
+                        code: 'apply',
+                        grammar: 'functionObject.apply([thisObj[,argsArray]])',
+                        describe: '调用当前Function对象，可同时改变函数内的this指针引用，函数参数以数组或arguments对象的形式传入。'
+                    },
+                    {
+                        code: 'call',
+                        grammar: 'functionObject.call([thisObj[,arg1[arg2[args...]]]])',
+                        describe: '调用当前Function对象，可同时改变函数内的this指针引用，函数参数一个个分别传入。'
+                    },
+                    {
+                        code: 'toString',
+                        grammar: 'object.toString()',
+                        describe: '返回定义该Function对象的字符串。'
+                    },
+                    {
+                        code: 'valueOf',
+                        grammar: 'object.valueOf()',
+                        describe: '返回Function对象本身。'
+                    }
+                ]
+            },
+            {
+                title: 'Date属性方法',
+                list: [
+                    {
+                        code: 'getDate',
+                        grammar: 'date.getDate()',
+                        describe: '返回Date对象"日期"部分数值(1 ~ 31)。'
+                    },
+                    {
+                        code: 'getDay',
+                        grammar: 'date.getDay()',
+                        describe: '返回Date对象"星期"部分的数值(0 ~ 6)。'
+                    },
+                    {
+                        code: 'getFullYear',
+                        grammar: 'date.getFullYear()',
+                        describe: '返回Date对象"年份"部分的实际数值。'
+                    },
+                    {
+                        code: 'getHours',
+                        grammar: 'date.getHours()',
+                        describe: '返回Date对象"小时"部分的数值(0 ~ 23)。'
+                    },
+                    {
+                        code: 'getMilliseconds',
+                        grammar: 'date.getMilliseconds()',
+                        describe: '返回Date对象"毫秒"部分的数值(0 ~ 999)。'
+                    },
+                    {
+                        code: 'getMinutes',
+                        grammar: 'date.getMinutes()',
+                        describe: '返回Date对象"分钟"部分的数值(0 ~ 59)。'
+                    },
+                    {
+                        code: 'getMonth',
+                        grammar: 'date.getMonth()',
+                        describe: '返回Date对象"月份"部分的数值(0 ~ 11)。'
+                    },
+                    {
+                        code: 'getSeconds',
+                        grammar: 'date.getSeconds()',
+                        describe: '返回Date对象"秒"部分的数值(0 ~ 59)。'
+                    },
+                    {
+                        code: 'getTime',
+                        grammar: 'date.getTime()',
+                        describe: '返回Date对象与UTC时间1970年1月1日午夜之间相差的毫秒数。'
+                    },
+                    {
+                        code: 'getTimezoneOffset',
+                        grammar: 'date.getTimezoneOffset()',
+                        describe: '返回本地时间与格林威治标准时间(GMT)的分钟差。'
+                    },
+                    {
+                        code: 'getUTCDate',
+                        grammar: 'date.getUTCDate()',
+                        describe: '基于UTC时间返回Date对象"日期"部分的数值(1 ~ 31)。'
+                    },
+                    {
+                        code: 'getUTCDay',
+                        grammar: 'date.getUTCDay()',
+                        describe: '基于UTC时间返回Date对象"星期"部分的数值(0 ~ 6)。'
+                    },
+                    {
+                        code: 'getUTCFullYear',
+                        grammar: 'date.getUTCFullYear()',
+                        describe: '基于UTC时间返回Date对象"年份"部分的数值。'
+                    },
+                    {
+                        code: 'getUTCHours',
+                        grammar: 'date.getUTCHours()',
+                        describe: '基于UTC时间返回Date对象"小时"部分的数值(0 ~ 23)。'
+                    },
+                    {
+                        code: 'getUTCMilliseconds',
+                        grammar: 'date.getUTCMilliseconds()',
+                        describe: '基于UTC时间返回Date对象"毫秒"部分的数值(0 ~ 999)。'
+                    },
+                    {
+                        code: 'getUTCMinutes',
+                        grammar: 'date.getUTCMinutes()',
+                        describe: '基于UTC时间返回Date对象"分钟"部分的数值(0 ~ 59)。'
+                    },
+                    {
+                        code: 'getUTCMonth',
+                        grammar: 'date.getUTCMonth()',
+                        describe: '基于UTC时间返回Date对象"月份"部分的数值 (0 ~ 11)。'
+                    },
+                    {
+                        code: 'getUTCSeconds',
+                        grammar: 'date.getUTCSeconds()',
+                        describe: '基于UTC时间返回Date对象"秒"部分的数值(0 ~ 59)。'
+                    },
+                    {
+                        code: 'parse',
+                        grammar: 'date.parse(dateString)',
+                        describe: '返回指定日期(字符串)到UTC时间1970年1月1日午夜之间相差的毫秒数。'
+                    },
+                    {
+                        code: 'setDate',
+                        grammar: 'date.setDate(dateNumber)',
+                        describe: '设置Date对象中"日期"部分的数值(1 ~ 31，但不限于)。'
+                    },
+                    {
+                        code: 'setFullYear',
+                        grammar: 'date.setFullYear(year[,month[,dateNumber]])',
+                        describe: '设置Date对象中"年份"部分的实际数值。'
+                    },
+                    {
+                        code: 'setHours',
+                        grammar: 'date.setHours(hours[,minutes[,seconds[,milliseconds]]]',
+                        describe: '设置Date对象中"小时"部分的数值(0 ~ 23，但不限于)。'
+                    },
+                    {
+                        code: 'setMilliseconds',
+                        grammar: 'date.setMilliseconds(milliseconds)',
+                        describe: '设置Date对象中"毫秒"部分的数值(0 ~ 999，但不限于)。'
+                    },
+                    {
+                        code: 'setMinutes',
+                        grammar: 'date.setMinutes(minutes[,seconds[,milliseconds]])',
+                        describe: '设置Date对象中"分钟"部分的数值(0 ~ 59，但不限于)。'
+                    },
+                    {
+                        code: 'setMonth',
+                        grammar: 'date.setMonth(month[,dateValue])',
+                        describe: '设置Date对象中"月份"部分的数值(0 ~ 11，但不限于)。'
+                    },
+                    {
+                        code: 'setSeconds',
+                        grammar: 'date.setSeconds(seconds[,milliseconds])',
+                        describe: '设置Date对象中"秒"部分的数值(0 ~ 59，但不限于)。'
+                    },
+                    {
+                        code: 'setTime',
+                        grammar: 'date.setTime(milliseconds)',
+                        describe: '以毫秒值设置Date对象。'
+                    },
+                    {
+                        code: 'setUTCDate',
+                        grammar: 'date.setUTCDate(dateValue)',
+                        describe: '基于UTC时间设置Date对象"日期"部分的数值(1 ~ 31，但不限于)。'
+                    },
+                    {
+                        code: 'setUTCFullYear',
+                        grammar: 'date.setUTCFullYear(year[,month [,dateNumber]])',
+                        describe: '基于UTC时间设置Date对象"年份"部分的实际数值。'
+                    },
+                    {
+                        code: 'setUTCHours',
+                        grammar: 'date.setUTCHours(hours[,minutes[,seconds[,milliseconds]]])',
+                        describe: '基于UTC时间设置Date对象"小时"部分的数值(0 ~ 23，但不限于)。'
+                    },
+                    {
+                        code: 'setUTCMilliseconds',
+                        grammar: 'date.setUTCMilliseconds(milliseconds)',
+                        describe: '基于UTC时间设置Date对象"毫秒"部分的数值(0 ~ 999，但不限于)。'
+                    },
+                    {
+                        code: 'setUTCMinutes',
+                        grammar: 'date.setUTCMinutes(minutes[,seconds[,milliseconds]])',
+                        describe: '基于UTC时间设置Date对象"分钟"部分的数值(0 ~ 59，但不限于)。'
+                    },
+                    {
+                        code: 'setUTCMonth',
+                        grammar: 'date.setUTCMonth(month[,dateValue])',
+                        describe: '基于UTC时间设置Date对象"月份"部分的数值(0 ~ 11，但不限于)。'
+                    },
+                    {
+                        code: 'setUTCSeconds',
+                        grammar: 'date.setUTCSeconds(seconds[,milliseconds])',
+                        describe: '基于UTC时间设置Date对象"秒"部分的数值(0 ~ 59，但不限于)。'
+                    },
+                    {
+                        code: 'toDateString',
+                        grammar: 'date.toDateString()',
+                        describe: '返回Date对象"日期"部分(年月日)的字符串形式。'
+                    },
+                    {
+                        code: 'toLocaleDateString',
+                        grammar: 'date.toLocaleDateString()',
+                        describe: '基于本地时间格式，返回Date对象"日期"部分(年月日)的字符串形式。'
+                    },
+                    {
+                        code: 'toLocaleString',
+                        grammar: 'object.toLocaleString()',
+                        describe: '基于本地时间格式，返回Date对象的字符串形式。'
+                    },
+                    {
+                        code: 'toLocaleTimeString',
+                        grammar: 'date.toLocaleTimeString()',
+                        describe: '基于本地时间格式，返回Date对象"时间"部分(时分秒)的字符串形式。'
+                    },
+                    {
+                        code: 'toString',
+                        grammar: 'object.toString()',
+                        describe: '返回Date对象的字符串形式。'
+                    },
+                    {
+                        code: 'toTimeString',
+                        grammar: 'date.toTimeString()',
+                        describe: '返回Date对象"时间"部分(时分秒)的字符串形式。'
+                    },
+                    {
+                        code: 'toUTCString',
+                        grammar: 'date.toUTCString()',
+                        describe: '基于UTC时间格式，返回Date对象的字符串形式。'
+                    },
+                    {
+                        code: 'UTC',
+                        grammar: 'Date.UTC(year,month,day[,hours[,minutes[,seconds[,milliseconds]]]])',
+                        describe: '基于UTC时间，返回指定日期与UTC时间1997年1月1日午夜相差的毫秒数。'
+                    },
+                    {
+                        code: 'valueOf',
+                        grammar: 'object.valueOf()',
+                        describe: '返回Date对象的原始值。'
                     }
                 ]
             },
@@ -573,17 +1142,17 @@
                     {
                         code: 'initEvent',
                         grammar: 'event.initEvent(eventType,canBubble,cancelable)',
-                        describe: '初始化新创建的 Event 对象的属性'
+                        describe: '初始化新创建的 Event 对象的属性。'
                     },
                     {
                         code: 'preventDefault',
                         grammar: 'event.preventDefault()',
-                        describe: '通知浏览器不要执行与事件关联的默认动作'
+                        describe: '通知浏览器不要执行与事件关联的默认动作。'
                     },
                     {
                         code: 'stopPropagation',
                         grammar: 'event.stopPropagation()',
-                        describe: '不再派发事件'
+                        describe: '不再派发事件。'
                     },
                     {
                         code: 'addEventListener',
@@ -603,7 +1172,7 @@
                     {
                         code: 'onclick',
                         grammar: 'object.onclick=function(){SomeJavaScriptCode};',
-                        describe: '当用户点击某个对象时调用的事件句柄'
+                        describe: '当用户点击某个对象时调用的事件句柄。'
                     },
                     {
                         code: 'oncontextmenu',
@@ -613,17 +1182,17 @@
                     {
                         code: 'ondblclick',
                         grammar: 'object.ondblclick=function(){SomeJavaScriptCode};',
-                        describe: '当用户双击某个对象时调用的事件句柄'
+                        describe: '当用户双击某个对象时调用的事件句柄。'
                     },
                     {
                         code: 'onmousedown',
                         grammar: 'object.onmousedown=function(){SomeJavaScriptCode};',
-                        describe: '鼠标按钮被按下'
+                        describe: '鼠标按钮被按下。'
                     },
                     {
                         code: 'onmouseenter',
                         grammar: 'object.onmouseenter=function(){myScript};',
-                        describe: '	当鼠标指针移动到元素上时触发'
+                        describe: '	当鼠标指针移动到元素上时触发。'
                     },
                     {
                         code: 'onmouseleave',
@@ -633,42 +1202,42 @@
                     {
                         code: 'onmousemove',
                         grammar: 'object.onmousemove=function(){SomeJavaScriptCode};',
-                        describe: '鼠标被移动'
+                        describe: '鼠标被移动。'
                     },
                     {
                         code: 'onmouseover',
                         grammar: 'object.onmouseover=function(){SomeJavaScriptCode};',
-                        describe: '鼠标移到某元素之上'
+                        describe: '鼠标移到某元素之上。'
                     },
                     {
                         code: 'onmouseout',
                         grammar: 'object.onmouseout=function(){SomeJavaScriptCode};',
-                        describe: '鼠标从某元素移开'
+                        describe: '鼠标从某元素移开。'
                     },
                     {
                         code: 'onmouseup',
                         grammar: 'object.onmouseup=function(){SomeJavaScriptCode};',
-                        describe: '鼠标按键被松开'
+                        describe: '鼠标按键被松开。'
                     },
                     {
                         code: 'onkeydown',
                         grammar: 'object.onkeydown=function(){SomeJavaScriptCode};',
-                        describe: '某个键盘按键被按下'
+                        describe: '某个键盘按键被按下。'
                     },
                     {
                         code: 'onkeypress',
                         grammar: 'object.onkeypress=function(){SomeJavaScriptCode};',
-                        describe: '某个键盘按键被按下并松开'
+                        describe: '某个键盘按键被按下并松开。'
                     },
                     {
                         code: 'onkeyup',
                         grammar: 'object.onkeyup=function(){SomeJavaScriptCode};',
-                        describe: '某个键盘按键被松开'
+                        describe: '某个键盘按键被松开。'
                     },
                     {
                         code: 'onabort',
                         grammar: 'object.onabort=function(){myScript};',
-                        describe: '图像的加载被中断(<object>)'
+                        describe: '图像的加载被中断。(<object>)'
                     },
                     {
                         code: 'onbeforeunload',
@@ -678,17 +1247,17 @@
                     {
                         code: 'onerror',
                         grammar: 'object.onerror=function(){myScript};',
-                        describe: '在加载文档或图像时发生错误(<object>,<body>和<frameset>)'
+                        describe: '在加载文档或图像时发生错误。(<object>,<body>和<frameset>)'
                     },
                     {
                         code: 'onhashchange',
                         grammar: 'object.onhashchange=function(){myScript};',
-                        describe: '该事件在当前 URL 的锚部分发生修改时触发'
+                        describe: '该事件在当前 URL 的锚部分发生修改时触发。'
                     },
                     {
                         code: 'onload',
                         grammar: 'window.onload=function(){SomeJavaScriptCode};',
-                        describe: '一张页面或一幅图像完成加载'
+                        describe: '一张页面或一幅图像完成加载。'
                     },
                     {
                         code: 'onpageshow',
@@ -703,17 +1272,17 @@
                     {
                         code: 'onresize',
                         grammar: 'window.onresize=function(){SomeJavaScriptCode};',
-                        describe: '窗口或框架被重新调整大小'
+                        describe: '窗口或框架被重新调整大小。'
                     },
                     {
                         code: 'onscroll',
                         grammar: 'object.onscroll=function(){myScript};',
-                        describe: '当文档被滚动时发生的事件'
+                        describe: '当文档被滚动时发生的事件。'
                     },
                     {
                         code: 'onunload',
                         grammar: 'window.onunload=function(){SomeJavaScriptCode};',
-                        describe: '用户退出页面(<body>和<frameset>)'
+                        describe: '用户退出页面。(<body>和<frameset>)'
                     },
                     {
                         code: 'onblur',
@@ -828,22 +1397,22 @@
                     {
                         code: 'onabort',
                         grammar: 'object.onabort=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）终止加载时触发'
+                        describe: '事件在视频/音频（audio/video）终止加载时触发。'
                     },
                     {
                         code: 'oncanplay',
                         grammar: 'object.oncanplay=function(){myScript};',
-                        describe: '事件在用户可以开始播放视频/音频（audio/video）时触发'
+                        describe: '事件在用户可以开始播放视频/音频（audio/video）时触发。'
                     },
                     {
                         code: 'oncanplaythrough',
                         grammar: 'object.oncanplaythrough=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）可以正常播放且无需停顿和缓冲时触发'
+                        describe: '事件在视频/音频（audio/video）可以正常播放且无需停顿和缓冲时触发。'
                     },
                     {
                         code: 'ondurationchange',
                         grammar: 'object.ondurationchange=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）的时长发生变化时触发'
+                        describe: '事件在视频/音频（audio/video）的时长发生变化时触发。'
                     },
                     {
                         code: 'onemptied',
@@ -853,87 +1422,87 @@
                     {
                         code: 'onended',
                         grammar: 'object.onended=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）播放结束时触发'
+                        describe: '事件在视频/音频（audio/video）播放结束时触发。'
                     },
                     {
                         code: 'onerror',
                         grammar: 'object.onerror=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）数据加载期间发生错误时触发'
+                        describe: '事件在视频/音频（audio/video）数据加载期间发生错误时触发。'
                     },
                     {
                         code: 'onloadeddata',
                         grammar: 'object.onloadeddata=function(){myScript};',
-                        describe: '事件在浏览器加载视频/音频（audio/video）当前帧时触发触发'
+                        describe: '事件在浏览器加载视频/音频（audio/video）当前帧时触发触发。'
                     },
                     {
                         code: 'onloadedmetadata',
                         grammar: 'object.onloadedmetadata=function(){myScript};',
-                        describe: '事件在指定视频/音频（audio/video）的元数据加载后触发'
+                        describe: '事件在指定视频/音频（audio/video）的元数据加载后触发。'
                     },
                     {
                         code: 'onloadstart',
                         grammar: 'object.onloadstart=function(){myScript};',
-                        describe: '事件在浏览器开始寻找指定视频/音频（audio/video）触发'
+                        describe: '事件在浏览器开始寻找指定视频/音频（audio/video）触发。'
                     },
                     {
                         code: 'onpause',
                         grammar: 'object.onpause=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）暂停时触发'
+                        describe: '事件在视频/音频（audio/video）暂停时触发。'
                     },
                     {
                         code: 'onplay',
                         grammar: 'object.onplay=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）开始播放时触发'
+                        describe: '事件在视频/音频（audio/video）开始播放时触发。'
                     },
                     {
                         code: 'onplaying',
                         grammar: 'object.onplaying=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）暂停或者在缓冲后准备重新开始播放时触发'
+                        describe: '事件在视频/音频（audio/video）暂停或者在缓冲后准备重新开始播放时触发。'
                     },
                     {
                         code: 'onprogress',
                         grammar: 'object.onprogress=function(){myScript};',
-                        describe: '事件在浏览器下载指定的视频/音频（audio/video）时触发'
+                        describe: '事件在浏览器下载指定的视频/音频（audio/video）时触发。'
                     },
                     {
                         code: 'onratechange',
                         grammar: 'object.onratechange=function(){myScript};',
-                        describe: '事件在视频/音频（audio/video）的播放速度发送改变时触发'
+                        describe: '事件在视频/音频（audio/video）的播放速度发送改变时触发。'
                     },
                     {
                         code: 'onseeked',
                         grammar: 'object.onseeked=function(){myScript};',
-                        describe: '事件在用户重新定位视频/音频（audio/video）的播放位置后触发'
+                        describe: '事件在用户重新定位视频/音频（audio/video）的播放位置后触发。'
                     },
                     {
                         code: 'onseeking',
                         grammar: 'object.onseeking=function(){myScript};',
-                        describe: '事件在用户开始重新定位视频/音频（audio/video）时触发'
+                        describe: '事件在用户开始重新定位视频/音频（audio/video）时触发。'
                     },
                     {
                         code: 'onstalled',
                         grammar: 'object.onstalled=function(){myScript};',
-                        describe: '事件在浏览器获取媒体数据，但媒体数据不可用时触发'
+                        describe: '事件在浏览器获取媒体数据，但媒体数据不可用时触发。'
                     },
                     {
                         code: 'onsuspend',
                         grammar: 'object.onsuspend=function(){myScript};',
-                        describe: '事件在浏览器读取媒体数据中止时触发'
+                        describe: '事件在浏览器读取媒体数据中止时触发。'
                     },
                     {
                         code: 'ontimeupdate',
                         grammar: 'object.ontimeupdate=function(){myScript};',
-                        describe: '事件在当前的播放位置发送改变时触发'
+                        describe: '事件在当前的播放位置发送改变时触发。'
                     },
                     {
                         code: 'onvolumechange',
                         grammar: 'object.onvolumechange=function(){myScript};',
-                        describe: '事件在音量发生改变时触发'
+                        describe: '事件在音量发生改变时触发。'
                     },
                     {
                         code: 'onwaiting',
                         grammar: 'object.onwaiting=function(){myScript};',
-                        describe: '事件在视频由于要播放下一帧而需要缓冲时触发'
+                        describe: '事件在视频由于要播放下一帧而需要缓冲时触发。'
                     },
                     {
                         code: 'animationend',
@@ -953,7 +1522,7 @@
                     {
                         code: 'transitionend',
                         grammar: 'object.addEventListener("transitionend", myScript);// 标准语法,object.addEventListener("webkitTransitionend", myScript);//Chrome,Safari和Opera代码',
-                        describe: '该事件在CSS完成过渡后触发'
+                        describe: '该事件在CSS完成过渡后触发。'
                     },
                     {
                         code: 'onmessage',
@@ -963,17 +1532,17 @@
                     {
                         code: 'ononline',
                         grammar: 'object.ononline=function(){myScript};',
-                        describe: '该事件在浏览器开始在线工作时触发'
+                        describe: '该事件在浏览器开始在线工作时触发。'
                     },
                     {
                         code: 'onoffline',
                         grammar: 'object.onoffline=function(){myScript};',
-                        describe: '该事件在浏览器开始离线工作时触发'
+                        describe: '该事件在浏览器开始离线工作时触发。'
                     },
                     {
                         code: 'onpopstate',
                         grammar: 'object.onpopstate=function(){myScript};',
-                        describe: '该事件在窗口的浏览历史（history 对象）发生改变时触发'
+                        describe: '该事件在窗口的浏览历史（history 对象）发生改变时触发。'
                     },
                     {
                         code: 'onshow',
@@ -1003,627 +1572,67 @@
                     {
                         code: 'decodeURI',
                         grammar: 'decodeURI(uri)',
-                        describe: '解码某个编码的URI'
+                        describe: '解码某个编码的URI。'
                     },
                     {
                         code: 'decodeURIComponent',
                         grammar: 'decodeURIComponent(uri)',
-                        describe: '解码一个编码的URI组件'
+                        describe: '解码一个编码的URI组件。'
                     },
                     {
                         code: 'encodeURI',
                         grammar: 'encodeURI(uri)',
-                        describe: '把字符串编码为URI'
+                        describe: '把字符串编码为URI。'
                     },
                     {
                         code: 'encodeURIComponent',
                         grammar: 'encodeURIComponent(uri)',
-                        describe: '把字符串编码为URI组件'
+                        describe: '把字符串编码为URI组件。'
                     },
                     {
                         code: 'escape',
                         grammar: 'escape(string)',
-                        describe: '对字符串进行编码'
+                        describe: '对字符串进行编码。'
                     },
                     {
                         code: 'eval',
                         grammar: 'eval(string)',
-                        describe: '计算JavaScript字符串，并把它作为脚本代码来执行'
+                        describe: '计算JavaScript字符串，并把它作为脚本代码来执行。'
                     },
                     {
                         code: 'isFinite',
                         grammar: 'isFinite(value)',
-                        describe: '检查某个值是否为有穷大的数'
+                        describe: '检查某个值是否为有穷大的数。'
                     },
                     {
                         code: 'isNaN',
                         grammar: 'isNaN(value)',
-                        describe: '检查某个值是否是数字'
+                        describe: '检查某个值是否是数字。'
                     },
                     {
                         code: 'Number',
                         grammar: 'Number(object)',
-                        describe: '把对象的值转换为数字'
+                        describe: '把对象的值转换为数字。'
                     },
                     {
                         code: 'parseFloat',
                         grammar: 'parseFloat(string)',
-                        describe: '解析一个字符串并返回一个浮点数'
+                        describe: '解析一个字符串并返回一个浮点数。'
                     },
                     {
                         code: 'parseInt',
                         grammar: 'parseInt(string, radix)',
-                        describe: '解析一个字符串并返回一个整数'
+                        describe: '解析一个字符串并返回一个整数。'
                     },
                     {
                         code: 'String',
                         grammar: 'String(object)',
-                        describe: '把对象的值转换为字符串'
+                        describe: '把对象的值转换为字符串。'
                     },
                     {
                         code: 'unescape',
                         grammar: 'unescape(string)',
-                        describe: '对由escape()编码的字符串进行解码'
-                    }
-                ]
-            },
-            {
-                title: 'String属性方法',
-                list: [
-                    {
-                        code: 'anchor',
-                        grammar: 'stringObject.anchor(anchorname)',
-                        describe: '创建A标签的HTML锚'
-                    },
-                    {
-                        code: 'blink',
-                        grammar: 'stringObject.blink()',
-                        describe: '使用粗体显示字符串'
-                    },
-                    {
-                        code: 'charAt',
-                        grammar: 'stringObject.charAt(index)',
-                        describe: '返回在指定位置的字符'
-                    },
-                    {
-                        code: 'charCodeAt',
-                        grammar: 'stringObject.charCodeAt(index)',
-                        describe: '返回指定位置的字符的Unicode编码'
-                    },
-                    {
-                        code: 'concat',
-                        grammar: 'stringObject.concat(stringX,stringX,...,stringX)',
-                        describe: '用于连接两个或多个字符串'
-                    },
-                    {
-                        code: 'fixed',
-                        grammar: 'stringObject.fixed()',
-                        describe: '用于把字符串显示为打字机字体'
-                    },
-                    {
-                        code: 'fontcolor',
-                        grammar: 'stringObject.fontcolor(color)',
-                        describe: '用于按照指定的颜色来显示字符串'
-                    },
-                    {
-                        code: 'fontsize',
-                        grammar: 'stringObject.fontsize(size)',
-                        describe: '用于按照指定的尺寸来显示字符串'
-                    },
-                    {
-                        code: 'fromCharCode',
-                        grammar: 'String.fromCharCode(numX,numX,...,numX)',
-                        describe: '接受一个指定的Unicode值，然后返回一个字符串'
-                    },
-                    {
-                        code: 'indexOf',
-                        grammar: 'stringObject.indexOf(searchvalue,fromindex)',
-                        describe: '返回某个指定的字符串值在字符串中首次出现的位置'
-                    },
-                    {
-                        code: 'italics',
-                        grammar: 'stringObject.italics()',
-                        describe: '用于把字符串显示为斜体'
-                    },
-                    {
-                        code: 'lastIndexOf',
-                        grammar: 'stringObject.lastIndexOf(searchvalue,fromindex)',
-                        describe: '可返回一个指定的字符串值最后出现的位置，在一个字符串中的指定位置从后向前搜索'
-                    },
-                    {
-                        code: 'link',
-                        grammar: 'stringObject.link(url)',
-                        describe: '把字符串显示为超链接'
-                    },
-                    {
-                        code: 'localeCompare',
-                        grammar: 'stringObject.localeCompare(target)',
-                        describe: '用本地特定的顺序来比较两个字符串'
-                    },
-                    {
-                        code: 'match',
-                        grammar: 'stringObject.match(searchvalue),stringObject.match(regexp)',
-                        describe: '可在字符串内检索指定的值，或找到一个或多个正则表达式的匹配'
-                    },
-                    {
-                        code: 'replace',
-                        grammar: 'stringObject.replace(regexp/substr,replacement)',
-                        describe: '用于在字符串中用一些字符替换另一些字符，或替换一个与正则表达式匹配的子串'
-                    },
-                    {
-                        code: 'search',
-                        grammar: 'stringObject.search(regexp)',
-                        describe: '用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串'
-                    },
-                    {
-                        code: 'slice',
-                        grammar: 'stringObject.slice(start,end)',
-                        describe: '可提取字符串的某个部分，并以新的字符串返回被提取的部分'
-                    },
-                    {
-                        code: 'split',
-                        grammar: 'stringObject.split(separator,howmany)',
-                        describe: '用于把一个字符串分割成字符串数组'
-                    },
-                    {
-                        code: 'strike',
-                        grammar: 'stringObject.strike()',
-                        describe: '用于显示加删除线的字符串'
-                    },
-                    {
-                        code: 'sub',
-                        grammar: 'stringObject.sub()',
-                        describe: '用于把字符串显示为下标'
-                    },
-                    {
-                        code: 'sup',
-                        grammar: 'stringObject.sup()',
-                        describe: '用于把字符串显示为上标'
-                    },
-                    {
-                        code: 'substr',
-                        grammar: 'stringObject.substr(start,length)',
-                        describe: '可在字符串中抽取从start下标开始的指定数目的字符'
-                    },
-                    {
-                        code: 'substring',
-                        grammar: 'stringObject.substring(start,stop)',
-                        describe: '用于提取字符串中介于两个指定下标之间的字符'
-                    },
-                    {
-                        code: 'toLocaleLowerCase',
-                        grammar: 'stringObject.toLocaleLowerCase()',
-                        describe: '用于把字符串转换为小写'
-                    },
-                    {
-                        code: 'toLocaleUpperCase',
-                        grammar: 'stringObject.toLocaleUpperCase()',
-                        describe: '用于把字符串转换为大写'
-                    },
-                    {
-                        code: 'toLowerCase',
-                        grammar: 'stringObject.toLowerCase()',
-                        describe: '用于把字符串转换为小写'
-                    },
-                    {
-                        code: 'toUpperCase',
-                        grammar: 'stringObject.toUpperCase()',
-                        describe: '用于把字符串转换为大写'
-                    },
-                    {
-                        code: 'toString',
-                        grammar: 'stringObject.toString()',
-                        describe: '返回字符串'
-                    },
-                    {
-                        code: 'valueOf',
-                        grammar: 'stringObject.valueOf()',
-                        describe: '返回某个字符串对象的原始值'
-                    }
-                ]
-            },
-            {
-                title: 'Math属性方法',
-                list: [
-                    {
-                        code: 'E',
-                        grammar: 'Math.E',
-                        describe: '返回数学常量e，即自然对数的底数(约等于2.718)'
-                    },
-                    {
-                        code: 'LN10',
-                        grammar: 'Math.LN10',
-                        describe: '返回10的自然对数(约等于2.303)'
-                    },
-                    {
-                        code: 'LN2',
-                        grammar: 'Math.LN2',
-                        describe: '返回2的自然对数(约等于0.693)'
-                    },
-                    {
-                        code: 'LOG10E',
-                        grammar: 'Math.LOG10E',
-                        describe: '返回以10为底的e的对数(即log10e，约等于0.434)'
-                    },
-                    {
-                        code: 'LOG2E',
-                        grammar: 'Math.LOG2E',
-                        describe: '返回以2为底的e的对数(即log2e，约等于1.414)'
-                    },
-                    {
-                        code: 'PI',
-                        grammar: 'Math.PI',
-                        describe: '返回圆周率π(约等于3.14159)'
-                    },
-                    {
-                        code: 'SQRT1_2',
-                        grammar: 'Math.SQRT1_2',
-                        describe: '返回0.5的平方根，也就是2的平方根的倒数(约等于0.707)'
-                    },
-                    {
-                        code: 'SQRT2',
-                        grammar: 'Math.SQRT2',
-                        describe: '返回2的平方根(约等于1.414)'
-                    },
-                    {
-                        code: 'abs',
-                        grammar: 'abs(x)',
-                        describe: '返回数的绝对值'
-                    },
-                    {
-                        code: 'acos',
-                        grammar: 'acos(x)',
-                        describe: '返回数的反余弦值'
-                    },
-                    {
-                        code: 'asin',
-                        grammar: 'asin(x)',
-                        describe: '返回数的反正弦值'
-                    },
-                    {
-                        code: 'atan',
-                        grammar: 'atan(x)',
-                        describe: '以介于-π/2与π/2弧度之间的数值来返回x的反正切值'
-                    },
-                    {
-                        code: 'atan2',
-                        grammar: 'atan2(y,x)',
-                        describe: '返回从x轴到点(x,y)的角度(介于-π/2与π/2弧度之间)'
-                    },
-                    {
-                        code: 'ceil',
-                        grammar: 'ceil(x)',
-                        describe: '对数进行上舍入'
-                    },
-                    {
-                        code: 'cos',
-                        grammar: 'cos(x)',
-                        describe: '返回数的余弦'
-                    },
-                    {
-                        code: 'exp',
-                        grammar: 'exp(x)',
-                        describe: '返回e的指数'
-                    },
-                    {
-                        code: 'floor',
-                        grammar: 'floor(x)',
-                        describe: '对数进行下舍入'
-                    },
-                    {
-                        code: 'log',
-                        grammar: 'log(x)',
-                        describe: '返回数的自然对数(底为e)，即logex'
-                    },
-                    {
-                        code: 'max',
-                        grammar: 'max(x,y)',
-                        describe: '返回x和y中的最高值'
-                    },
-                    {
-                        code: 'min',
-                        grammar: 'min(x,y)',
-                        describe: '返回x和y中的最低值'
-                    },
-                    {
-                        code: 'pow',
-                        grammar: 'pow(x,y)',
-                        describe: '返回x的y次幂'
-                    },
-                    {
-                        code: 'random',
-                        grammar: 'random()',
-                        describe: '返回0~1之间(不包括1)的随机数'
-                    },
-                    {
-                        code: 'round',
-                        grammar: 'round(x)',
-                        describe: '把数四舍五入为最接近的整数'
-                    },
-                    {
-                        code: 'sin',
-                        grammar: 'sin(x)',
-                        describe: '返回数的正弦值'
-                    },
-                    {
-                        code: 'sqrt',
-                        grammar: 'sqrt(x)',
-                        describe: '返回数的平方根'
-                    },
-                    {
-                        code: 'tan',
-                        grammar: 'tan(x)',
-                        describe: '返回角的正切值'
-                    }
-                ]
-            },
-            {
-                title: 'Date属性方法',
-                list: [
-                    {
-                        code: 'getDate',
-                        grammar: 'date.getDate()',
-                        describe: '返回Date对象"日期"部分数值(1 ~ 31)'
-                    },
-                    {
-                        code: 'getDay',
-                        grammar: 'date.getDay()',
-                        describe: '返回Date对象"星期"部分的数值(0 ~ 6)'
-                    },
-                    {
-                        code: 'getFullYear',
-                        grammar: 'date.getFullYear()',
-                        describe: '返回Date对象"年份"部分的实际数值'
-                    },
-                    {
-                        code: 'getHours',
-                        grammar: 'date.getHours()',
-                        describe: '返回Date对象"小时"部分的数值(0 ~ 23)'
-                    },
-                    {
-                        code: 'getMilliseconds',
-                        grammar: 'date.getMilliseconds()',
-                        describe: '返回Date对象"毫秒"部分的数值(0 ~ 999)'
-                    },
-                    {
-                        code: 'getMinutes',
-                        grammar: 'date.getMinutes()',
-                        describe: '返回Date对象"分钟"部分的数值(0 ~ 59)'
-                    },
-                    {
-                        code: 'getMonth',
-                        grammar: 'date.getMonth()',
-                        describe: '返回Date对象"月份"部分的数值(0 ~ 11)'
-                    },
-                    {
-                        code: 'getSeconds',
-                        grammar: 'date.getSeconds()',
-                        describe: '返回Date对象"秒"部分的数值(0 ~ 59)'
-                    },
-                    {
-                        code: 'getTime',
-                        grammar: 'date.getTime()',
-                        describe: '返回Date对象与UTC时间1970年1月1日午夜之间相差的毫秒数'
-                    },
-                    {
-                        code: 'getTimezoneOffset',
-                        grammar: 'date.getTimezoneOffset()',
-                        describe: '返回本地时间与格林威治标准时间(GMT)的分钟差'
-                    },
-                    {
-                        code: 'getUTCDate',
-                        grammar: 'date.getUTCDate()',
-                        describe: '基于UTC时间返回Date对象"日期"部分的数值(1 ~ 31)'
-                    },
-                    {
-                        code: 'getUTCDay',
-                        grammar: 'date.getUTCDay()',
-                        describe: '基于UTC时间返回Date对象"星期"部分的数值(0 ~ 6)'
-                    },
-                    {
-                        code: 'getUTCFullYear',
-                        grammar: 'date.getUTCFullYear()',
-                        describe: '基于UTC时间返回Date对象"年份"部分的数值'
-                    },
-                    {
-                        code: 'getUTCHours',
-                        grammar: 'date.getUTCHours()',
-                        describe: '基于UTC时间返回Date对象"小时"部分的数值(0 ~ 23)'
-                    },
-                    {
-                        code: 'getUTCMilliseconds',
-                        grammar: 'date.getUTCMilliseconds()',
-                        describe: '基于UTC时间返回Date对象"毫秒"部分的数值(0 ~ 999)'
-                    },
-                    {
-                        code: 'getUTCMinutes',
-                        grammar: 'date.getUTCMinutes()',
-                        describe: '基于UTC时间返回Date对象"分钟"部分的数值(0 ~ 59)'
-                    },
-                    {
-                        code: 'getUTCMonth',
-                        grammar: 'date.getUTCMonth()',
-                        describe: '基于UTC时间返回Date对象"月份"部分的数值 (0 ~ 11)'
-                    },
-                    {
-                        code: 'getUTCSeconds',
-                        grammar: 'date.getUTCSeconds()',
-                        describe: '基于UTC时间返回Date对象"秒"部分的数值(0 ~ 59)'
-                    },
-                    {
-                        code: 'parse',
-                        grammar: 'date.parse(dateString)',
-                        describe: '返回指定日期(字符串)到UTC时间1970年1月1日午夜之间相差的毫秒数'
-                    },
-                    {
-                        code: 'setDate',
-                        grammar: 'date.setDate(dateNumber)',
-                        describe: '设置Date对象中"日期"部分的数值(1 ~ 31，但不限于)'
-                    },
-                    {
-                        code: 'setFullYear',
-                        grammar: 'date.setFullYear(year[,month[,dateNumber]])',
-                        describe: '设置Date对象中"年份"部分的实际数值'
-                    },
-                    {
-                        code: 'setHours',
-                        grammar: 'date.setHours(hours[,minutes[,seconds[,milliseconds]]]',
-                        describe: '设置Date对象中"小时"部分的数值(0 ~ 23，但不限于)'
-                    },
-                    {
-                        code: 'setMilliseconds',
-                        grammar: 'date.setMilliseconds(milliseconds)',
-                        describe: '设置Date对象中"毫秒"部分的数值(0 ~ 999，但不限于)'
-                    },
-                    {
-                        code: 'setMinutes',
-                        grammar: 'date.setMinutes(minutes[,seconds[,milliseconds]])',
-                        describe: '设置Date对象中"分钟"部分的数值(0 ~ 59，但不限于)'
-                    },
-                    {
-                        code: 'setMonth',
-                        grammar: 'date.setMonth(month[,dateValue])',
-                        describe: '设置Date对象中"月份"部分的数值(0 ~ 11，但不限于)'
-                    },
-                    {
-                        code: 'setSeconds',
-                        grammar: 'date.setSeconds(seconds[,milliseconds])',
-                        describe: '设置Date对象中"秒"部分的数值(0 ~ 59，但不限于)'
-                    },
-                    {
-                        code: 'setTime',
-                        grammar: 'date.setTime(milliseconds)',
-                        describe: '以毫秒值设置Date对象'
-                    },
-                    {
-                        code: 'setUTCDate',
-                        grammar: 'date.setUTCDate(dateValue)',
-                        describe: '基于UTC时间设置Date对象"日期"部分的数值(1 ~ 31，但不限于)'
-                    },
-                    {
-                        code: 'setUTCFullYear',
-                        grammar: 'date.setUTCFullYear(year[,month [,dateNumber]])',
-                        describe: '基于UTC时间设置Date对象"年份"部分的实际数值'
-                    },
-                    {
-                        code: 'setUTCHours',
-                        grammar: 'date.setUTCHours(hours[,minutes[,seconds[,milliseconds]]])',
-                        describe: '基于UTC时间设置Date对象"小时"部分的数值(0 ~ 23，但不限于)'
-                    },
-                    {
-                        code: 'setUTCMilliseconds',
-                        grammar: 'date.setUTCMilliseconds(milliseconds)',
-                        describe: '基于UTC时间设置Date对象"毫秒"部分的数值(0 ~ 999，但不限于)'
-                    },
-                    {
-                        code: 'setUTCMinutes',
-                        grammar: 'date.setUTCMinutes(minutes[,seconds[,milliseconds]])',
-                        describe: '基于UTC时间设置Date对象"分钟"部分的数值(0 ~ 59，但不限于)'
-                    },
-                    {
-                        code: 'setUTCMonth',
-                        grammar: 'date.setUTCMonth(month[,dateValue])',
-                        describe: '基于UTC时间设置Date对象"月份"部分的数值(0 ~ 11，但不限于)'
-                    },
-                    {
-                        code: 'setUTCSeconds',
-                        grammar: 'date.setUTCSeconds(seconds[,milliseconds])',
-                        describe: '基于UTC时间设置Date对象"秒"部分的数值(0 ~ 59，但不限于)'
-                    },
-                    {
-                        code: 'toDateString',
-                        grammar: 'date.toDateString()',
-                        describe: '返回Date对象"日期"部分(年月日)的字符串形式'
-                    },
-                    {
-                        code: 'toLocaleDateString',
-                        grammar: 'date.toLocaleDateString()',
-                        describe: '基于本地时间格式，返回Date对象"日期"部分(年月日)的字符串形式'
-                    },
-                    {
-                        code: 'toLocaleString',
-                        grammar: 'object.toLocaleString()',
-                        describe: '基于本地时间格式，返回Date对象的字符串形式'
-                    },
-                    {
-                        code: 'toLocaleTimeString',
-                        grammar: 'date.toLocaleTimeString()',
-                        describe: '基于本地时间格式，返回Date对象"时间"部分(时分秒)的字符串形式'
-                    },
-                    {
-                        code: 'toString',
-                        grammar: 'object.toString()',
-                        describe: '返回Date对象的字符串形式'
-                    },
-                    {
-                        code: 'toTimeString',
-                        grammar: 'date.toTimeString()',
-                        describe: '返回Date对象"时间"部分(时分秒)的字符串形式'
-                    },
-                    {
-                        code: 'toUTCString',
-                        grammar: 'date.toUTCString()',
-                        describe: '基于UTC时间格式，返回Date对象的字符串形式'
-                    },
-                    {
-                        code: 'UTC',
-                        grammar: 'Date.UTC(year,month,day[,hours[,minutes[,seconds[,milliseconds]]]])',
-                        describe: '基于UTC时间，返回指定日期与UTC时间1997年1月1日午夜相差的毫秒数'
-                    },
-                    {
-                        code: 'valueOf',
-                        grammar: 'object.valueOf()',
-                        describe: '返回Date对象的原始值'
-                    }
-                ]
-            },
-            {
-                title: 'Function属性方法',
-                list: [
-                    {
-                        code: 'arguments',
-                        grammar: 'functionObject.arguments',
-                        describe: '返回该函数执行时内置的arguments对象'
-                    },
-                    {
-                        code: 'caller',
-                        grammar: 'functionObject.caller',
-                        describe: '返回调用当前函数的函数'
-                    },
-                    {
-                        code: 'constructor',
-                        grammar: 'object.constructor',
-                        describe: '返回创建该对象的构造函数'
-                    },
-                    {
-                        code: 'length',
-                        grammar: 'functionObject.length',
-                        describe: '返回函数定义的参数个数'
-                    },
-                    {
-                        code: 'prototype',
-                        grammar: 'functionObject.prototype',
-                        describe: '返回创建该对象的函数的原型对象'
-                    },
-                    {
-                        code: 'apply',
-                        grammar: 'functionObject.apply([thisObj[,argsArray]])',
-                        describe: '调用当前Function对象，可同时改变函数内的this指针引用，函数参数以数组或arguments对象的形式传入'
-                    },
-                    {
-                        code: 'call',
-                        grammar: 'functionObject.call([thisObj[,arg1[arg2[args...]]]])',
-                        describe: '调用当前Function对象，可同时改变函数内的this指针引用，函数参数一个个分别传入'
-                    },
-                    {
-                        code: 'toString',
-                        grammar: 'object.toString()',
-                        describe: '返回定义该Function对象的字符串'
-                    },
-                    {
-                        code: 'valueOf',
-                        grammar: 'object.valueOf()',
-                        describe: '返回Function对象本身'
+                        describe: '对由escape()编码的字符串进行解码。'
                     }
                 ]
             }
