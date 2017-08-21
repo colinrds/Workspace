@@ -1,0 +1,25 @@
+html,body{
+    width: 100%;
+    height: 200%;
+    background: #F6F6F6;
+    margin: 0;
+    padding: 0;
+}
+img{
+    width: 100%;
+    height: auto;
+}
+#header{
+    width: 100%;
+    height: 66px;
+    background: #FFF;
+    -moz-box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    -webkit-box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    .logo{
+        width: 66px;
+        height: 66px;
+        float: left;
+        background: url('../img/weicao.png') no-repeat;
+    }
+}
