@@ -8,7 +8,9 @@ json/
 .metadata
 *.tmp
 *.zip
-*.esp
+*.rar
+*.eps
+*.txt
 *.url
 *.ai
 *.bak
