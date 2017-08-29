@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<div id="frm">
+    <div class="youxi">
+        <div class="neibu">
+            <div class="content">
+                <div id="main"></div>
+            </div>
+            <span class="main"></div>
+        </div>
+    </div>
+</div>
+
+<body>
+
+    <script type="text/javascript">
+        // var s = [];
+        // function findChild(x) {
+        //     var c = x.childNodes;
+        //     for (var i = 0; i < c.length; i++) {
+        //         if (c[i].tagName) {
+        //             s.push(c[i]);
+        //         }
+        //         if (c[i].childNodes) {
+        //             findChild(c[i]);
+        //         }
+        //     }
+        //     return s;
+        // }
+        var Dom = [];
+        function findChild(node,name) {
+            var $node = node.childNodes;
+            var nodeoName = name.match(/[a-zA-z\d]+$/);
+            for (var i = 0; i < $node.length; i++) {
+                if ($node[i].tagName) {
+                    switch (name.charAt(0)) {
+                        //id选择器  eg: #box  使用document.getElementById选取
+                        case '#':
+                            if($node[i].getAttribute('id') == nodeoName){
+                                Dom.push($node[i]);
+                            }
+                            break;
+                        case '.':
+                            if($node[i].getAttribute('class') == nodeoName){
+                                Dom.push($node[i]);
+                            }
+                            break;
+                        default:
+                            if($node[i].tagName.toLocaleLowerCase() == name){
+                                Dom.push($node[i]);
+                            }
+                    }
+                }
+                if ($node[i].childNodes) {
+                    findChild($node[i],name);
+                }
+            }
+            return Dom;
+        }
+
+        function init() {
+            var a = document.getElementById("frm");
+            console.log(findChild(a, 'span'));
+        }
+        window.onload = init;
+    </script>
+</body>
+
+</html>
