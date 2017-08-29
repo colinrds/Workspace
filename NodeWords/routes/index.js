@@ -27,9 +27,9 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/setdata', function (req, res, next) {
-  var str = trim(req.body.text);
+  var str = req.body.text;
   console.log(str);
-  fs.appendFile('./data/f.txt', '\r\n'+ str + '\r\n', function (err) {
+  fs.appendFile('./data/f.txt', str + '\r\n', function (err) {
     if (err) {
       console.log(err);
     } else {

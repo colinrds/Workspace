@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="player"></div>
+    <script type="text/javascript" src="js/clappr.js"></script>
+    <script type="text/javascript" src="js/level-selector.js"></script>
+    <script type="text/javascript" src="js/clappr-playback-rate-plugin.js"></script>
+    <script>
+        var player = new Clappr.Player({
+            source: "data/ori.m3u8",
+            parentId: "#player",
+            plugins: {
+                'core': [PlaybackRatePlugin,LevelSelector]
+            },
+            levelSelectorConfig: {
+                title: '清晰度',
+                labels: {
+                    1: '清晰', // 240kbps
+                    0: '流畅', // 120kbps
+                },
+                labelCallback: function(playbackLevel, customLabel) {
+                    console.log(playbackLevel, customLabel)
+                    return customLabel; // High 720p
+                }
+            },
+            events: {
+                //当播放器在启动时准备就绪时触发
+                onReady: function (e) {
+                    this.flag = true;
+
+                },
+                //播放器调整大小
+                onResize: function (e) {
+
+                },
+                //当播放器开始播放时触发
+                onPlay: function (e) {
+
+                    console.log(this);
+
+                    if (this.flag) {
+                        // var video = document.getElementsByTagName('video')[0];
+                        var video = player.playerInfo.options.parentElement.children[0].children[0].children[4];
+                        // video.currentTime = '0.5';
+                        this.seek(0.5);
+                        this.flag = false;
+                    }
+
+
+                },
+                //当播放器暂停
+                onPause: function (e) {
+                    console.log('播放暂停')
+                },
+                //播放器停止时
+                onStop: function (e) {
+                    console.log('播放停止')
+                },
+                //当播放器结束视频
+                onEnded: function (e) {
+                    console.log('播放结束')
+                },
+                //当播放器寻找视频时触发
+                onSeek: function (e) {
+                    console.log(e)
+                },
+                //收到错误时触发
+                onError: function (e) {
+
+                },
+                //播放中时间实时记录触发
+                onTimeUpdate: function (e) {
+                    console.log(e,this);
+                },
+                //播放器更新音量时触发
+                onVolumeUpdate: function (e) {
+                    console.log(e)
+                }
+            }
+        });
+        console.log(player.playerInfo.options.parentElement.children[0].children[0].children[4]);
+    </script>
+</body>
+
+</html>

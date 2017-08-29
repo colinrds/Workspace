@@ -1,0 +1,76 @@
+.level_selector[data-level-selector] {
+  float: right;
+  margin-top: 5px;
+  position: relative;
+}
+
+.level_selector[data-level-selector] button {
+  background-color: transparent;
+  color: #fff;
+  font-family: Roboto, "Open Sans", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  border: none;
+  font-size: 10px;
+}
+
+.level_selector[data-level-selector] button:hover {
+  color: #c9c9c9;
+}
+
+.level_selector[data-level-selector] button.changing {
+  -webkit-animation: pulse 0.5s infinite alternate;
+}
+
+.level_selector[data-level-selector] > ul {
+  list-style-type: none;
+  position: absolute;
+  bottom: 25px;
+  border: 1px solid black;
+  background: rgba(0, 0, 0, 0.7);
+  margin: 0;
+  padding: 0;
+  display: none;
+  border-radius: 4px;
+}
+
+.level_selector[data-level-selector] li {
+  font-size: 10px;
+  color: #aaa;
+}
+
+.level_selector[data-level-selector] li[data-title] {
+  padding: 5px;
+}
+
+.level_selector[data-level-selector] li a {
+  color: #aaa;
+  padding: 2px 10px;
+  display: block;
+  text-decoration: none;
+}
+
+.level_selector[data-level-selector] li a:hover {
+  color: white;
+}
+
+.level_selector[data-level-selector] li a:hover a {
+  color: white;
+  text-decoration: none;
+}
+
+.level_selector[data-level-selector] li.current a {
+  color: #FFF;
+  background-color: #000;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    color: #fff;
+  }
+  50% {
+    color: #ff0101;
+  }
+  100% {
+    color: #B80000;
+  }
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Promise</title>
+</head>
+
+<body>
+    <script type="text/javascript" src="./promise.js"></script>
+    <script>
+        // function MyPromise(fn) {
+        //     this.value;
+        //     this.resolveFunc = function () {};
+        //     this.rejectFunc = function () {};
+        //     fn(this.resolve.bind(this), this.reject.bind(this));
+        // }
+
+        // MyPromise.prototype.resolve = function (val) {
+        //     var self = this;
+        //     self.value = val;
+        //     setTimeout(function () {
+        //         self.resolveFunc(self.value);
+        //     }, 0);
+        // }
+
+        // MyPromise.prototype.reject = function (val) {
+        //     var self = this;
+        //     self.value = val;
+        //     setTimeout(function () {
+        //         self.rejectFunc(self.value);
+        //     }, 0);
+        // }
+
+        // MyPromise.prototype.then = function (resolveFunc, rejectFunc) {
+        //     this.resolveFunc = resolveFunc;
+        //     this.rejectFunc = rejectFunc;
+        // }
+
+        // var fn = function (resolve, reject) {
+        //     console.log('begin to execute!');
+        //     var number = Math.random();
+        //     setTimeout(function () {
+        //         if (number <= 0.5) {
+        //             resolve('less than 0.5');
+        //         } else {
+        //             reject('greater than 0.5');
+        //         }
+        //     }, 2000);
+        // }
+
+        // var p = new MyPromise(fn);
+        // p.then(function (data) {
+        //     console.log('resolve: ', data);
+        // }, function (data) {
+        //     console.log('reject: ', data);
+        // });
+
+
+
+
+        // function Quest(fn) {
+        //     if (this instanceof Quest) {
+
+        //     } else {
+        //         return new Quest(fn);
+        //     }
+        // }
+        // Quest.prototype = {
+        //     init: function () {
+
+        //     },
+        //     zhen: function () {
+
+        //     }
+        // }
+
+        // function ajax() {
+
+        // }
+
+        // Quest(ajax).zhen(function (data) {
+
+        // }, function (data) {
+
+        // })
+
+        var getData100 = function () {
+            return Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve('10110ms');
+                }, 2000);
+            });
+        }
+
+        var getData200 = function () {
+            return Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve('200ms');
+                }, 200);
+            });
+        }
+
+        Promise.all([getData100,getData200]).zhen(function(data){
+            console.log(data);
+        })
+    </script>
+</body>
+
+</html>

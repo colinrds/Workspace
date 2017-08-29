@@ -152,12 +152,61 @@
         .item:nth-child(10) {
             background: #EA4B35;
         } */
+        #nav{
+            position: fixed;
+            bottom: 20px;
+            right: -140px;;
+            background: #35475A;
+        }
+        #nav .nav_list{
+            list-style: none;
+            margin: 0;
+            padding: 10px 0;
+        }
+        #nav .nav_list li{
+            width: 100%;
+            height: 40px;
+        }
+        #nav .nav_list a{
+            width: 140px;
+            text-align: center;
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+            font-size:14px;
+            color: #F4F4F4;
+        }
+        #nav .nav_list a:hover{
+            background: #3D5369;
+        }
+        #nav .nav_btn{
+            width: 50px;
+            height: 50px;
+            background: #35475A url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABJ0lEQVR4Xu2bMUoEURBEq24g3s0biKEYmxtvKih7Ao9l4BHMetl0WacdfrJUv0l7PkxVv/ofmj/W8MfD9QsDIGC4A0RgOABsgkSgi0BVPUu679678fq37c9r37hJQFW9SDrcuLj/ft6D7a/LlzGgsy8kAj+233dHoDMnoc4pkNDFFQ0QsOJewloISOjiigYIWHEvYS0EJHRxRQMErLiXsBYCErq4ogECOvdCBiLMBCUxE9w9FD3HIyQCzAT/2us4BbpTIL0OAekd7vRBQOdQeh0C0jvc6YOAzqH0OgSkd7jTBwGdQ+l1CNjqcFXdSTom3BOU9Gj791Jvd03uTdJrSAyebH/sNWD2RUlmgiHsb8ngFBjQ5E2JEAABwx0gAsMB4K8xIjA9Aidriz1BeWWngAAAAABJRU5ErkJggg==') no-repeat center center;
+            background-size: 32px 32px;
+            border-right: 1px solid #3D5369;
+            position: absolute;
+            left: -51px;
+            bottom: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
     <div id="main">
         <div class="waterfall"></div>
+    </div>
+    <div id="nav">
+        <ul class="nav_list">
+            <li><a href="#">DOM属性方法</a></li>
+            <li><a href="#">DOM属性方法</a></li>
+            <li><a href="#">DOM属性方法</a></li>
+            <li><a href="#">DOM属性方法</a></li>
+            <li><a href="#">DOM属性方法</a></li>
+        </ul>
+        <i class="nav_btn"></i>
     </div>
     <script>
         function Manual() { };
@@ -170,19 +219,62 @@
                 str = str.replace(/x27/g, '&#39;');
                 return str;
             },
+            enReg: function (text) {
+                return text.replace(/[^A-Za-z]/ig, "").toLocaleLowerCase();
+            },
+            rightAnimation: function(dom,val){
+                var computedStyle = document.defaultView.getComputedStyle(dom, null); 
+                console.log();
+            },
+            _navState: true,
+            _navAnimation: function(){
+                var that = this;
+                var navBtn = document.getElementsByClassName('nav_btn')[0];
+                var navState = true;
+                navBtn.onclick = (function(e){
+                    if(that._navState){
+                        // that.rightAnimation(this.parentNode,'0px');
+                        this.parentNode.style.right = '0px';
+                        that._navState = false;
+                    }else{
+                        this.parentNode.style.right = '-140px';
+                        that._navState = true;
+                    }
+                })
+            },
+            _bodyClick: function(){
+                var that = this;
+                var bodyDOM = document.getElementsByTagName('body')[0];
+                var navDOM = document.getElementById('nav');
+                bodyDOM.onclick = function(){
+                    if(navDOM.style.right == '0px'){
+                        navDOM.style.right = '-140px';
+                        that._navState = true;
+                    }
+                }
+                navDOM.onclick = function(e){
+                    e.stopPropagation();
+                }
+            },
             init: function () {
                 var that = this;
                 var waterfallDOM = document.getElementsByClassName('waterfall')[0];
+                var navListDOM = document.getElementsByClassName('nav_list')[0];
                 var mianHtml = '';
                 var contentHtml = '';
+                var navTitle = '';
                 for (i in manualData) {
                     for (child in manualData[i].list) {
                         contentHtml += '<li><span>' + manualData[i].list[child].code + '</span><span>' + that.changeString(manualData[i].list[child].describe) + '</span></li>';
                     }
-                    mianHtml += '<div class="item"><div class="item-title">' + manualData[i].title + '</div><ul>' + contentHtml + '</ul></div>'
+                    mianHtml += '<div class="item" id="'+that.enReg(manualData[i].title)+'"><div class="item-title">' + manualData[i].title + '</div><ul>' + contentHtml + '</ul></div>';
+                    navTitle += '<li><a href="#' + that.enReg(manualData[i].title) + '">' + manualData[i].title + '</a></li>'
                 }
+                navListDOM.innerHTML = navTitle;
                 waterfallDOM.innerHTML = mianHtml;
                 contentHtml = '';
+                that._navAnimation();
+                that._bodyClick();
             }
         }
         var manualData = [

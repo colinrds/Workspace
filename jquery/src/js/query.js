@@ -187,6 +187,9 @@ var $ = (function () {
                 }
                 elem.innerHTML = '' + val;
             }, null, val);
+        },
+        css: function(){
+            console.log(this);
         }
     })
 

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pinterest</title>
+    <style type="text/css">
+        html {
+            padding: 10px;
+            background: #2A333C;
+        }
+
+        body,
+        ul,
+        li,
+        h3 {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 14px;
+            font-weight: 300;
+        }
+        /*瀑布流布局样式*/
+
+        #lxf-box {
+            position: relative;
+        }
+
+        #lxf-box li {
+            width: 456px;
+            position: absolute;
+            background: #fff;
+            text-align: left;
+            left: 0px;
+            top: 0;
+            color: #EEE;
+        }
+
+        #lxf-box li tr:nth-child(even) {
+            background: rgba(255, 255, 255, .1);
+        }
+
+        #lxf-box li table {
+            width: 100%;
+        }
+
+        #lxf-box li h3 {
+            font-size: 20px;
+            text-align: center;
+            line-height: 60px;
+            color: #FFF;
+            font-weight: blod;
+        }
+
+        #lxf-box li:nth-child(1) {
+            background: #B94A48;
+        }
+
+        #lxf-box li:nth-child(2) {
+            background: #3A87AD;
+        }
+
+        #lxf-box li:nth-child(3) {
+            background: #468847;
+        }
+
+        #lxf-box li:nth-child(4) {
+            background: #B94A48;
+        }
+
+        #lxf-box li:nth-child(5) {
+            background: #3A87AD;
+        }
+
+        #lxf-box li:nth-child(6) {
+            background: #468847;
+        }
+
+        #lxf-box li:nth-child(7) {
+            background: #B94A48;
+        }
+
+        #lxf-box li:nth-child(8) {
+            background: #3A87AD;
+        }
+
+        #lxf-box li:nth-child(9) {
+            background: #468847;
+        }
+
+        #lxf-box li:nth-child(10) {
+            background: #B94A48;
+        }
+
+        #lxf-box li:nth-child(11) {
+            background: #3A87AD;
+        }
+
+        #lxf-box li:nth-child(12) {
+            background: #468847;
+        }
+
+        #lxf-box li:nth-child(13) {
+            background: #B94A48;
+        }
+
+        #lxf-box li:nth-child(14) {
+            background: #3A87AD;
+        }
+
+        #lxf-box li:nth-child(15) {
+            background: #468847;
+        }
+
+        #lxf-box li:nth-child(16) {
+            background: #B94A48;
+        }
+        /* li {
+            -webkit-transition: all .7s ease-out .1s;
+            -moz-transition: all .7s ease-out .1s;
+            -o-transition: all .7s ease-out .1s;
+            transition: all .7s ease-out .1s
+        } */
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <ul id="lxf-box">
+        <li>
+            <h3>节点类型</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>节点类型</th>
+                    <th>节点值</th>
+                </tr>
+                <tr>
+                    <td>标签节点(Element)</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>属性节点(Attr)</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>文本节点(Text)</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>CDATA节点(CDATASetion)</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>实体引用节点(EntityReference)</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>实体节点(Entity)</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>处理指令节点(ProcessingInstruction)</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>注释节点(Comment)</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>文档节点(Document)</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>文档类型节点(DocumentType)</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>文档片段节点(DocumentFragment)</td>
+                    <td>11</td>
+                </tr>
+                <tr>
+                    <td>DTD声明节点(Notation)</td>
+                    <td>12</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Node类型</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>属性</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>nodeType</td>
+                    <td>节点类型</td>
+                </tr>
+                <tr>
+                    <td>nodeName</td>
+                    <td>节点名</td>
+                </tr>
+                <tr>
+                    <td>nodeValue</td>
+                    <td>节点值</td>
+                </tr>
+                <tr>
+                    <td>childNodes</td>
+                    <td>子节点</td>
+                </tr>
+                <tr>
+                    <td>parentNode</td>
+                    <td>父节点</td>
+                </tr>
+                <tr>
+                    <td>ownerDocument</td>
+                    <td>文档节点</td>
+                </tr>
+                <tr>
+                    <td>previousSibling</td>
+                    <td>上一个节点</td>
+                </tr>
+                <tr>
+                    <td>nextSibling</td>
+                    <td>下一个节点</td>
+                </tr>
+                <tr>
+                    <td>firstChild</td>
+                    <td>第一个子节点</td>
+                </tr>
+                <tr>
+                    <td>lastChild</td>
+                    <td>最后一个子节点</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Document类型属性</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>属性</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>documentElement</td>
+                    <td>html标签</td>
+                </tr>
+                <tr>
+                    <td>head</td>
+                    <td>head标签</td>
+                </tr>
+                <tr>
+                    <td>body</td>
+                    <td>body标签</td>
+                </tr>
+                <tr>
+                    <td>URL</td>
+                    <td>当前页url</td>
+                </tr>
+                <tr>
+                    <td>referrer</td>
+                    <td>来源页url</td>
+                </tr>
+                <tr>
+                    <td>domain</td>
+                    <td>页面域名</td>
+                </tr>
+                <tr>
+                    <td>images</td>
+                    <td>所有图片集合</td>
+                </tr>
+                <tr>
+                    <td>cookie</td>
+                    <td>cookie信息</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>页面标题</td>
+                </tr>
+                <tr>
+                    <td>activeElement</td>
+                    <td>当前焦点元素</td>
+                </tr>
+                <tr>
+                    <td>documentMode</td>
+                    <td>文档模式</td>
+                </tr>
+                <tr>
+                    <td>readyState</td>
+                    <td>文档状态</td>
+                </tr>
+                <tr>
+                    <td>doctype</td>
+                    <td>文档类型声明</td>
+                </tr>
+                <tr>
+                    <td>scripts</td>
+                    <td>脚本集合</td>
+                </tr>
+                <tr>
+                    <td>forms</td>
+                    <td>form标签集合</td>
+                </tr>
+                <tr>
+                    <td>children</td>
+                    <td>元素类型的子节点集合</td>
+                </tr>
+                <tr>
+                    <td>defaultView</td>
+                    <td>document关联的window对象</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Document类型方法</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>方法</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>getElementById()</td>
+                    <td>返回对应id的元素</td>
+                </tr>
+                <tr>
+                    <td>getElementsByName()</td>
+                    <td>返回对应名称元素集合</td>
+                </tr>
+                <tr>
+                    <td>getElementsByTagName()</td>
+                    <td>返回对应标签名元素集合</td>
+                </tr>
+                <tr>
+                    <td>getElementsByClassName()</td>
+                    <td>返回指定类名的元素集合</td>
+                </tr>
+                <tr>
+                    <td>querySelector()</td>
+                    <td>返回符合选择器的第一个元素</td>
+                </tr>
+                <tr>
+                    <td>querySelectorAll()</td>
+                    <td>返回符合选择器的元素集合</td>
+                </tr>
+                <tr>
+                    <td>createElement()</td>
+                    <td>创建元素节点</td>
+                </tr>
+                <tr>
+                    <td>createTextNode()</td>
+                    <td>创建文本节点</td>
+                </tr>
+                <tr>
+                    <td>createAttribute()</td>
+                    <td>创建属性节点</td>
+                </tr>
+                <tr>
+                    <td>createComment()</td>
+                    <td>创建注释节点</td>
+                </tr>
+                <tr>
+                    <td>createDocumentFragment()</td>
+                    <td>创建空的DFragment对象</td>
+                </tr>
+                <tr>
+                    <td>matchesSelector()</td>
+                    <td>该选择器是否符合元素匹配</td>
+                </tr>
+                <tr>
+                    <td>write()</td>
+                    <td>文档文本写入</td>
+                </tr>
+                <tr>
+                    <td>writeIn()</td>
+                    <td>文档文本写入</td>
+                </tr>
+                <tr>
+                    <td>implementation.hasFeature</td>
+                    <td>特性监测</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Element类型属性</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>属性</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>id</td>
+                    <td>id</td>
+                </tr>
+                <tr>
+                    <td>className</td>
+                    <td>类名</td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td>标题</td>
+                </tr>
+                <tr>
+                    <td>style</td>
+                    <td>设置或返回元素的样式属性</td>
+                </tr>
+                <tr>
+                    <td>children</td>
+                    <td>元素子集合</td>
+                </tr>
+                <tr>
+                    <td>innerHTML</td>
+                    <td>设置或者返回元素的内容</td>
+                </tr>
+                <tr>
+                    <td>outerHTML</td>
+                    <td>设置或者返回元素的内容</td>
+                </tr>
+                <tr>
+                    <td>textContent</td>
+                    <td>设置或返回文本内容</td>
+                </tr>
+                <tr>
+                    <td>contentEditable</td>
+                    <td>设置或返回元素的可编辑状态</td>
+                </tr>
+                <tr>
+                    <td>isContentEditable</td>
+                    <td>是否可编辑</td>
+                </tr>
+                <tr>
+                    <td>childElementCount</td>
+                    <td>子元素节点个数</td>
+                </tr>
+                <tr>
+                    <td>firstElementChild</td>
+                    <td>第一个子元素节点</td>
+                </tr>
+                <tr>
+                    <td>lastElementChild</td>
+                    <td>最后一个子元素节点</td>
+                </tr>
+                <tr>
+                    <td>previousElementSibling</td>
+                    <td>上一个元素节点</td>
+                </tr>
+                <tr>
+                    <td>nextElementSibling</td>
+                    <td>下一个元素节点</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Element类型方法</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>方法</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>focus()</td>
+                    <td>设置焦点</td>
+                </tr>
+                <tr>
+                    <td>blur()</td>
+                    <td>失去焦点</td>
+                </tr>
+                <tr>
+                    <td>appendChild()</td>
+                    <td>在子节点列表之后插入</td>
+                </tr>
+                <tr>
+                    <td>insertBefore()</td>
+                    <td>在参照节点之前插入节点</td>
+                </tr>
+                <tr>
+                    <td>removeChild()</td>
+                    <td>节点删除</td>
+                </tr>
+                <tr>
+                    <td>removeChild()</td>
+                    <td>节点删除</td>
+                </tr>
+                <tr>
+                    <td>replaceChild()</td>
+                    <td>节点替换</td>
+                </tr>
+                <tr>
+                    <td>cloneNode()</td>
+                    <td>复制节点</td>
+                </tr>
+                <tr>
+                    <td>importNode()</td>
+                    <td>从A文档中取得a节点，将其导入B文档(类似cloneNode方法)</td>
+                </tr>
+                <tr>
+                    <td>contains()</td>
+                    <td>该节点是否为调用节点的子级</td>
+                </tr>
+                <tr>
+                    <td>hasFocus()</td>
+                    <td>是否获得了焦点</td>
+                </tr>
+                <tr>
+                    <td>hasChildNodes()</td>
+                    <td>是否存在子节点</td>
+                </tr>
+                <tr>
+                    <td>isDefaultNamespace()</td>
+                    <td>是否指定了名称空间</td>
+                </tr>
+                <tr>
+                    <td>isEqualNode()</td>
+                    <td>两个元素是否相等</td>
+                </tr>
+                <tr>
+                    <td>isSupported()</td>
+                    <td>是否支持某特性</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Attr类型属性</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>属性</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>属性名</td>
+                </tr>
+                <tr>
+                    <td>value</td>
+                    <td>属性值</td>
+                </tr>
+                <tr>
+                    <td>isId</td>
+                    <td>是否为id类型</td>
+                </tr>
+                <tr>
+                    <td>specified</td>
+                    <td>属性是否被指定</td>
+                </tr>
+                <tr>
+                    <td>length</td>
+                    <td>属性长度</td>
+                </tr>
+                <tr>
+                    <td>attributes</td>
+                    <td>属性集合</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>大小和偏移</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>属性</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>offsetParent</td>
+                    <td>偏移的父容器</td>
+                </tr>
+                <tr>
+                    <td>getBoundingClientRect()</td>
+                    <td>获取页面元素实际位置和宽高(返回属性对象)</td>
+                </tr>
+                <tr>
+                    <td>offsetWidth</td>
+                    <td>元素宽度(可视内容区+滚动条+内边距+边框)</td>
+                </tr>
+                <tr>
+                    <td>offsetHeight</td>
+                    <td>元素高度(可视内容区+滚动条+内边距+边框)</td>
+                </tr>
+                <tr>
+                    <td>offsetLeft</td>
+                    <td>与相邻父级的左距离</td>
+                </tr>
+                <tr>
+                    <td>offsetTop</td>
+                    <td>与相邻父级的上距离</td>
+                </tr>
+                <tr>
+                    <td>clientWidth</td>
+                    <td>元素宽度(可视内容区+内边距)</td>
+                </tr>
+                <tr>
+                    <td>clientHeight</td>
+                    <td>元素高度(可视内容区+内边距)</td>
+                </tr>
+                <tr>
+                    <td>clientLeft</td>
+                    <td>内边距边缘与边框边缘的距离(左边框)</td>
+                </tr>
+                <tr>
+                    <td>clientTop</td>
+                    <td>内边距边缘与边框边缘的距离(上边框)</td>
+                </tr>
+                <tr>
+                    <td>scrollWidth</td>
+                    <td>元素宽度(可视内容区+滚动内容区+内边距)</td>
+                </tr>
+                <tr>
+                    <td>scrollHeight</td>
+                    <td>元素高度(可视内容区+滚动内容区+内边距)</td>
+                </tr>
+                <tr>
+                    <td>scrollLeft</td>
+                    <td>隐藏的滚动宽度(待滚动宽度)</td>
+                </tr>
+                <tr>
+                    <td>scrollTop</td>
+                    <td>隐藏的滚动高度(待滚动宽度)</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Attr类型方法</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>方法</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>getAttribute()</td>
+                    <td>获取属性值</td>
+                </tr>
+                <tr>
+                    <td>getAttributeNode()</td>
+                    <td>获取属性节点</td>
+                </tr>
+                <tr>
+                    <td>setAttribute()</td>
+                    <td>设置属性值</td>
+                </tr>
+                <tr>
+                    <td>setAttributeNode()</td>
+                    <td>设置属性节点</td>
+                </tr>
+                <tr>
+                    <td>removeAttribute()</td>
+                    <td>删除属性</td>
+                </tr>
+                <tr>
+                    <td>hasAttribute()</td>
+                    <td>是否存在指定的属性</td>
+                </tr>
+                <tr>
+                    <td>hasAttributes()</td>
+                    <td>是否存在属性</td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            <h3>Text类型方法</h3>
+            <table border="0" cellpadding="10" cellspacing="0">
+                <tr>
+                    <th>方法</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td>appendData(string)</td>
+                    <td>将text添加到节点的末尾</td>
+                </tr>
+                <tr>
+                    <td>deleteData(start,length)</td>
+                    <td>从指定位置开始删除n个字符</td>
+                </tr>
+                <tr>
+                    <td>insertData(start,string)</td>
+                    <td>从指定位置插入文本</td>
+                </tr>
+                <tr>
+                    <td>replaceData(start,length,string)</td>
+                    <td>用text替换从offset位置开始到offset+count为止处的文本</td>
+                </tr>
+                <tr>
+                    <td>splitText(start)</td>
+                    <td>从指定位置将当前文本节点分裂成两个文本节点</td>
+                </tr>
+                <tr>
+                    <td>substringData(start,length)</td>
+                    <td>从指定位置开始删除n个字符</td>
+                </tr>
+                <tr>
+                    <td>normalize()</td>
+                    <td>合并相邻文本节点，并删除空的文本节点</td>
+                </tr>
+            </table>
+        </li>
+    </ul>
+    <script>
+        /*
+                                原理：1.把所有的li的高度值放到数组里面
+                                     2.第一行的top都为0
+                                	 3.计算高度值最小的值是哪个li
+                                	 4.把接下来的li放到那个li的下面
+                                */
+        var margin = 10; //这里设置间距
+        var li = $("li"); //这里是区块名称
+        var li_W = li[0].offsetWidth + margin; //取区块的实际宽度（包含间距，这里使用源生的offsetWidth函数，不适用jQuery的width()函数是因为它不能取得实际宽度，例如元素内有pandding就不行了）
+        function liuxiaofan() { //定义成函数便于调用
+            var h = []; //记录区块高度的数组
+            var n = document.documentElement.offsetWidth / li_W | 0; //窗口的宽度除以区块宽度就是一行能放几个区块
+            for (var i = 0; i < li.length; i++) { //有多少个li就循环多少次
+                li_H = li[i].offsetHeight; //获取每个li的高度
+                if (i < n) { //n是一行最多的li，所以小于n就是第一行了
+                    h[i] = li_H; //把每个li放到数组里面
+                    li.eq(i).css("top", 0); //第一行的Li的top值为0
+                    li.eq(i).css("left", i * li_W); //第i个li的左坐标就是i*li的宽度
+                } else {
+                    min_H = Math.min.apply(null, h); //取得数组中的最小值，区块中高度值最小的那个
+                    minKey = getarraykey(h, min_H); //最小的值对应的指针
+                    h[minKey] += li_H + margin; //加上新高度后更新高度值
+                    li.eq(i).css("top", min_H + margin); //先得到高度最小的Li，然后把接下来的li放到它的下面
+                    li.eq(i).css("left", minKey * li_W); //第i个li的左坐标就是i*li的宽度
+                }
+            }
+        }
+        /* 使用for in运算返回数组中某一值的对应项数(比如算出最小的高度值是数组里面的第几个) */
+        function getarraykey(s, v) {
+            for (k in s) {
+                if (s[k] == v) {
+                    return k;
+                }
+            }
+        }
+        /*这里一定要用onload，因为图片不加载完就不知道高度值*/
+        window.onload = function () {
+            liuxiaofan();
+        };
+        /*浏览器窗口改变时也运行函数*/
+        window.onresize = function () {
+            liuxiaofan();
+        };
+    </script>
+</body>
+
+</html>
