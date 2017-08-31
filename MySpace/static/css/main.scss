@@ -1,6 +1,7 @@
 body {
     width: 100%;
     font-weight: 300;
+    // background: #F8F8F8;
 }
 
 .w1080 {
@@ -12,7 +13,7 @@ body {
 header {
     width: 100%;
     height: 300px;
-    background: #625169;
+    background: #3B5999;
     background-size: auto 80%;
     overflow: hidden;
     .header-bg{
@@ -59,10 +60,10 @@ header {
         -webkit-box-shadow:2px 1px 2px rgba(0,0,0,.1); 
         box-shadow:2px 1px 2px rgba(0,0,0,.1); 
         .input-text{
-            width: 418px;
+            width: 428px;
             height: 52px;
             border: 0;
-            padding: 0 15px;
+            padding: 0 10px;
             font-size:15px;
             color: #666;
             font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei";
@@ -80,8 +81,9 @@ header {
 nav {
     width: 100%;
     height: 54px;
-    background: #0A3951;
+    background: #3B5999;
     .nav-list {
+        width: 730px;
         float: left;
         li {
             height: 54px;
@@ -91,7 +93,7 @@ nav {
             a {
                 height: 50px;
                 line-height: 54px;
-                color: #A2ADB1;
+                color: #BBBBBB;
                 padding: 0 30px;
                 display: block;
                 &.hover {
@@ -100,7 +102,7 @@ nav {
                     padding: 0 30px;
                     display: block;
                     color: #FFF;
-                    border-bottom: 4px solid #497689;
+                    border-bottom: 4px solid #EEE;
                 }
             }
             &:hover {
@@ -110,7 +112,7 @@ nav {
                     padding: 0 30px;
                     display: block;
                     color: #FFF;
-                    border-bottom: 4px solid #497689;
+                    border-bottom: 4px solid #EEE;
                 }
             }
         }
@@ -125,7 +127,7 @@ nav {
                     line-height: 54px;
                     padding: 0 30px;
                     display: block;
-                    color: #A2ADB1;
+                    color: #BBBBBB;
                     border-bottom: 0;
                 }
                 &:hover {
@@ -135,7 +137,7 @@ nav {
                         padding: 0 30px;
                         display: block;
                         color: #FFF;
-                        border-bottom: 4px solid #497689;
+                        border-bottom: 4px solid #EEE;
                     }
                 }
             }
@@ -144,16 +146,69 @@ nav {
 }
 main{
     width: 1080px;
-    overflow:hidden;
     margin:  20px auto;
 }
-.content{
-    width: 720px;
-    height: 1000px;
+#content{
+    width: 730px;
     float:left;
 }
-.sidebar{
-    width: 350px;
-    height: 1000px;
+.list{
+    width: 100%;
+    overflow: hidden;
+    .list-li{
+        width: 100%;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom:1px solid #EEE;
+        .list-title{
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            a{
+                color: #3B589A;
+                font-size:18px;
+                &:hover{
+                    color: #566DC0;
+                }
+            }
+        }
+        .list-content{
+            width: 100%;
+            line-height: 26px;
+            color: #666;
+        }
+    }
+}
+#sidebar{
+    width: 300px;
     float: right;
+}
+.intro-card{
+    width: 298px;
+    border:1px solid #EEE;
+    position: relative;
+    top: -70px;
+    background: #FFF;
+    .my-img{
+        width: 278px;
+        height: 278px;
+        padding: 10px;
+        overflow: hidden;
+        border-bottom:1px solid #EEE;
+        img{
+            width: 278px;
+            height: 278px;
+        }
+    }
+    .my-description{
+        padding: 10px;
+        text-align: center;
+        .my-name{
+            font-size:28px;
+            font-weight: bold;
+        }
+        p{
+            line-height: 30px;
+        }
+    }
 }
