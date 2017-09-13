@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jsclub</title>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <app id="app">
+        <header>
+            <div class="common-width">
+                <div class="logo"><a href="#" class="logo-a">javascript</a></div>
+                <div class="search">
+                    <label>
+                        <input type="text" class="search-text" placeholder="输入搜索关键字">
+                        <input type="button" class="search-btn">
+                    </label>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="nav">
+                <ul class="nav-list">
+                    <li v-for="(nav,index) in navs" v-on:click="navClick(index)" :class="{hover: nav.hover}"><a :href="nav.href">{{nav.title}}</a></li>
+                </ul>
+            </div>
+
+            <div class="main">
+                <div class="type-info">
+                    <span class="hover">最新</span>
+                    <span>热门</span>
+                    <span>精华</span>
+                </div>
+                <router-view></router-view>
+                <!-- <div class="article">
+                    <div class="article-info">
+                        <div class="article-title">使用UML并结合MVC新方法设计精品课程网站</div>
+                        <div class="article-information">
+                            <span>2017-09-12</span>
+                            <span>来源：网络整理</span>
+                            <span>喜欢：223</span>
+                        </div>
+                    </div>
+                    <article>
+                        <h1 id="框架">框架</h1>
+                        <p>小程序开发框架的目标是通过尽可能简单、高效的方式让开发者可以在微信中开发具有原生 APP 体验的服务。</p>
+                        <p>框架提供了自己的视图层描述语言 WXML 和 WXSS，以及基于 JavaScript 的逻辑层框架，并在视图层与逻辑层间提供了数据传输和事件系统，可以让开发者可以方便的聚焦于数据与逻辑上。</p>
+                        <h3 id="响应的数据绑定">响应的数据绑定</h3>
+                        <p>框架的核心是一个响应的数据绑定系统。</p>
+                        <p>整个系统分为两块视图层（View）和逻辑层（App Service）</p>
+                        <p>框架可以让数据与视图非常简单地保持同步。当做数据修改的时候，只需要在逻辑层修改数据，视图层就会做相应的更新。</p>
+                        <p>通过这个简单的例子来看：</p>
+                        <pre><code class="lang-html"><span class="hljs-comment">&lt;!-- This is our View --&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">view</span>&gt;</span> Hello {{name}}! <span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">"changeName"</span>&gt;</span> Click me! <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+                            </code></pre>
+                        <pre><code class="lang-js"><span class="hljs-comment">// This is our App Service.</span>
+                            <span class="hljs-comment">// This is our data.</span>
+                            <span class="hljs-keyword">var</span> helloData = {
+                            name: <span class="hljs-string">'WeChat'</span>
+                            }
+                            
+                            <span class="hljs-comment">// Register a Page.</span>
+                            Page({
+                            data: helloData,
+                            changeName: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{
+                                <span class="hljs-comment">// sent data change to view</span>
+                                <span class="hljs-keyword">this</span>.setData({
+                                name: <span class="hljs-string">'MINA'</span>
+                                })
+                            }
+                            })
+                            </code></pre>
+                        <ul>
+                            <li>开发者通过框架将逻辑层数据中的 <code>name</code> 与视图层的 <code>name</code> 进行了绑定，所以在页面一打开的时候会显示 <code>Hello WeChat!</code></li>
+                            <li>当点击按钮的时候，视图层会发送 <code>changeName</code> 的事件给逻辑层，逻辑层找到对应的事件处理函数</li>
+                            <li>逻辑层执行了 <code>setData</code> 的操作，将 name 从 <code>WeChat</code> 变为 <code>MINA</code>，因为该数据和视图层已经绑定了，从而视图层会自动改变为
+                                <code>Hello MINA!</code> 。</li>
+                        </ul>
+                        <h3 id="页面管理">页面管理</h3>
+                        <p>框架 管理了整个<strong>小程序</strong>的页面路由，可以做到页面间的无缝切换，并给以页面完整的生命周期。开发者需要做的只是将页面的数据，方法，生命周期函数注册进 框架 中，其他的一切复杂的操作都交由
+                            框架 处理。</p>
+                        <h3 id="基础组件">基础组件</h3>
+                        <p>框架 提供了一套基础的组件，这些组件自带微信风格的样式以及特殊的逻辑，开发者可以通过组合基础组件，创建出强大的<strong>微信小程序</strong> 。</p>
+                        <h3 id="丰富的-api">丰富的 API</h3>
+                        <p>框架 提供丰富的微信原生 API，可以方便的调起微信提供的能力，如获取用户信息，本地存储，支付功能等。</p>
+
+                    </article>
+                </div>
+                <div class="related-head">相关文章</div>
+                <div class="list">
+                    <div class="list-li">
+                        <h3 class="list-title"><a href="#">UML与MVC设计模式在MIS中的研究与应用</a></h3>
+                        <div class="list-info">2017-08-11</div>
+                        <div class="list-img">
+                            <ul>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                            </ul>
+                        </div>
+                        <div class="list-intro">使用UML并结合MVC新方法设计精品课程网站.用UML用例图做需求分析,用UML类图进行系统静态设计,用UML顺序图进行系统动态设计.用MVC组件图设计系统总架构.通过PHP语言实现...</div>
+                        <span class="visit">356</span>
+                    </div>
+                    <div class="list-li">
+                        <h3 class="list-title"><a href="#">UML与MVC设计模式在MIS中的研究与应用</a></h3>
+                        <div class="list-info">2017-08-11</div>
+                        <div class="list-intro">使用UML并结合MVC新方法设计精品课程网站.用UML用例图做需求分析,用UML类图进行系统静态设计,用UML顺序图进行系统动态设计.用MVC组件图设计系统总架构.通过PHP语言实现...</div>
+                        <span class="visit">356</span>
+                    </div>
+                    <div class="list-li">
+                        <h3 class="list-title"><a href="#">UML与MVC设计模式在MIS中的研究与应用</a></h3>
+                        <p class="list-info">2017-08-11</p>
+                        <div class="list-img">
+                            <ul>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                            </ul>
+                        </div>
+                        <p class="list-intro">使用UML并结合MVC新方法设计精品课程网站.用UML用例图做需求分析,用UML类图进行系统静态设计,用UML顺序图进行系统动态设计.用MVC组件图设计系统总架构.通过PHP语言实现...</p>
+                        <span class="visit">356</span>
+                    </div>
+                    <div class="list-li">
+                        <h3 class="list-title"><a href="#">UML与MVC设计模式在MIS中的研究与应用</a></h3>
+                        <div class="list-info">2017-08-11</div>
+                        <div class="list-img">
+                            <ul>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                                <li><span><img src="http://addon.discuz.com/resource/preview/28883/2.thumb.jpg?v2Lj6"></span></li>
+                            </ul>
+                        </div>
+                        <div class="list-intro">使用UML并结合MVC新方法设计精品课程网站.用UML用例图做需求分析,用UML类图进行系统静态设计,用UML顺序图进行系统动态设计.用MVC组件图设计系统总架构.通过PHP语言实现...</div>
+                        <span class="visit">356</span>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="sidebar">
+                <div class="recommend">
+                    <div class="recommend-head">推荐文章</div>
+                    <div class="recommend-content">
+                        <a href="#">
+                            <img src="image/pic_1.jpg">
+                            <p class="recommend-title">使用UML并结合MVC新方法设计精品课程网站</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="sidebar-list">
+                    <div class="sidebar-hot-head">热门文章</div>
+                    <ul class="sidebar-list-content">
+                        <li v-for="hot in hotList"><a :href="hot.href">{{hot.title}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <footer>
+            Copyright &copy; 2013-2017 JavaScript prototype 沪ICP备10011451号-6
+        </footer>
+    </app>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-router.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+
+</html>
