@@ -238,9 +238,6 @@ main{
         position: relative;
         border-radius: 5px;
         overflow: hidden;
-        &:hover{
-            background: #FAFAFA;
-        }
         .list-title{
             height: 30px;
             line-height: 30px;
@@ -264,7 +261,7 @@ main{
                 padding: 3px;
                 border:1px solid #EEE;
                 margin-right: 10px;
-                background: #F9F9F9;
+                background: #FFF;
                 span{
                     width: 100%;
                     height: 100%;
@@ -279,6 +276,7 @@ main{
         .list-intro{
             font-size:15px;
             line-height: 25px;
+            margin-bottom: 20px;
         }
         .list-info{
             height: 30px;

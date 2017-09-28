@@ -269,10 +269,6 @@ main {
   overflow: hidden;
 }
 
-.list .list-li:hover {
-  background: #FAFAFA;
-}
-
 .list .list-li .list-title {
   height: 30px;
   line-height: 30px;
@@ -301,7 +297,7 @@ main {
   padding: 3px;
   border: 1px solid #EEE;
   margin-right: 10px;
-  background: #F9F9F9;
+  background: #FFF;
 }
 
 .list .list-li .list-img li span {
@@ -318,6 +314,7 @@ main {
 .list .list-li .list-intro {
   font-size: 15px;
   line-height: 25px;
+  margin-bottom: 20px;
 }
 
 .list .list-li .list-info {

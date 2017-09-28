@@ -10,22 +10,12 @@
 </head>
 
 <body>
-    <app id="app">
-        <header>
-            <div class="common-width">
-                <div class="logo"><a href="#" class="logo-a">javascript</a></div>
-                <div class="search">
-                    <label>
-                        <input type="text" class="search-text" placeholder="输入搜索关键字">
-                        <input type="button" class="search-btn">
-                    </label>
-                </div>
-            </div>
-        </header>
+    <div id="app">
+        <v-header></v-header>
         <main>
             <div class="nav">
                 <ul class="nav-list">
-                    <li v-for="(nav,index) in navs" v-on:click="navClick(index)" :class="{hover: nav.hover}"><a :href="nav.href">{{nav.title}}</a></li>
+                    <li v-for="(nav,index) in navs" v-on:click="navClick(nav)" :class="nav == navHover ? 'hover':''"><a :href="'#'+nav">{{nav}}</a></li>
                 </ul>
             </div>
 
@@ -162,8 +152,8 @@
         <footer>
             Copyright &copy; 2013-2017 JavaScript prototype 沪ICP备10011451号-6
         </footer>
-    </app>
-    <script type="text/javascript" src="js/vue.min.js"></script>
+    </div>
+    <script type="text/javascript" src="js/vue.js"></script>
     <script type="text/javascript" src="js/vue-router.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>

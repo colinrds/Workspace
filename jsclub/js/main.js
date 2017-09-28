@@ -13,20 +13,32 @@
 
 })(window)
 
+Vue.component('v-header', {
+    template: '<header><div class="common-width">' +
+    '<div class="logo"><a href="#" class="logo-a">javascript</a></div>' +
+    '<div class="search">' +
+    '<label>' +
+    '<input type="text" class="search-text" placeholder="输入搜索关键字">' +
+    '<input type="button" class="search-btn">' +
+    '</label>' +
+    '</div>' +
+    '</div></header>'
+})
+
 var home = Vue.extend({
-    template: '<div class="list">'+
-            '<div class="list-li" v-for="list in lists">'+
-            '<h3 class="list-title"><a :href="list.href">{{list.title}}</a></h3>'+
-            '<p class="list-info">{{list.date}}</p>'+
-            '<div class="list-img"><ul>'+
-            '<li v-for="listImage in list.image"><span><img :src="listImage"></span></li>'+
-            '</ul></div>'+
-            '<p class="list-intro">{{list.intro}}</p>'+
-            '<span class="visit">{{list.visit}}</span>'+
-            '</div></div>',
+    template: '<div class="list">' +
+    '<div class="list-li" v-for="list in lists">' +
+    '<h3 class="list-title"><a :href="list.href">{{list.title}}</a></h3>' +
+    '<p class="list-info">{{list.date}}</p>' +
+    '<p class="list-intro">{{list.intro}}</p>' +
+    '<div class="list-img"><ul>' +
+    '<li v-for="listImage in list.image"><span><img :src="listImage"></span></li>' +
+    '</ul></div>' +
+    '<span class="visit">{{list.visit}}</span>' +
+    '</div></div>',
     data: function () {
         return {
-            lists:[
+            lists: [
                 {
                     title: '使用UML并结合MVC新方法设计精品课程网站',
                     href: '#',
@@ -113,19 +125,19 @@ var home = Vue.extend({
 });
 
 var javascript = Vue.extend({
-    template: '<div class="list">'+
-            '<div class="list-li" v-for="list in lists">'+
-            '<h3 class="list-title"><a :href="list.href">{{list.title}}</a></h3>'+
-            '<p class="list-info">{{list.date}}</p>'+
-            '<div class="list-img"><ul>'+
-            '<li v-for="listImage in list.image"><span><img :src="listImage"></span></li>'+
-            '</ul></div>'+
-            '<p class="list-intro">{{list.intro}}</p>'+
-            '<span class="visit">{{list.visit}}</span>'+
-            '</div></div>',
+    template: '<div class="list">' +
+    '<div class="list-li" v-for="list in lists">' +
+    '<h3 class="list-title"><a :href="list.href">{{list.title}}</a></h3>' +
+    '<p class="list-info">{{list.date}}</p>' +
+    '<div class="list-img"><ul>' +
+    '<li v-for="listImage in list.image"><span><img :src="listImage"></span></li>' +
+    '</ul></div>' +
+    '<p class="list-intro">{{list.intro}}</p>' +
+    '<span class="visit">{{list.visit}}</span>' +
+    '</div></div>',
     data: function () {
         return {
-            lists:[
+            lists: [
                 {
                     title: '函数式编程术语解析',
                     href: '#',
@@ -205,7 +217,7 @@ var javascript = Vue.extend({
             ]
         }
     },
-    created () {
+    created() {
         // 组件创建完后获取数据，
         // 此时 data 已经被 observed 了
         this.fetchData()
@@ -215,7 +227,7 @@ var javascript = Vue.extend({
         '$route': 'fetchData'
     },
     methods: {
-        fetchData: function() {
+        fetchData: function () {
             console.log(111);
         }
     }
@@ -226,42 +238,17 @@ var router = new VueRouter({
     transitionOnLoad: true,
     routes: [
         { path: '/', component: home },
+        { path: '/home', component: home },
         { path: '/javascript', component: javascript }
     ]
 })
-
 
 var app = new Vue({
     el: '#app',
     router,
     data: {
-        navs: [
-            {
-                title: 'Home',
-                href: '#',
-                hover: true
-            },
-            {
-                title: 'JavaScript',
-                href: '#javascript',
-                hover: false
-            },
-            {
-                title: 'NodeJS',
-                href: '#nodejs',
-                hover: false
-            },
-            {
-                title: 'Vue',
-                href: '#vue',
-                hover: false
-            },
-            {
-                title: 'React',
-                href: '#react',
-                hover: false
-            }
-        ],
+        navHover: '',
+        navs: ['Home', 'JavaScript', 'NodeJS', 'Vue', 'React'],
         hotList: [
             {
                 title: '使用UML并结合MVC新方法设计精品课程网站',
@@ -304,7 +291,7 @@ var app = new Vue({
                 href: '#'
             }
         ],
-        lists:[
+        lists: [
             {
                 title: '使用UML并结合MVC新方法设计精品课程网站',
                 href: '#',
@@ -411,15 +398,18 @@ var app = new Vue({
             }
         ]
     },
+    mounted: function () {
+        var navStr = location.href;
+        var num = navStr.indexOf("#")
+        navStr = navStr.substr(num + 2);
+        if (navStr == '') {
+            navStr = 'Home'
+        }
+        this.navHover = navStr;
+    },
     methods: {
-        navClick: function (idx, event) {
-            this.navs.forEach(function (val, index) {
-                if (index == idx) {
-                    val.hover = true;
-                } else {
-                    val.hover = false;
-                }
-            })
+        navClick: function (name) {
+            this.navHover = name;
         }
     }
 })
