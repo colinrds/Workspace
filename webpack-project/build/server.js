@@ -35,13 +35,14 @@ module.exports = (function () {
             //获取url参数
             var site = url.parse(req.url);
             //获取请求页面地址
-            var pathname = site.pathname;
+            var pathname = decodeURIComponent(site.pathname);
             //获取请求参数并转成对象输出
             var query = querystring.parse(site.query);
             //添加send方法
             res.send = function(content){
                 res.end(content);
             };
+
             //添加query方法
             req.query = query;
 
@@ -69,6 +70,13 @@ module.exports = (function () {
     var app = new AppRequest();
 
     // console.log(JSON.stringify());
+    app.get('/',function(req,res){
+        console.log(res);
+        fs.readFile("./index.html",function(err,data){
+            res.writeHead(200,{"Context-Type":"text/html;charset=UTF-8"});  
+            res.end(data);  
+        }); 
+    })
     app.get('/aaa',function(req,res){
         var name = req.query.name;
         res.send(req.method + '_hello aaa' + name);
