@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>迪士尼彩乐园官网-专注彩票-为人类建乐园</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/jquery-ui.css">
+	<link rel="stylesheet" href="css/stylesheet.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/index.css">
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/dialog.js"></script>
+	<script type="text/javascript" src="js/libs.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<link rel="stylesheet" href="css/login.css">
+	<script type="text/javascript" src="js/reg.js"></script>
+</head>
+
+<body id="bodyid">
+	<div class="top">
+		<div class="g_w1">
+			<div class="time_box">
+				<span class="date showTime"></span> 营业时间：白天07:30 - 凌晨04:00 / 全年无休
+			</div>
+			<div class="oper_box">
+
+				<div class="login">
+					<form action="/login" id="login_form" method="GET">
+						<a href="/register"><button type="button" id="btn-register" class="btn btn-red" >注册</button></a>
+						<div class="userid form-control">
+							<input type='text' id="username" name="username" placeholder="会员账号" tabindex="1">
+						</div>
+						<div class="password form-control">
+							<input type='password' id="password" name="password" placeholder="密码" tabindex="2">
+							<a href="/forgotpwd" class="btn btn-sm btn-white">忘记?</a>
+						</div>
+						<div class="vcode form-control">
+							<input type='text' id="vcode" name="vcode" placeholder="验证码" tabindex="2">
+						</div>
+						<div class="vcode_img">
+							<img src="img/callcode.jpeg">
+						</div>
+						<button type="button" id="btnlogin" class="btn btn-red" tabindex="4">登录</button>
+						<button type="button" id="guestLogin" class="btn btn-blue">试玩登录</button>
+					</form>
+				</div>
+				<div class="header-links" style="display: none;">
+					<ul>
+						<li><span class="username"></span></li>
+						<!-- <li><span class="tesing"></span></li> -->
+						<li class="header-center"><a href="/member/index?page=center/index">个人中心</a></li>
+						<li class="header-payment"><a href="/member/index?page=payment/deposit">资金管理</a></li>
+						<li><a href="/member/index">进入游戏</a></li>
+						<li><a href="/member/logout">退出</a></li>
+					</ul>
+					<a target="_blank" href="https://gzzaxc826.livechatvalue.com/chat/chatClient/chatbox.jsp?companyID=737177&configID=40879&jid=1682755682&s=1"><div" class="btn btn-yellow floatright"><div style="margin-top:2px; "><img src="img/mic.png"></div> <div style="margin-left:4px; margin-top: 0;">在线客服</div></div"></a>
+				</div>
+			</div>
+			<div class="g_glear"></div>
+		</div>
+		<div class="g_glear"></div>
+	</div>
+	<div class="topmenu">
+		<div class="g_w1">
+			<div class="logo"><a href="/"><img src="img/logo.png" width="244" height="59" alt=""/></a>
+			</div>
+			<div class="menulinks clearfix">
+				<a href="/" class="sublinks">网站首页</a>
+				<a href="/register" class="sublinks">开户注册</a>
+				<a href="/promo" class="sublinks">优惠活动</a>
+				<a href="/member/index?page=payment/deposit" class="trade sublinks">存款取款</a>
+				<a href="/faqs" class="sublinks">常见问题</a>
+				<a href="/mobile" class="sublinks">手机投注</a>
+				<a href="http://dsnag.com" target="_blank" class="sublinks">加盟合作</a>
+			</div>
+		</div>
+	</div>
+	<div class="bannerpromo">
+		<div class="g_w1">
+			<img src="img/banner_login.jpg" width="1000" height="221" alt="" />
+			<div class="headertxt">注册</div>
+			<div class="headersubtxt">欢迎来到迪士尼彩乐园，我们更专注彩票，博彩乐趣都在这里。</div>
+		</div>
+	</div>
+
+	<div class="loginpanel">
+		<div class="g_w1 clearfix body_bg">
+			<div class="stepitm stepactive" style="z-index: 3;">
+				<div class="stepno">01</div>
+				<div class="stepnotxt">设置账户及登录密码</div>
+				<div class="hlfcircle hlfcircleactive"></div>
+			</div>
+			<div class="stepitm" style="z-index: 2;">
+				<div class="stepno ml90">02</div>
+				<div class="stepnotxt">注册成功</div>
+				<div class="hlfcircle"></div>
+			</div>
+			<div class="stepitm" style="z-index: 1;">
+				<div class="stepno ml90">03</div>
+				<div class="stepnotxt">登录网站</div>
+			</div>
+
+		</div>
+
+		<div class="g_w1 clearfix body_bg">
+			<form action="/reg" method="GET" id="regForm">
+				<div class="row mt35 clearfix">
+					<div class="col1">登录账号:</div>
+					<div class="col2">
+						<input type="text" id="username" name="username" maxlength="15" class="textbox1">
+					</div>
+					<div id="nameTips" class="col3">＊帐户名由4-10个字符组成</div>
+				</div>
+				<div class="row  clearfix">
+					<div class="col1">手机号码:</div>
+					<div class="col2">
+						<input type="text" id="mobile" name="mobile" class="textbox1">
+					</div>
+					<div class="col3">＊请输入真实手机号码，验证身份，修改密码渠道，否则无法修改资料</div>
+				</div>
+				<div class="row clearfix">
+					<div class="col1">登录密码:</div>
+					<div class="col2">
+						<input type="password" id="password" name="password" class="textbox1">
+					</div>
+					<div class="col3">＊6-20个字母、数字或组合组成，区分大小写</div>
+				</div>
+				<div class="row  clearfix">
+					<div class="col1">确认密码:</div>
+					<div class="col2">
+						<input type="password" id="password1" name="password1" class="textbox1">
+					</div>
+					<div class="col3">＊请再次输入密码以确保输入无误</div>
+				</div>
+				<div class="row  clearfix">
+					<div class="col1">验证码:</div>
+					<div class="col2">
+						<input type="text" id="code" name="code" class="textbox2">
+						<div class="capcha">
+							<!-- <img src="code?_=1506971202125" alt="none" title="看不清？点击更换一张验证图片" /> -->
+						</div>
+					</div>
+					<div class="col3">＊请输入验证码</div>
+				</div>
+				<div class="row" style="margin-bottom: 50px;">
+					<div class="col1"></div>
+					<div class="col2">
+						<input type="submit" class="submitbtn" id="btnRegister" value="创建帐号">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<link rel="stylesheet" href="css/phoneback.css">
+	<div class="footernavi2">
+		<div class="footercontainer bothborder">
+			<div class="col4 borderleft borderright">
+				<div class="footercontent">
+					<a href="https://1380tt.com" target="_blank"><img src="img/footerlogo1.jpg" width="151" height="80" alt=""></a>
+				</div>
+			</div>
+			<div class="col5 borderleft borderright">
+				<div class="footercontent">
+					<a href="http://sgwin123.com" target="_blank"><img src="img/footerlogo2.jpg" width="168" height="80" alt=""></a>
+				</div>
+			</div>
+			<div class="col6 borderleft borderright">
+				<div class="footercontent">
+					<!--<a href="http://1681580.com" target="_blank"><img src="images/cash/footerlogo3.jpg" width="160" height="80" alt=""></a>-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footerindex2">
+		©2013-2016 迪士尼彩乐园。All Rights Reserved.
+	</div>
+
+
+	<div class="socialnavi">
+		<div class="wechatqr">
+			<img src="img/wechat_qr1.png" alt="" />
+		</div>
+		<div class="downloadqr" style="display: none;">
+			<p>下载迪士尼网址<br> 防劫持发布器
+			</p>
+		</div>
+		<div class="phonebackqr" style="display: none;">
+			<p>提交回电请求</p>
+		</div>
+		<div class="qq" onClick="javascript:window.open('http://wpa.qq.com/msgrd?v=3&uin=1131138320&site=qq&menu=yes','_blank')"></div>
+		<div class="wechat" onClick=""></div>
+		<div class="livechat" onClick="javascript:window.open('https://gzzaxc826.livechatvalue.com/chat/chatClient/chatbox.jsp?companyID=737177&configID=40879&jid=1682755682&s=1','_blank')"></div>
+		<div class="download" onClick="javascript:window.open('http://soft.320app.com/','_blank')"></div>
+		<div>
+			<a href="javascript:;" onClick="scrolltop();" class="scrolltop"><img src="img/support_top.png" width="50"
+			height="50" alt="" /></a>
+		</div>
+
+	</div>
+	<script src="js/jquery.bxslider.min.js"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/phoneback.js"></script>
+	<script src="js/main.js?v=1226"></script>
+</body>
+
+</html>

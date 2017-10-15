@@ -1,0 +1,63 @@
+/* phoneback */
+
+.pb_body{
+	font: normal 13px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;  
+    color: #4f6b72; 
+    display: none;
+}
+
+.pb_text {
+	font-size:13px;
+	line-height: 130%;
+	color:#blue;
+}
+
+.pb_textbox {
+	box-sizing: border-box;
+	float:left;
+	width: 200px;
+	height: 30px;
+	padding:9px;
+	border: 1px solid #B9B4B4;
+	font-size: 13px;
+	color: #666;
+	border-radius: 2px;
+}
+
+.pb_table{
+	
+    padding: 0 0 5px 0;  
+    margin: 2;
+	border-collapse:separate; 
+	border-spacing:4px 10px;
+}
+
+.pb_table td {  
+    border-right: 0px solid #C1DAD7;  
+    border-bottom: 0px solid #C1DAD7;  
+    
+    color: #4f6b72;  
+}  
+
+.pb_select {
+	box-sizing: border-box;
+	background: transparent;
+    float:left;
+	width: 200px;
+	height: 30px;
+	padding:3px;
+	border: 1px solid #B9B4B4;
+	font-size: 13px;
+	color: #666;
+	border-radius: 2px;
+}
+
+.validateTips { border: 1px solid transparent; padding: 0.3em; color:#9B30FF}
+
+.back{
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      display: inline-block;
+      color: rgba(1,1,1,0.5)
+    }
