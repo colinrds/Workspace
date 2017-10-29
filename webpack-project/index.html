@@ -10,6 +10,79 @@
 
 <body>
   <h1>INDEX PAGE PS:Colin</h1>
+  <div class="page">
+    <button class="submit_btn">提交</button>
+  </div>
+  <script>
+    function ajaxRequest(options) {
+      options = options || {};
+      options.type = (options.type || "GET").toUpperCase();
+      options.dataType = options.dataType || "json";
+      var params = formatParams(options.data);
+      var xhr;
+
+      if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+      } else if (window.ActiveObject) {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+      }
+
+      if (options.type == "GET") {
+        //1.请求类型，2.请求地址，3.是否异步请求
+        xhr.open("GET", options.url + "?" + params, true);
+        xhr.withCredentials = true;
+        xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+        xhr.send(null);
+      } else if (options.type == "POST") {
+        xhr.open("POST", options.url, true);
+        xhr.withCredentials = true;
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+        xhr.send(params);
+      }
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+          var status = xhr.status;
+          if (status >= 200 && status < 300 || status == 304) {
+            options.success && options.success(JSON.parse(xhr.responseText, xhr.responseXML));
+          } else {
+            options.error && options.error(status);
+          }
+        }
+      }
+    }
+
+    //格式化参数
+    function formatParams(data) {
+      var arr = [];
+      for (var name in data) {
+        arr.push(encodeURIComponent(name) + "=" + encodeURIComponent(data[name]));
+      }
+      arr.push(("v=" + Math.random()).replace("."));
+      return arr.join("&");
+    }
+
+    var $submit = document.getElementsByClassName('submit_btn')[0];
+
+    $submit.onclick = function () {
+      console.log('ajax');
+      ajaxRequest({
+        type: 'POST',
+        url: '/ccc',
+        data: {
+          name: 'colin',
+          age: '30'
+        },
+        success: function (data) {
+          console.log(data);
+        },
+        error: function (e) {
+          console.log(e);
+        }
+      })
+    }
+  </script>
 </body>
 
 </html>
