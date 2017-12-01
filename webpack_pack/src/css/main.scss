@@ -1,0 +1,19 @@
+//主体样式
+html{
+    width: 100%;
+    height: 100%;
+    padding:0;
+    margin: 0;
+    background:#EEE url('../img/hf.png') no-repeat;
+}
+body{
+    width: 100%;
+    overflow: hidden;
+    .header{
+        width: 100%;
+        height: 150px;
+        margin-top: 200px;
+        background:url('../img/hp.png') no-repeat;
+    }
+}
+

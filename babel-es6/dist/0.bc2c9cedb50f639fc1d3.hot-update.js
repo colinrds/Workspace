@@ -1,0 +1,1 @@
+webpackHotUpdate(0,{15:function(a,e,t){"use strict";e.a={el:"#app",data:()=>({name:"guowenfh",age:"15"})}}});

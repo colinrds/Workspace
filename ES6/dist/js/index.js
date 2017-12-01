@@ -67,9 +67,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-function hello(){
-    console.log('hello Colin');
-}
+throw new Error("Module build failed: SyntaxError: /Users/linhang/package.json: Unexpected end of JSON input\n    at JSON.parse (<anonymous>)\n    at Object.Module._extensions..json (module.js:588:27)\n    at Module.load (module.js:488:32)\n    at tryModuleLoad (module.js:447:12)\n    at Function.Module._load (module.js:439:3)\n    at Module.require (module.js:498:17)\n    at require (internal/module.js:20:19)\n    at find (/Users/linhang/Workspace/Workspace/ES6/node_modules/.7.1.2@babel-loader/lib/resolve-rc.js:14:49)\n    at find (/Users/linhang/Workspace/Workspace/ES6/node_modules/.7.1.2@babel-loader/lib/resolve-rc.js:24:12)\n    at find (/Users/linhang/Workspace/Workspace/ES6/node_modules/.7.1.2@babel-loader/lib/resolve-rc.js:24:12)\n    at find (/Users/linhang/Workspace/Workspace/ES6/node_modules/.7.1.2@babel-loader/lib/resolve-rc.js:24:12)\n    at find (/Users/linhang/Workspace/Workspace/ES6/node_modules/.7.1.2@babel-loader/lib/resolve-rc.js:24:12)\n    at find (/Users/linhang/Workspace/Workspace/ES6/node_modules/.7.1.2@babel-loader/lib/resolve-rc.js:24:12)\n    at Object.module.exports (/Users/linhang/Workspace/Workspace/ES6/node_modules/.7.1.2@babel-loader/lib/index.js:113:132)");
 
 /***/ })
 /******/ ]);

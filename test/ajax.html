@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax</title>
+</head>
+
+<body>
+    <div id="ajax"></div>
+    <script>
+        ;(function (fn) {
+            if (typeof module !== 'undefined' && module.exports) {
+                module.exports = new fn;
+            } else if (typeof define === "function") {
+                define(fn);
+            } else {
+                this.ajaxFn = fn;
+            }
+        })(function (options) {
+            options = options || {};
+            options.data = options.data || {};
+            options.type = (options.type || "GET").toUpperCase();
+            options.dataType = options.dataType || "json";
+            this.formatParams = function (data) {
+                var arr = [];
+                for (var name in data) {
+                    arr.push(encodeURIComponent(name) + "=" + encodeURIComponent(data[name]));
+                }
+                arr.push(("v=" + Math.random()).replace("."));
+                return arr.join("&");
+            };
+            var params = this.formatParams(options.data);
+            var xhr;
+
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveObject) {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+
+            if (options.type == "GET") {
+                xhr.open("GET", options.url + "?" + params, true);
+                xhr.withCredentials = true;
+                xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+                xhr.send(null);
+            } else if (options.type == "POST") {
+                xhr.open("POST", options.url, true);
+                xhr.withCredentials = true;
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+                xhr.send(params);
+            }
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var status = xhr.status;
+                    if (status >= 200 && status < 300 || status == 304) {
+                        options.success && options.success(JSON.parse(xhr.responseText, xhr.responseXML));
+                    } else {
+                        options.error && options.error(status);
+                    }
+                }
+            }
+        });
+
+        ajaxFn({
+            url: 'test.json',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        })
+    </script>
+</body>
+
+</html>

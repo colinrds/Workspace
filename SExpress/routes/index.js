@@ -4,9 +4,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-	fs.readFile('./bin/webpack.config.prod.js', {flag: 'r+', encoding: 'utf8'}, function (err, data) {
+	fs.readFile('./bin/webpack.js', {flag: 'r+', encoding: 'utf8'}, function (err, data) {
 		if(err) {
-		 console.error(err);
+		 console.error(err);ç
 		 return;
 		}
 		res.render('index', {

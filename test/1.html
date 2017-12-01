@@ -9,11 +9,325 @@
 </head>
 
 <body>
-    <div class="result"></div>
-    <script>
-
-
-    </script>
+    <div class="t_fsz">
+        <table cellspacing="0" cellpadding="0"><tbody><tr><td class="t_f" id="postmessage_39939">
+        <table cellspacing="0" class="t_table"><tbody><tr><td>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<font color="#333333"><font style="font-size:16px">之前在知道创宇的项目中有用到过nodejs作中间层，当时还不太理解其背后真正的原因；后来在和一位学长交谈的过程中，也了解到蚂蚁金服也在使用类似的方法，使用nodejs作为中间层去请求真实后台的数据；之后人到北京，也见到现在的公司也在往nodejs后端方向靠拢。随着知识的增加，加之自己查阅资料，慢慢总结出了一些原理。</font></font><br>
+        <font size="4">从做微信小程序引发的思考</font><br>
+        <br>
+        <font color="#333333"><font style="font-size:16px">最近出于爱好，写了个音乐播放器的微信小程序（原本想用vue写的，后来因为公司业务原因，年后可能去做微信小程序，所以就换了前端技术栈），源码在我的GitHub上： <a href="https://github.com/xingbofeng/wx-audio" target="_blank" class="even">wx-audio</a> 。</font></font><br>
+        <font color="#333333"><font style="font-size:16px">思考：后端出于性能和别的原因，提供的接口所返回的数据格式也许不太适合前端直接使用，前端所需的排序功能、筛选功能，以及到了视图层的页面展现，也许都需要对接口所提供的数据进行二次处理。这些处理虽可以放在前端来进行，但也许数据量一大便会浪费浏览器性能。因而现今，增加node端便是一种良好的解决方案。</font></font><br>
+        <font color="#333333"><font style="font-size:16px">在我的微信小程序demo的server端代码中，我通过http模块对真实后台（网易云音乐API）发起http请求，然后通过express模块搭建后端服务。</font></font><br>
+        <font color="#333333"><font style="font-size:16px">发起请求：</font></font><div class="blockcode"><div id="code_fnx"><ol><li>// http.js<br>
+        </li><li>var formatURL = require('./formatURL.js');<br>
+        </li><li>var http = require('http');<br>
+        </li><li>const POSThttp = function(request){<br>
+        </li><li>&nbsp;&nbsp;return new Promise((resolve, reject) =&gt; {<br>
+        </li><li>&nbsp; &nbsp; let body = '';<br>
+        </li><li>&nbsp; &nbsp; // http模块拿到真实后台api的数据<br>
+        </li><li>&nbsp; &nbsp; http.get(formatURL(request.body.musicname), function(res){<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;res.on('data', (data) =&gt; {<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;body += data;<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;}).on('end', () =&gt; {<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;// 格式化<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;const {<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; name,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; audio: musicUrl,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; page,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; album: {<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;name: musicName,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;picUrl,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; },<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; artists: [{<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;name: singer,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; }],<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;} = JSON.parse(body).result.songs[0];<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;const reply = {<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; name,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; picUrl,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; musicUrl,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; page,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; singer,<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;};<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;resolve(reply);<br>
+        </li><li>&nbsp; &nbsp;&nbsp; &nbsp;});<br>
+        </li><li>&nbsp; &nbsp; });<br>
+        </li><li>&nbsp;&nbsp;});<br>
+        </li><li>};<br>
+        </li><li>module.exports = POSThttp;<br>
+        </li><li></li></ol></div><em onclick="copycode($('code_fnx'));">复制代码</em></div><font color="#333333"><font style="font-size:16px">得到数据传回前端：</font></font><div class="blockcode"><div id="code_gwJ"><ol><li>var express = require('express');<br>
+        </li><li>var POSThttp = require('./POSThttp.js');<br>
+        </li><li>var bodyParser = require('body-parser');<br>
+        </li><li>// 使用body-parser解析post请求的参数，如果没有，req.body为undefined。<br>
+        </li><li>var app = express();<br>
+        </li><li>app.use(bodyParser.json());<br>
+        </li><li>app.use(bodyParser.urlencoded({<br>
+        </li><li>&nbsp;&nbsp;extended: true<br>
+        </li><li>}));<br>
+        </li><li>app.post('/', (req, res) =&gt; {<br>
+        </li><li>&nbsp;&nbsp;POSThttp(req).then((data) =&gt; {<br>
+        </li><li>&nbsp; &nbsp; res.send(data);<br>
+        </li><li>&nbsp;&nbsp;}).catch((err) =&gt; {<br>
+        </li><li>&nbsp; &nbsp; res.send(err);<br>
+        </li><li>&nbsp;&nbsp;});<br>
+        </li><li>});<br>
+        </li><li>app.listen(3000, () =&gt; {<br>
+        </li><li>&nbsp;&nbsp;console.log('open wx-audio server successful!')<br>
+        </li><li>});<br>
+        </li><li></li></ol></div><em onclick="copycode($('code_gwJ'));">复制代码</em></div><font color="#333333"><font style="font-size:16px">这几十行代码也就实现了一个简单的中间层的demo，并做到了在中间层格式化参数，便于前端进行使用的过程。</font></font><br>
+        <font size="4">为什么需要中间层？</font><br>
+        <br>
+        <font color="#333333"><font style="font-size:16px">其实这个问题，我认为跟面试常考的题：“为什么需要前后端分离？”是类似的，其原因可以归纳为以下几点：</font></font><br>
+        <font size="4">现今网站存在问题</font><br>
+        <br>
+        <font color="#333333"><font style="font-size:16px">之前有向一位在百度有多年工作经验的老前辈交谈这类问题，我所提到的搜狐公司代码冗余、前后端耦合的问题，他是这么回答并且给予我这样的建议：</font></font><br>
+        <font color="#333333"><font style="font-size:16px"><br>
+        </font></font><br>
+        <a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711x10kna1ui9k94jza.jpg" target="_blank" class="odd"></a><div align="center"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711x10kna1ui9k94jza.jpg" target="_blank" class="even">
+        <ignore_js_op>
+        
+        <img id="aimg_6719" aid="6719" src="data/attachment/forum/201704/05/123437z69tem6g22eeoo73.jpg" zoomfile="data/attachment/forum/201704/05/123437z69tem6g22eeoo73.jpg" file="data/attachment/forum/201704/05/123437z69tem6g22eeoo73.jpg" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="165" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6719_menu" style="position: absolute; display: none" disautofocus="true"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711x10kna1ui9k94jza.jpg" target="_blank" class="odd">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711x10kna1ui9k94jza.jpg" target="_blank" class="even">
+        <p><strong>f7dd48bf7db82926a03ce78b158064ec.jpg</strong> <em class="xg1">(27.29 KB, 下载次数: 10)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711x10kna1ui9k94jza.jpg" target="_blank" class="odd">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcxOXwwYWU0MGVlYXwxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="even">下载附件</a>
+        
+        </p>
+        
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        <a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711zoiisntsyann2det.jpg" target="_blank" class="odd"></a><div align="center"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711zoiisntsyann2det.jpg" target="_blank" class="even">
+        <ignore_js_op>
+        
+        <img id="aimg_6720" aid="6720" src="data/attachment/forum/201704/05/123437tj9ju0u4z45efkag.jpg" zoomfile="data/attachment/forum/201704/05/123437tj9ju0u4z45efkag.jpg" file="data/attachment/forum/201704/05/123437tj9ju0u4z45efkag.jpg" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="163" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" initialized="true" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6720_menu" style="position: absolute; z-index: 301; left: 710px; top: 2463px; display: none;" disautofocus="true" initialized="true"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711zoiisntsyann2det.jpg" target="_blank" class="odd">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711zoiisntsyann2det.jpg" target="_blank" class="even">
+        <p><strong>b51936f8dde9728a803555c432738056.jpg</strong> <em class="xg1">(26.1 KB, 下载次数: 13)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202711zoiisntsyann2det.jpg" target="_blank" class="odd">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcyMHxhZGViYjQwZHwxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="even">下载附件</a>
+        
+        </p>
+        
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        <a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712trngl7nbnk8x6l6n.jpg" target="_blank" class="odd"></a><div align="center"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712trngl7nbnk8x6l6n.jpg" target="_blank" class="even">
+        <ignore_js_op>
+        
+        <img id="aimg_6721" aid="6721" src="data/attachment/forum/201704/05/123437x8wclbidz44plli6.jpg" zoomfile="data/attachment/forum/201704/05/123437x8wclbidz44plli6.jpg" file="data/attachment/forum/201704/05/123437x8wclbidz44plli6.jpg" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="200" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6721_menu" style="position: absolute; display: none" disautofocus="true"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712trngl7nbnk8x6l6n.jpg" target="_blank" class="odd">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712trngl7nbnk8x6l6n.jpg" target="_blank" class="even">
+        <p><strong>eb2250b7a34012201cdef625749362b0.jpg</strong> <em class="xg1">(9.74 KB, 下载次数: 14)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712trngl7nbnk8x6l6n.jpg" target="_blank" class="odd">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcyMXxlMWFkZTYzZXwxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="even">下载附件</a>
+        
+        </p>
+        
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        <font color="#333333"><font style="font-size:16px"><br>
+        </font></font><br>
+        <font color="#333333"><font style="font-size:16px">其实，提炼出来，现今大公司的老项目（包括百度、搜狐等公司所采用的后端渲染等），或多或少都会存在这样的一些 <strong>问题</strong> ：</font></font><br>
+        <ul><br>
+        <li>前端代码越来越复杂<br>
+        </li><li>前后端依旧高度耦合<br>
+        </li><li>无法良好的支持跨终端<br>
+        </li></ul><font size="4">前辈们提出的解决方案</font><br>
+        <br>
+        <font color="#333333"><font style="font-size:16px">参考 <a href="http://2014.jsconf.cn/slides/herman-taobaoweb/index.html" target="_blank" class="odd">淘宝前后端分离解决方案</a></font></font><br>
+        <ul><br>
+        <li>前端代码越来越复杂，我们希望尽可能地减少工作量，开始使用类似MV*的分层结构，使前端后分离成为必要。<br>
+        </li><li>前端需要处理更多的工作，希望有权操控View，Router（如：SPA的尝试）<br>
+        </li><li>各种终端设备的兴起，需要我们把页面适配到更多的地方。<br>
+        </li></ul><font color="#333333"><font style="font-size:16px">开始：我们所尝试的CLIENT-SIDE MV* 框架，后端暴露数据接口、处理业务逻辑，前端接收数据、处理渲染逻辑。</font></font><div class="blockcode"><div id="code_Xh2"><ol><li>关于MVC的定义：<br>
+        </li><li><br>
+        </li><li>MVC是一种设计模式，它将应用划分为3个部分：数据（模型）、展现层（视图）和用户交互（控制器）。换句话说，一个事件的发生是这样的过程：<br>
+        </li><li>　　1. 用户和应用产生交互。<br>
+        </li><li>　　2. 控制器的事件处理器被触发。<br>
+        </li><li>　　3. 控制器从模型中请求数据，并将其交给视图。<br>
+        </li><li>　　4. 视图将数据呈现给用户。<br>
+        </li><li>我们不用类库或框架就可以实现这种MVC架构模式。关键是要将MVC的每部分按照职责进行划分，将代码清晰地分割为若干部分，并保持良好的解耦。这样可以对每个部分进行独立开发、测试和维护。<br>
+        </li><li></li></ol></div><em onclick="copycode($('code_Xh2'));">复制代码</em></div><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712n6xzoyxqbb5ftfft.jpg" target="_blank" class="even"></a><div align="center"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712n6xzoyxqbb5ftfft.jpg" target="_blank" class="odd">
+        <ignore_js_op>
+        
+        <img id="aimg_6722" aid="6722" src="data/attachment/forum/201704/05/123437fmn4pmjdxtepynnm.jpg" zoomfile="data/attachment/forum/201704/05/123437fmn4pmjdxtepynnm.jpg" file="data/attachment/forum/201704/05/123437fmn4pmjdxtepynnm.jpg" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="550" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6722_menu" style="position: absolute; display: none" disautofocus="true"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712n6xzoyxqbb5ftfft.jpg" target="_blank" class="even">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712n6xzoyxqbb5ftfft.jpg" target="_blank" class="odd">
+        <p><strong>3c4eeec957d177c2a4502ce42d853db5.jpg</strong> <em class="xg1">(26.86 KB, 下载次数: 15)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202712n6xzoyxqbb5ftfft.jpg" target="_blank" class="even">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcyMnwxMGRlZDdlYnwxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="odd">下载附件</a>
+        
+        </p>
+        
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        <font color="#333333"><font style="font-size:16px">如：Backbone, EmberJS, KnockoutJS, AngularJS等框架。</font></font><br>
+        <a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202713wwcmc1851j81tx7j.png" target="_blank" class="even"></a><div align="center"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202713wwcmc1851j81tx7j.png" target="_blank" class="odd">
+        <ignore_js_op>
+        
+        <img id="aimg_6723" aid="6723" src="data/attachment/forum/201704/05/123437xygo7ve3yz69cevr.png" zoomfile="data/attachment/forum/201704/05/123437xygo7ve3yz69cevr.png" file="data/attachment/forum/201704/05/123437xygo7ve3yz69cevr.png" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="550" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6723_menu" style="position: absolute; display: none" disautofocus="true"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202713wwcmc1851j81tx7j.png" target="_blank" class="even">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202713wwcmc1851j81tx7j.png" target="_blank" class="odd">
+        <p><strong>2cefaa0fbf689674b8983df18c2b5222.png</strong> <em class="xg1">(41.01 KB, 下载次数: 3)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202713wwcmc1851j81tx7j.png" target="_blank" class="even">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcyM3w4NmU1YTQxMXwxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="odd">下载附件</a>
+        
+        </p>
+        
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        <font color="#333333"><font style="font-size:16px">但这样的方式仍旧存在问题：</font></font><br>
+        <font size="3">各层职责重叠</font><br>
+        <br>
+        <ul><br>
+        <li>Client-side Model 是 Server-side Model 的加工<br>
+        </li><li>Client-side View 跟 Server-side是 不同层次的东西<br>
+        </li><li>Client-side的Controller 跟 Sever-side的Controller 各搞各的<br>
+        </li><li>Client-side的Route 但是 Server-side 可能没有<br>
+        </li></ul><font size="3">性能问题</font><br>
+        <br>
+        <ul><br>
+        <li>渲染，取值都在客户端进行，有性能的问题<br>
+        </li><li>需要等待资源到齐才能进行，会有短暂白屏与闪动<br>
+        </li><li>在移动设备低速网路的体验奇差无比<br>
+        </li></ul><font size="3">重用问题</font><br>
+        <br>
+        <ul><br>
+        <li>模版无法重用，造成维护上的麻烦与不一致<br>
+        </li><li>逻辑无法重用，前端的校验后端仍须在做一次<br>
+        </li><li>路由无法重用，前端的路由在后端未必存在<br>
+        </li></ul><font size="3">跨终端问题</font><br>
+        <br>
+        <ul><br>
+        <li>业务太靠前，导致不同端重复实现<br>
+        </li><li>逻辑太靠前，造成维护上的不易<br>
+        </li></ul><font size="3">渲染都在客户端，模版无法重用，SEO实现 麻烦</font><br>
+        <br>
+        <font size="4">NodeJS作为中间层的全栈开发方案</font><br>
+        <br>
+        <font color="#333333"><font style="font-size:16px">有了NodeJS之后，前端可以更加专注于视图层，而让更多的数据逻辑放在Node层处理。</font></font><br>
+        <a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202714hnv5o2x525ntvs88.png" target="_blank" class="even"></a><div align="center"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202714hnv5o2x525ntvs88.png" target="_blank" class="odd">
+        <ignore_js_op>
+        
+        <img id="aimg_6724" aid="6724" src="data/attachment/forum/201704/05/123437xl54ml5u25z2j22z.png" zoomfile="data/attachment/forum/201704/05/123437xl54ml5u25z2j22z.png" file="data/attachment/forum/201704/05/123437xl54ml5u25z2j22z.png" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="550" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6724_menu" style="position: absolute; display: none" disautofocus="true"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202714hnv5o2x525ntvs88.png" target="_blank" class="even">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202714hnv5o2x525ntvs88.png" target="_blank" class="odd">
+        <p><strong>c76d78efb7151c62edea227ae46ec8e0.png</strong> <em class="xg1">(68.51 KB, 下载次数: 11)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/data/attachment/portal/201701/28/202714hnv5o2x525ntvs88.png" target="_blank" class="even">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcyNHw0ODhmZWI4NHwxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="odd">下载附件</a>
+        
+        </p>
+        
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        <font color="#333333"><font style="font-size:16px">我们使用Node层：</font></font><br>
+        <ul><br>
+        <li>转发数据，串接服务<br>
+        </li><li>路由设计，控制逻辑<br>
+        </li><li>渲染页面，体验优化<br>
+        </li><li>中间层带来的性能问题，在异步ajax转成同步渲染过程中得到平衡<br>
+        </li><li>更多的可能<br>
+        </li></ul><font color="#333333"><font style="font-size:16px">其实更为重要的是，对于前端来说，NodeJS的学习成本是相当低的：我们无需学习一门新的语言，就能做到以前开发帮我们做的事情，一切都显得那么自然。</font></font><br>
+        <font color="#333333"><font style="font-size:16px">技术在不断变化中，唯有跟上技术革新的浪潮，才能不被时代所淘汰，不管是人还是企业。</font></font><br>
+         </td></tr></tbody></table>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<a href="http://www.wxapp-union.com/plugin.php?id=wq_reward&amp;mod=pay&amp;infoid=1243&amp;idtype=aid" target="_blank" class="even">赞赏</a><br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<a href="http://www.wxapp-union.com/misc.php?mod=invite&amp;action=article&amp;id=1243" target="_blank" class="odd">邀请</a> <br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <table cellspacing="0" class="t_table"><tbody><tr><td><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=1&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="even"></a><div align="center"><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=1&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="odd">
+        <ignore_js_op>
+        
+        <img id="aimg_6725" aid="6725" src="data/attachment/forum/201704/05/123437j90d6oohvuvrkzh1.gif" zoomfile="data/attachment/forum/201704/05/123437j90d6oohvuvrkzh1.gif" file="data/attachment/forum/201704/05/123437j90d6oohvuvrkzh1.gif" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="32" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6725_menu" style="position: absolute; display: none" disautofocus="true"><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=1&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="even">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=1&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="odd">
+        <p><strong>49ac03d5a7f85b61996900e1ea870e22.gif</strong> <em class="xg1">(2.38 KB, 下载次数: 14)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=1&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="even">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcyNXw0NmE3NTcyZHwxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="odd">下载附件</a>
+        
+        </p>
+        <p>鲜花</p>
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; 鲜花&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; </td><td><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=2&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="even"></a><div align="center"><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=2&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="odd">
+        <ignore_js_op>
+        
+        <img id="aimg_6726" aid="6726" src="data/attachment/forum/201704/05/123437bkyjlwyej0j0jxbb.gif" zoomfile="data/attachment/forum/201704/05/123437bkyjlwyej0j0jxbb.gif" file="data/attachment/forum/201704/05/123437bkyjlwyej0j0jxbb.gif" class="zoom" onclick="zoom(this, this.src, 0, 0, 0)" width="32" inpost="1" onmouseover="showMenu({'ctrlid':this.id,'pos':'12'})" lazyloaded="true" _load="1" style="">
+        
+        </ignore_js_op></a><div class="tip tip_4 aimg_tip" id="aimg_6726_menu" style="position: absolute; display: none" disautofocus="true"><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=2&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="even">
+        </a><div class="xs0"><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=2&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="odd">
+        <p><strong>828fdb2eb8cdb9374659d9e2ed6ac96b.gif</strong> <em class="xg1">(2.56 KB, 下载次数: 3)</em></p>
+        </a><p><a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=click&amp;op=add&amp;clickid=2&amp;idtype=aid&amp;id=1243&amp;hash=06a5acf5b0b2f192ec96a232a00c8bf1&amp;handlekey=clickhandle" target="_blank" class="even">
+        </a><a href="http://www.guaishouxueyuan.net/forum.php?mod=attachment&amp;aid=NjcyNnxmNjIyMDFjN3wxNTA5NTEwMTkxfDc2NDl8MzIyODE%3D&amp;nothumb=yes" target="_blank" class="odd">下载附件</a>
+        
+        </p>
+        <p>鸡蛋</p>
+        <p class="xg1 y">2017-4-5 12:34 上传</p>
+        
+        </div>
+        <div class="tip_horn"></div>
+        </div>
+        
+        
+        </div><br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; 鸡蛋&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; </td></tr></tbody></table>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<i>分享至 :</i><a href="http://www.wxapp-union.com/#" target="_blank" class="even">QQ空间</a><br>
+        <a href="http://www.wxapp-union.com/home.php?mod=spacecp&amp;ac=favorite&amp;type=article&amp;id=1243&amp;handlekey=favoritearticlehk_1243" target="_blank" class="odd">收藏</a><br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <i><a href="http://www.wxapp-union.com/article-1231-1.html" target="_blank" class="even">微信小程序的一个web实现（浏览器Chrome运行）</a></i>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<i><a href="http://www.wxapp-union.com/article-1252-1.html" target="_blank" class="odd">小程序之API管理</a></i>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <br>
+        &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;来自: <a href="http://www.xingbofeng.com/2017/01/24/从NodeJS搭建中间层再谈前后端分离/" target="_blank" class="even">原文地址</a></td></tr></tbody></table>
+        
+        
+        
+        
+        </div>
 </body>
 
 </html>

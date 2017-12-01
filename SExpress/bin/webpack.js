@@ -3,6 +3,8 @@ var webpack = require('webpack');
 var htmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+var pathUrl = ''
+
 module.exports = {
     entry: { 
         index: [
@@ -12,9 +14,8 @@ module.exports = {
     output: {
         path:path.join(__dirname,"dist"),
         publicPath: '..',
-        filename: 'js/index.js'
+        filename: pathUrl+'/js/index.js'
     },
-    devtool: 'source-map',
     module: {
         loaders: [
             {
